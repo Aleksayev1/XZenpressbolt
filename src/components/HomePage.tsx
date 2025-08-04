@@ -117,7 +117,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             Sua empresa promove a saúde integral, Wellness no ambiente de trabalho full time?
           </h2>
           <p className="text-xl text-blue-100 mb-6">
-            Implemente agora práticas de saúde mental e garante a certificação oficial como Empresa Promotora da Saúde Mental
+            Implemente agora práticas de saúde mental e almeje a certificação de Empresa Promotora da Saúde.
           </p>
           <div className="bg-white bg-opacity-20 rounded-2xl p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-blue-100">
