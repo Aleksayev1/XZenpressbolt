@@ -8,6 +8,7 @@ import { AcupressurePage } from './components/AcupressurePage';
 import { BreathingExercise } from './components/BreathingExercise';
 import { PremiumPage } from './components/PremiumPage';
 import { LoginPage } from './components/LoginPage';
+import './index.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
