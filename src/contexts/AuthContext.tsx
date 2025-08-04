@@ -40,10 +40,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Simple validation
+      if (!email.includes('@') || password.length < 6) {
+        throw new Error('Invalid credentials');
+      }
+      
       const mockUser: User = {
         id: '1',
         email,
-        name: email.split('@')[0],
+        name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
         isPremium: false,
         createdAt: new Date().toISOString(),
       };

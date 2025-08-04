@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, AlertCircle, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { useLanguage } from '../contexts/LanguageContext';
 
 interface LoginPageProps {
   onPageChange: (page: string) => void;
@@ -9,7 +8,6 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
   const { login, resetPassword, isLoading } = useAuth();
-  const { t } = useLanguage();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
@@ -76,6 +74,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4">
         <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
           <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Mail className="w-8 h-8 text-white" />
+            </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Recuperar Senha</h2>
             <p className="text-gray-600">Digite seu email para receber o link de recuperação</p>
           </div>
@@ -92,7 +93,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="seu@email.com"
                   required
                 />
@@ -137,11 +138,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
         <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <User className="w-8 h-8 text-white" />
+          </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            {isLogin ? t('login.title') : 'Criar Conta'}
+            {isLogin ? 'Bem-vindo de volta!' : 'Criar Conta'}
           </h2>
           <p className="text-gray-600">
-            {isLogin ? 'Bem-vindo de volta!' : 'Junte-se à nossa comunidade de bem-estar'}
+            {isLogin ? 'Entre na sua conta XZenPress' : 'Junte-se à nossa comunidade de bem-estar'}
           </p>
         </div>
 
@@ -151,21 +155,24 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nome Completo
               </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Seu nome completo"
-                required={!isLogin}
-              />
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  placeholder="Seu nome completo"
+                  required={!isLogin}
+                />
+              </div>
             </div>
           )}
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('login.email')}
+              Email
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -174,7 +181,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 placeholder="seu@email.com"
                 required
               />
@@ -183,7 +190,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('login.password')}
+              Senha
             </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -192,7 +199,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 placeholder="••••••••"
                 required
               />
@@ -218,7 +225,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="••••••••"
                   required={!isLogin}
                 />
@@ -244,7 +251,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
             disabled={isLoading}
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           >
-            <span>{isLoading ? 'Processando...' : (isLogin ? t('login.submit') : 'Criar Conta')}</span>
+            <span>{isLoading ? 'Processando...' : (isLogin ? 'Entrar' : 'Criar Conta')}</span>
             <ArrowRight className="w-5 h-5" />
           </button>
 
@@ -254,7 +261,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
               onClick={() => setShowResetForm(true)}
               className="w-full text-blue-600 hover:text-blue-800 font-medium"
             >
-              {t('login.forgot')}
+              Esqueceu a senha?
             </button>
           )}
 
@@ -268,6 +275,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
             </button>
           </div>
         </form>
+
+        {/* Demo credentials */}
+        <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Para testar:</h4>
+          <p className="text-xs text-gray-600">
+            Use qualquer email válido e senha com 6+ caracteres
+          </p>
+        </div>
       </div>
     </div>
   );

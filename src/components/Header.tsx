@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Menu, X, Globe, User, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
   currentPage: string;
@@ -9,8 +10,8 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const { user, logout } = useAuth();
   
-  const user = null; // Temporário - será conectado ao contexto depois
   const currentLanguage = { code: 'pt', name: 'Português', flag: '🇧🇷' };
   const languages = [
     { code: 'pt', name: 'Português', flag: '🇧🇷' },
@@ -26,8 +27,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
   ];
 
   const handleLogout = () => {
-    // Implementar logout depois
-    console.log('Logout');
+    logout();
+    onPageChange('home');
   };
 
   return (

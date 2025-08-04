@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { HomePage } from './components/HomePage';
+import { LoginPage } from './components/LoginPage';
 import { BreathingExercise } from './components/BreathingExercise';
 import { AcupressurePage } from './components/AcupressurePage';
 import { PremiumPage } from './components/PremiumPage';
@@ -15,6 +16,8 @@ function App() {
     switch (currentPage) {
       case 'home':
         return <HomePage onPageChange={setCurrentPage} />;
+      case 'login':
+        return <LoginPage onPageChange={setCurrentPage} />;
       case 'breathing':
         return <BreathingExercise />;
       case 'acupressure':
