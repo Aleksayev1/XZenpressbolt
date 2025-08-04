@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Volume2 } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
 
 export const BreathingExercise: React.FC = () => {
-  const { t } = useLanguage();
   const [isActive, setIsActive] = useState(false);
   const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [timeLeft, setTimeLeft] = useState(4);
@@ -13,9 +11,9 @@ export const BreathingExercise: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const phases = {
-    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.inhale') },
-    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: t('breathing.hold') },
-    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: t('breathing.exhale') },
+    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: 'Inspire' },
+    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: 'Segure' },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: 'Expire' },
   };
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
@@ -95,7 +93,7 @@ export const BreathingExercise: React.FC = () => {
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-          {t('breathing.title')}
+          Técnica de Respiração 4-7-8
         </h1>
         
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
@@ -157,15 +155,15 @@ export const BreathingExercise: React.FC = () => {
             <div className="grid grid-cols-3 gap-4 text-center">
               <div className={`p-4 rounded-xl transition-all duration-300 ${phase === 'inhale' ? 'bg-blue-50 border-2 border-blue-200' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">4s</div>
-                <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
+                <div className="text-sm text-gray-600">Inspire</div>
               </div>
               <div className={`p-4 rounded-xl transition-all duration-300 ${phase === 'hold' ? 'bg-green-50 border-2 border-green-200' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-green-600 mb-1">7s</div>
-                <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
+                <div className="text-sm text-gray-600">Segure</div>
               </div>
               <div className={`p-4 rounded-xl transition-all duration-300 ${phase === 'exhale' ? 'bg-purple-50 border-2 border-purple-200' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-purple-600 mb-1">8s</div>
-                <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
+                <div className="text-sm text-gray-600">Expire</div>
               </div>
             </div>
           </div>
@@ -178,7 +176,7 @@ export const BreathingExercise: React.FC = () => {
                 className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Play className="w-6 h-6" />
-                <span>{t('breathing.start')}</span>
+                <span>Iniciar Sessão</span>
               </button>
             ) : (
               <button
@@ -186,7 +184,7 @@ export const BreathingExercise: React.FC = () => {
                 className="flex items-center space-x-2 bg-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Pause className="w-6 h-6" />
-                <span>{t('breathing.stop')}</span>
+                <span>Parar</span>
               </button>
             )}
             

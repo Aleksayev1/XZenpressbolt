@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Menu, X, Globe, User, LogOut } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useLanguage, languages } from '../contexts/LanguageContext';
 
 interface HeaderProps {
   currentPage: string;
@@ -11,14 +9,20 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-  const { user, logout } = useAuth();
-  const { currentLanguage, setLanguage, t } = useLanguage();
+  
+  const user = null; // Temporário
+  const currentLanguage = { code: 'pt', name: 'Português', flag: '🇧🇷' };
+  const languages = [
+    { code: 'pt', name: 'Português', flag: '🇧🇷' },
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'es', name: 'Español', flag: '🇪🇸' },
+  ];
 
   const navItems = [
-    { id: 'home', label: t('nav.home') },
-    { id: 'acupressure', label: t('nav.acupressure') },
-    { id: 'breathing', label: t('nav.breathing') },
-    { id: 'premium', label: t('nav.premium') },
+    { id: 'home', label: 'Início' },
+    { id: 'acupressure', label: 'Acupressão' },
+    { id: 'breathing', label: 'Respiração' },
+    { id: 'premium', label: 'Premium' },
   ];
 
   return (
@@ -65,7 +69,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     <button
                       key={lang.code}
                       onClick={() => {
-                        setLanguage(lang);
                         setIsLanguageOpen(false);
                       }}
                       className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -95,7 +98,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-700 hover:text-red-600 hover:bg-gray-50 rounded-md"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>{t('nav.logout')}</span>
+                  <span>Sair</span>
                 </button>
               </div>
             ) : (
@@ -103,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 onClick={() => onPageChange('login')}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
               >
-                {t('nav.login')}
+                Entrar
               </button>
             )}
           </div>
@@ -148,7 +151,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     <button
                       key={lang.code}
                       onClick={() => {
-                        setLanguage(lang);
                         setIsMenuOpen(false);
                       }}
                       className={`flex items-center space-x-2 px-2 py-1 rounded text-sm ${
@@ -173,13 +175,12 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   </div>
                   <button
                     onClick={() => {
-                      logout();
                       setIsMenuOpen(false);
                     }}
                     className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>{t('nav.logout')}</span>
+                    <span>Sair</span>
                   </button>
                 </div>
               ) : (
@@ -191,7 +192,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     }}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium"
                   >
-                    {t('nav.login')}
+                    Entrar
                   </button>
                 </div>
               )}
