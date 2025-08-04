@@ -138,7 +138,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 <span><strong>Certificação:</strong> Selo oficial de qualidade</span>
               </div>
             </div>
-          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => onPageChange('breathing')}
