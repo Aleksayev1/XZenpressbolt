@@ -235,8 +235,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 auxiliando no atendimento integral aos requisitos da Lei 14.831/2024 e NR-1, com efetividade online durante todo o processo.
               </p>
               <div className="inline-flex items-center space-x-2 bg-yellow-100 border border-yellow-300 rounded-full px-6 py-3">
-                <span className="text-yellow-700 font-semibold">📞 Consultoria Gratuita:</span>
-                <span className="text-yellow-800">Avaliação inicial sem compromisso</span>
+                <span className="text-yellow-700 font-semibold">📊 Análise Gratuita:</span>
+                <span className="text-yellow-800">Experimentação dos pontos gratuitos (sem login)</span>
               </div>
             </div>
           </div>
