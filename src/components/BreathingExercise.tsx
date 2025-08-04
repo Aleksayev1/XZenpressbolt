@@ -50,18 +50,10 @@ export const BreathingExercise: React.FC = () => {
 
   const startExercise = () => {
     setIsActive(true);
-    if (audioRef.current) {
-      audioRef.current.play().catch(() => {
-        // Audio play failed, continue without sound
-      });
-    }
   };
 
   const stopExercise = () => {
     setIsActive(false);
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
   };
 
   const resetExercise = () => {
@@ -70,10 +62,6 @@ export const BreathingExercise: React.FC = () => {
     setTimeLeft(4);
     setTotalTime(0);
     setCurrentColor('#3B82F6');
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
   };
 
   const formatTime = (seconds: number) => {
@@ -352,14 +340,6 @@ export const BreathingExercise: React.FC = () => {
           </div>
         </div>
 
-        {/* Hidden audio element for ambient sounds */}
-        <audio
-          ref={audioRef}
-          loop
-          preload="none"
-        >
-          <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav" />
-        </audio>
       </div>
     </div>
   );
