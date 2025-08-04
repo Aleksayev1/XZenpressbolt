@@ -231,9 +231,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 🏆 Certificação Oficial Garantida
               </h3>
               <p className="text-gray-700 mb-6 max-w-3xl mx-auto">
-                Nossa metodologia garante que sua empresa obtenha a certificação oficial como 
-                <strong> Empresa Promotora da Saúde Mental</strong>, atendendo integralmente aos 
-                requisitos da Lei 14.831/2024 e NR-1, com acompanhamento especializado durante todo o processo.
+                Nossa metodologia auxilia sua empresa se tornar uma <strong>Empresa Promotora da Saúde Mental</strong>, 
+                auxiliando no atendimento integral aos requisitos da Lei 14.831/2024 e NR-1, com acompanhamento online durante todo o processo.
               </p>
               <div className="inline-flex items-center space-x-2 bg-yellow-100 border border-yellow-300 rounded-full px-6 py-3">
                 <span className="text-yellow-700 font-semibold">📞 Consultoria Gratuita:</span>
