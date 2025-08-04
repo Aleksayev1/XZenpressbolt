@@ -1,15 +1,11 @@
 import React from 'react';
 import { Play, Heart, Brain, Palette, Music, Star, ArrowRight } from 'lucide-react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth } from '../contexts/AuthContext';
 
 interface HomePageProps {
   onPageChange: (page: string) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
-  const { t } = useLanguage();
-  const { user } = useAuth();
 
   const features = [
     {
@@ -66,14 +62,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 Começar Agora
                 <ArrowRight className="w-5 h-5 ml-2 inline" />
               </button>
-              {!user && (
                 <button
                   onClick={() => onPageChange('login')}
                   className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-200"
                 >
                   Criar Conta Gratuita
                 </button>
-              )}
             </div>
           </div>
         </div>
