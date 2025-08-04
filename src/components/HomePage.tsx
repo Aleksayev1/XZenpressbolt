@@ -6,7 +6,6 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
-
   const features = [
     {
       icon: <Heart className="w-8 h-8 text-red-500" />,
@@ -62,12 +61,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 Começar Agora
                 <ArrowRight className="w-5 h-5 ml-2 inline" />
               </button>
-                <button
-                  onClick={() => onPageChange('login')}
-                  className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-200"
-                >
-                  Criar Conta Gratuita
-                </button>
+              <button
+                onClick={() => onPageChange('login')}
+                className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-200"
+              >
+                Criar Conta Gratuita
+              </button>
             </div>
           </div>
         </div>

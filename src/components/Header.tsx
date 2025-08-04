@@ -10,7 +10,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   
-  const user = null; // Temporário
+  const user = null; // Temporário - será conectado ao contexto depois
   const currentLanguage = { code: 'pt', name: 'Português', flag: '🇧🇷' };
   const languages = [
     { code: 'pt', name: 'Português', flag: '🇧🇷' },
@@ -24,6 +24,11 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
     { id: 'breathing', label: 'Respiração' },
     { id: 'premium', label: 'Premium' },
   ];
+
+  const handleLogout = () => {
+    // Implementar logout depois
+    console.log('Logout');
+  };
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -94,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   )}
                 </div>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-700 hover:text-red-600 hover:bg-gray-50 rounded-md"
                 >
                   <LogOut className="w-4 h-4" />
@@ -143,29 +148,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 </button>
               ))}
               
-              {/* Mobile Language Selector */}
-              <div className="px-3 py-2">
-                <div className="text-sm font-medium text-gray-700 mb-2">Language</div>
-                <div className="grid grid-cols-2 gap-2">
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                      }}
-                      className={`flex items-center space-x-2 px-2 py-1 rounded text-sm ${
-                        currentLanguage.code === lang.code
-                          ? 'bg-blue-100 text-blue-600'
-                          : 'text-gray-600 hover:bg-gray-100'
-                      }`}
-                    >
-                      <span>{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* Mobile User Actions */}
               {user ? (
                 <div className="px-3 py-2 border-t border-gray-200">
@@ -175,6 +157,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   </div>
                   <button
                     onClick={() => {
+                      handleLogout();
                       setIsMenuOpen(false);
                     }}
                     className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
