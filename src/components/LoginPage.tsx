@@ -144,10 +144,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
               alt="XZenPress Logo" 
               className="h-16 w-auto"
             />
-              src="/Logo Xzenpress oficial.png" 
-              alt="XZenPress Logo" 
-              className="h-16 w-auto"
-            />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             {isLogin ? 'Bem-vindo de volta!' : 'Criar Conta'}
