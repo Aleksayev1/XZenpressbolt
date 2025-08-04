@@ -111,6 +111,13 @@ export const AcupressurePage: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/Logo Xzenpress oficial.png" 
+              alt="XZenPress Logo" 
+              className="h-16 w-auto opacity-80"
+            />
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             <span className="bg-gradient-to-r from-blue-600 via-green-600 to-purple-600 bg-clip-text text-transparent">
               Acupressão & Cranioterapia

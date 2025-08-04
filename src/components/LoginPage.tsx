@@ -138,8 +138,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <User className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-4">
+            <img 
+              src="/Logo Xzenpress oficial.png" 
+              alt="XZenPress Logo" 
+              className="h-16 w-auto"
+            />
+              src="/Logo Xzenpress oficial.png" 
+              alt="XZenPress Logo" 
+              className="h-16 w-auto"
+            />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
             {isLogin ? 'Bem-vindo de volta!' : 'Criar Conta'}
