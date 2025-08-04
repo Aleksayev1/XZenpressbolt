@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Lock, Star, Info, Clock, Zap, Target } from 'lucide-react';
+import { MapPin, Lock, Star, Info, Clock, Zap, Target, Crown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcupressurePoint } from '../types';
@@ -304,7 +304,7 @@ export const AcupressurePage: React.FC = () => {
                 )}
 
                 {/* Timer */}
-                {selectedPoint && !selectedPoint.isPremium || user?.isPremium ? (
+                {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) ? (
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-3">
                       <h4 className="text-lg font-semibold text-gray-800">Timer de Aplicação</h4>
@@ -511,14 +511,6 @@ export const AcupressurePage: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
-              Fazer Upgrade Premium
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );
