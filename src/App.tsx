@@ -1,18 +1,10 @@
-import React from 'react';
-
 function App() {
   return (
-    <div className="min-h-screen bg-blue-50 flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-blue-600 mb-4">
-          XZenPress
-        </h1>
-        <p className="text-gray-600">
-          Aplicativo funcionando! ✅
-        </p>
-      </div>
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>XZenPress</h1>
+      <p>Aplicativo funcionando! ✅</p>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
