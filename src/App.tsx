@@ -1,46 +1,17 @@
 import React from 'react';
-import { useState } from 'react';
-import { AuthProvider } from './contexts/AuthContext';
-import { LanguageProvider } from './contexts/LanguageContext';
-import { Header } from './components/Header';
-import { HomePage } from './components/HomePage';
-import { AcupressurePage } from './components/AcupressurePage';
-import { BreathingExercise } from './components/BreathingExercise';
-import { PremiumPage } from './components/PremiumPage';
-import { LoginPage } from './components/LoginPage';
-import './index.css';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return <HomePage onPageChange={setCurrentPage} />;
-      case 'acupressure':
-        return <AcupressurePage />;
-      case 'breathing':
-        return <BreathingExercise />;
-      case 'premium':
-        return <PremiumPage onPageChange={setCurrentPage} />;
-      case 'login':
-        return <LoginPage onPageChange={setCurrentPage} />;
-      default:
-        return <HomePage onPageChange={setCurrentPage} />;
-    }
-  };
-
   return (
-    <AuthProvider>
-      <LanguageProvider>
-        <div className="min-h-screen bg-gray-50">
-          <Header currentPage={currentPage} onPageChange={setCurrentPage} />
-          <main>
-            {renderPage()}
-          </main>
-        </div>
-      </LanguageProvider>
-    </AuthProvider>
+    <div className="min-h-screen bg-blue-50 flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-blue-600 mb-4">
+          XZenPress
+        </h1>
+        <p className="text-gray-600">
+          Aplicativo funcionando! ✅
+        </p>
+      </div>
+    </div>
   );
 }
 
