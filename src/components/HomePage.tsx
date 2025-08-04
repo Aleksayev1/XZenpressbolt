@@ -114,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Sua empresa está preparada para a Lei 14.831/2024?
+            Sua empresa promove a saúde integral, Wellness no ambiente de trabalho full time?
           </h2>
           <p className="text-xl text-blue-100 mb-6">
             Implemente agora práticas de saúde mental e garante a certificação oficial como Empresa Promotora da Saúde Mental
