@@ -49,10 +49,11 @@
     "postcss": "^8.4.32"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && npm run generate-sw",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build && npm run generate-sw",
+    "preview": "vite preview",
+    "test": "vitest",
     "serve": "npx serve -s build -l 3000",
     "generate-sw": "workbox generateSW workbox-config.js",
     "analyze": "npm run build && npx serve -s build",
