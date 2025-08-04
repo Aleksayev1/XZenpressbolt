@@ -1,101 +1,9 @@
 import React, { useState } from 'react';
-import { MapPin, Lock, Star, Info } from 'lucide-react';
+import { MapPin, Lock, Star, Info, Clock, Zap, Target } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcupressurePoint } from '../types';
-
-const acupressurePoints: AcupressurePoint[] = [
-  {
-    id: '1',
-    name: 'Yintang (EX-HN3)',
-    nameEn: 'Third Eye Point',
-    nameEs: 'Punto del Tercer Ojo',
-    nameFr: 'Point du Troisième Œil',
-    description: 'Localizado entre as sobrancelhas, ajuda com ansiedade e insônia',
-    descriptionEn: 'Located between eyebrows, helps with anxiety and insomnia',
-    descriptionEs: 'Ubicado entre las cejas, ayuda con ansiedad e insomnio',
-    descriptionFr: 'Situé entre les sourcils, aide avec l\'anxiété et l\'insomnie',
-    position: { x: 50, y: 25 },
-    benefits: ['Reduz ansiedade', 'Melhora o sono', 'Alivia dores de cabeça'],
-    benefitsEn: ['Reduces anxiety', 'Improves sleep', 'Relieves headaches'],
-    benefitsEs: ['Reduce ansiedad', 'Mejora el sueño', 'Alivia dolores de cabeza'],
-    benefitsFr: ['Réduit l\'anxiété', 'Améliore le sommeil', 'Soulage les maux de tête'],
-    isPremium: false,
-    category: 'general'
-  },
-  {
-    id: '2',
-    name: 'Shenmen (HE7)',
-    nameEn: 'Spirit Gate',
-    nameEs: 'Puerta del Espíritu',
-    nameFr: 'Porte de l\'Esprit',
-    description: 'No pulso, lado do dedo mindinho, acalma a mente',
-    descriptionEn: 'On wrist, pinky side, calms the mind',
-    descriptionEs: 'En la muñeca, lado del meñique, calma la mente',
-    descriptionFr: 'Au poignet, côté auriculaire, calme l\'esprit',
-    position: { x: 20, y: 70 },
-    benefits: ['Reduz estresse', 'Melhora concentração', 'Equilibra emoções'],
-    benefitsEn: ['Reduces stress', 'Improves focus', 'Balances emotions'],
-    benefitsEs: ['Reduce estrés', 'Mejora concentración', 'Equilibra emociones'],
-    benefitsFr: ['Réduit le stress', 'Améliore la concentration', 'Équilibre les émotions'],
-    isPremium: false,
-    category: 'general'
-  },
-  {
-    id: '3',
-    name: 'Baihui (GV20)',
-    nameEn: 'Hundred Meetings',
-    nameEs: 'Cien Reuniones',
-    nameFr: 'Cent Réunions',
-    description: 'No topo da cabeça, melhora clareza mental',
-    descriptionEn: 'Top of head, improves mental clarity',
-    descriptionEs: 'En la parte superior de la cabeza, mejora la claridad mental',
-    descriptionFr: 'Au sommet de la tête, améliore la clarté mentale',
-    position: { x: 50, y: 10 },
-    benefits: ['Aumenta energia', 'Melhora memória', 'Reduz fadiga'],
-    benefitsEn: ['Increases energy', 'Improves memory', 'Reduces fatigue'],
-    benefitsEs: ['Aumenta energía', 'Mejora memoria', 'Reduce fatiga'],
-    benefitsFr: ['Augmente l\'énergie', 'Améliore la mémoire', 'Réduit la fatigue'],
-    isPremium: false,
-    category: 'general'
-  },
-  {
-    id: '4',
-    name: 'Ponto Anti-Séptico Premium',
-    nameEn: 'Premium Anti-Septic Point',
-    nameEs: 'Punto Anti-Séptico Premium',
-    nameFr: 'Point Anti-Septique Premium',
-    description: 'Ponto específico para tratamento de septicemia',
-    descriptionEn: 'Specific point for septicemia treatment',
-    descriptionEs: 'Punto específico para tratamiento de septicemia',
-    descriptionFr: 'Point spécifique pour le traitement de la septicémie',
-    position: { x: 30, y: 40 },
-    benefits: ['Fortalece imunidade', 'Combate infecções', 'Purifica sangue'],
-    benefitsEn: ['Strengthens immunity', 'Fights infections', 'Purifies blood'],
-    benefitsEs: ['Fortalece inmunidad', 'Combate infecciones', 'Purifica sangre'],
-    benefitsFr: ['Renforce l\'immunité', 'Combat les infections', 'Purifie le sang'],
-    isPremium: true,
-    category: 'septicemia'
-  },
-  {
-    id: '5',
-    name: 'Ponto ATM Premium',
-    nameEn: 'Premium TMJ Point',
-    nameEs: 'Punto ATM Premium',
-    nameFr: 'Point ATM Premium',
-    description: 'Ponto específico para disfunção da ATM',
-    descriptionEn: 'Specific point for TMJ dysfunction',
-    descriptionEs: 'Punto específico para disfunción de ATM',
-    descriptionFr: 'Point spécifique pour dysfonction ATM',
-    position: { x: 35, y: 35 },
-    benefits: ['Alivia dor na mandíbula', 'Reduz tensão facial', 'Melhora abertura bucal'],
-    benefitsEn: ['Relieves jaw pain', 'Reduces facial tension', 'Improves mouth opening'],
-    benefitsEs: ['Alivia dolor mandibular', 'Reduce tensión facial', 'Mejora apertura bucal'],
-    benefitsFr: ['Soulage la douleur de la mâchoire', 'Réduit la tension faciale', 'Améliore l\'ouverture buccale'],
-    isPremium: true,
-    category: 'atm'
-  }
-];
+import { acupressurePoints } from '../data/acupressurePoints';
 
 export const AcupressurePage: React.FC = () => {
   const { user } = useAuth();
@@ -103,9 +11,20 @@ export const AcupressurePage: React.FC = () => {
   const [selectedPoint, setSelectedPoint] = useState<AcupressurePoint | null>(null);
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
   const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
   const colorNames = ['Azul Calmante', 'Verde Equilibrante', 'Magenta Energizante'];
+
+  const categories = [
+    { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
+    { id: 'general', name: 'Pontos Gerais', icon: '⚡' },
+    { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
+    { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
+    { id: 'cranio', name: 'Cranioterapia', icon: '🧠', premium: true }
+  ];
 
   const getLocalizedName = (point: AcupressurePoint) => {
     switch (currentLanguage.code) {
@@ -134,6 +53,28 @@ export const AcupressurePage: React.FC = () => {
     }
   };
 
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const startPointTimer = (duration: number) => {
+    setTimeRemaining(duration);
+    setIsTimerActive(true);
+    
+    const timer = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev <= 1) {
+          setIsTimerActive(false);
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   const startColorTherapy = () => {
     setIsColorTherapyActive(true);
     let colorIndex = 0;
@@ -148,6 +89,12 @@ export const AcupressurePage: React.FC = () => {
       setCurrentColor('#3B82F6');
     }, 60000); // 1 minute
   };
+
+  const filteredPoints = acupressurePoints.filter(point => {
+    const categoryMatch = selectedCategory === 'all' || point.category === selectedCategory;
+    const accessMatch = !point.isPremium || (user && user.isPremium);
+    return categoryMatch && accessMatch;
+  });
 
   const availablePoints = acupressurePoints.filter(point => 
     !point.isPremium || (user && user.isPremium)
@@ -172,6 +119,33 @@ export const AcupressurePage: React.FC = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Pontos terapêuticos da Medicina Tradicional Chinesa combinados com cromoterapia
           </p>
+          
+          {/* Category Filter */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Categorias de Pontos</h3>
+            <div className="flex flex-wrap justify-center gap-3">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  disabled={category.premium && !user?.isPremium}
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium transition-all ${
+                    selectedCategory === category.id
+                      ? 'bg-blue-500 text-white shadow-lg'
+                      : category.premium && !user?.isPremium
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  <span>{category.icon}</span>
+                  <span>{category.name}</span>
+                  {category.premium && !user?.isPremium && (
+                    <Lock className="w-4 h-4" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
           
           {/* Color Therapy Controls */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-2xl mx-auto">
@@ -223,7 +197,7 @@ export const AcupressurePage: React.FC = () => {
                 <ellipse cx="165" cy="280" rx="15" ry="60" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
                 
                 {/* Acupressure Points */}
-                {availablePoints.map((point) => (
+                {filteredPoints.map((point) => (
                   <g key={point.id}>
                     <circle
                       cx={point.position.x * 3}
@@ -282,6 +256,31 @@ export const AcupressurePage: React.FC = () => {
                   {getLocalizedDescription(selectedPoint)}
                 </p>
                 
+                {/* Point Details */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="bg-blue-50 rounded-lg p-4 text-center">
+                    <Clock className="w-6 h-6 text-blue-600 mx-auto mb-2" />
+                    <div className="text-sm text-gray-600">Duração</div>
+                    <div className="font-semibold text-blue-800">
+                      {formatTime(selectedPoint.duration || 120)}
+                    </div>
+                  </div>
+                  <div className="bg-green-50 rounded-lg p-4 text-center">
+                    <Zap className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                    <div className="text-sm text-gray-600">Pressão</div>
+                    <div className="font-semibold text-green-800 capitalize">
+                      {selectedPoint.pressure || 'Moderada'}
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 rounded-lg p-4 text-center">
+                    <Target className="w-6 h-6 text-purple-600 mx-auto mb-2" />
+                    <div className="text-sm text-gray-600">Categoria</div>
+                    <div className="font-semibold text-purple-800 capitalize">
+                      {selectedPoint.category}
+                    </div>
+                  </div>
+                </div>
+                
                 <div className="mb-6">
                   <h4 className="text-lg font-semibold text-gray-800 mb-3">Benefícios:</h4>
                   <ul className="space-y-2">
@@ -293,6 +292,41 @@ export const AcupressurePage: React.FC = () => {
                     ))}
                   </ul>
                 </div>
+
+                {/* Instructions */}
+                {selectedPoint.instructions && (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-3">Instruções:</h4>
+                    <p className="text-gray-600 bg-gray-50 p-4 rounded-lg">
+                      {selectedPoint.instructions}
+                    </p>
+                  </div>
+                )}
+
+                {/* Timer */}
+                {selectedPoint && !selectedPoint.isPremium || user?.isPremium ? (
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-lg font-semibold text-gray-800">Timer de Aplicação</h4>
+                      {isTimerActive && (
+                        <div className="text-2xl font-bold text-blue-600">
+                          {formatTime(timeRemaining)}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => startPointTimer(selectedPoint.duration || 120)}
+                      disabled={isTimerActive}
+                      className={`w-full py-3 rounded-lg font-semibold transition-all ${
+                        isTimerActive
+                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
+                      }`}
+                    >
+                      {isTimerActive ? 'Timer Ativo...' : 'Iniciar Timer'}
+                    </button>
+                  </div>
+                ) : null}
 
                 {selectedPoint.isPremium && !user?.isPremium && (
                   <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
@@ -315,6 +349,22 @@ export const AcupressurePage: React.FC = () => {
                 <p className="text-gray-500">
                   Clique em qualquer ponto no diagrama para ver detalhes e benefícios
                 </p>
+                
+                {/* Quick Stats */}
+                <div className="mt-6 grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">
+                      {availablePoints.filter(p => !p.isPremium).length}
+                    </div>
+                    <div className="text-sm text-gray-500">Pontos Gratuitos</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-yellow-600">
+                      {availablePoints.filter(p => p.isPremium).length}
+                    </div>
+                    <div className="text-sm text-gray-500">Pontos Premium</div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -322,14 +372,29 @@ export const AcupressurePage: React.FC = () => {
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
               <div className="flex items-center space-x-2 mb-4">
                 <Info className="w-6 h-6 text-blue-600" />
-                <h3 className="text-xl font-semibold text-gray-800">Como Aplicar</h3>
+                <h3 className="text-xl font-semibold text-gray-800">Guia de Aplicação</h3>
               </div>
               <div className="space-y-3 text-gray-600">
-                <p>• Pressione suavemente o ponto com o dedo indicador</p>
-                <p>• Mantenha pressão constante por 30-60 segundos</p>
-                <p>• Respire profundamente durante a aplicação</p>
-                <p>• Use a técnica de respiração 4-7-8 para potencializar</p>
-                <p>• Combine com cromoterapia para melhores resultados</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-2">Técnica Básica:</h4>
+                    <ul className="space-y-1 text-sm">
+                      <li>• Pressione suavemente com dedo indicador ou médio</li>
+                      <li>• Mantenha pressão constante e confortável</li>
+                      <li>• Respire profundamente durante aplicação</li>
+                      <li>• Use movimentos circulares se indicado</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-2">Potencialização:</h4>
+                    <ul className="space-y-1 text-sm">
+                      <li>• Combine com respiração 4-7-8</li>
+                      <li>• Use cromoterapia durante aplicação</li>
+                      <li>• Aplique em ambiente tranquilo</li>
+                      <li>• Mantenha regularidade na prática</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -338,11 +403,118 @@ export const AcupressurePage: React.FC = () => {
         {/* Premium CTA */}
         {!user?.isPremium && (
           <div className="mt-12 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl p-8 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Desbloqueie Pontos Específicos</h2>
+            <h2 className="text-3xl font-bold mb-4">🔓 Desbloqueie Pontos Específicos</h2>
             <p className="text-xl mb-6 opacity-90">
-              Acesse pontos especializados para septicemia, ATM e muito mais
+              Acesse pontos especializados para septicemia, ATM, cranioterapia e muito mais
             </p>
-            <button className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white bg-opacity-20 rounded-lg p-4">
+                <div className="text-2xl mb-2">🛡️</div>
+                <div className="font-semibold">Septicemia</div>
+                <div className="text-sm opacity-80">Fortalecimento imunológico</div>
+              </div>
+              <div className="bg-white bg-opacity-20 rounded-lg p-4">
+                <div className="text-2xl mb-2">🦷</div>
+                <div className="font-semibold">ATM</div>
+                <div className="text-sm opacity-80">Disfunção temporomandibular</div>
+              </div>
+              <div className="bg-white bg-opacity-20 rounded-lg p-4">
+                <div className="text-2xl mb-2">🧠</div>
+                <div className="font-semibold">Cranioterapia</div>
+                <div className="text-sm opacity-80">Técnicas cranianas avançadas</div>
+              </div>
+            </div>
+            <button className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg inline-flex items-center space-x-2">
+              <Crown className="w-5 h-5" />
+              <span>Fazer Upgrade Premium</span>
+            </button>
+          </div>
+        )}
+
+        {/* Statistics */}
+        <div className="mt-12 bg-white rounded-3xl shadow-2xl p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            Estatísticas da Plataforma
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">
+                {acupressurePoints.length}
+              </div>
+              <div className="text-sm text-gray-600">Pontos Disponíveis</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">
+                {acupressurePoints.filter(p => !p.isPremium).length}
+              </div>
+              <div className="text-sm text-gray-600">Pontos Gratuitos</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-yellow-600 mb-2">
+                {acupressurePoints.filter(p => p.isPremium).length}
+              </div>
+              <div className="text-sm text-gray-600">Pontos Premium</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">
+                {new Set(acupressurePoints.map(p => p.category)).size}
+              </div>
+              <div className="text-sm text-gray-600">Categorias</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Educational Content */}
+        <div className="mt-12 bg-gradient-to-r from-blue-50 to-green-50 rounded-3xl p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+            💡 Dicas de Bem-Estar
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">🌅 Rotina Matinal</h3>
+              <p className="text-gray-600 text-sm">
+                Comece o dia aplicando o ponto Baihui (GV20) por 2 minutos para aumentar energia e clareza mental.
+              </p>
+            </div>
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">😴 Antes de Dormir</h3>
+              <p className="text-gray-600 text-sm">
+                Use o ponto Yintang (EX-HN3) combinado com respiração 4-7-8 para um sono mais reparador.
+              </p>
+            </div>
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">💼 No Trabalho</h3>
+              <p className="text-gray-600 text-sm">
+                O ponto Shenmen (HE7) é perfeito para reduzir estresse durante o expediente.
+              </p>
+            </div>
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-semibold text-gray-800 mb-3">🎯 Foco e Concentração</h3>
+              <p className="text-gray-600 text-sm">
+                Combine cromoterapia azul com pontos frontais para melhorar concentração nos estudos.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Safety Notice */}
+        <div className="mt-8 bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
+          <div className="flex items-start space-x-3">
+            <div className="text-yellow-600 text-xl">⚠️</div>
+            <div>
+              <h3 className="font-semibold text-yellow-800 mb-2">Aviso Importante</h3>
+              <p className="text-yellow-700 text-sm">
+                A acupressão é uma técnica complementar e não substitui tratamento médico. 
+                Em caso de condições graves como septicemia, procure sempre assistência médica profissional. 
+                Os pontos premium são baseados em técnicas tradicionais e devem ser usados como apoio ao tratamento convencional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
               Fazer Upgrade Premium
             </button>
           </div>

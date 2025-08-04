@@ -25,7 +25,10 @@ export interface AcupressurePoint {
   benefitsEs: string[];
   benefitsFr: string[];
   isPremium: boolean;
-  category: 'general' | 'septicemia' | 'atm';
+  category: 'general' | 'septicemia' | 'atm' | 'cranio';
+  instructions?: string;
+  duration?: number;
+  pressure?: 'muito leve' | 'leve' | 'moderada' | 'firme';
 }
 
 export interface BreathingSession {

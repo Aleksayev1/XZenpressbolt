@@ -1,0 +1,90 @@
+{
+  "id": "xzenpress-holistic-wellness",
+  "short_name": "XZenPress",
+  "name": "XZenPress - Plataforma de Bem-Estar Holística",
+  "description": "Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes para transformar sua qualidade de vida",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable any"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#059669",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "categories": ["health", "lifestyle", "medical", "wellness"],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Vista mobile do XZenPress com pontos de acupressão"
+    },
+    {
+      "src": "screenshot-desktop.png", 
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Vista desktop do XZenPress com cromoterapia"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Respiração 4-7-8",
+      "short_name": "Respiração",
+      "description": "Acesso rápido à técnica de respiração 4-7-8",
+      "url": "/breathing",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Pontos de Acupressão",
+      "short_name": "Acupressão",
+      "description": "Mapa interativo de pontos terapêuticos",
+      "url": "/acupressure",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Área Premium",
+      "short_name": "Premium",
+      "description": "Consultas WhatsApp e pontos específicos",
+      "url": "/premium",
+      "icons": [
+        {
+          "src": "logo192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
