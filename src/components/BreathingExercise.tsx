@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Volume2 } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const BreathingExercise: React.FC = () => {
@@ -9,6 +9,9 @@ export const BreathingExercise: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(4);
   const [totalTime, setTotalTime] = useState(0);
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
+  const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
+  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+  const [soundVolume, setSoundVolume] = useState(0.5);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -19,6 +22,23 @@ export const BreathingExercise: React.FC = () => {
   };
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
+  
+  const freeSounds = [
+    {
+      id: 'ocean',
+      name: 'Sons do Mar',
+      icon: <Waves className="w-5 h-5" />,
+      src: '/sounds/ocean.mp3',
+      description: 'Ondas relaxantes do oceano'
+    },
+    {
+      id: 'rain',
+      name: 'Chuva Suave',
+      icon: <CloudRain className="w-5 h-5" />,
+      src: '/sounds/rain.mp3',
+      description: 'Som calmante de chuva'
+    }
+  ];
 
   useEffect(() => {
     if (isActive) {
@@ -48,6 +68,23 @@ export const BreathingExercise: React.FC = () => {
     };
   }, [isActive, phase]);
 
+  // Audio control effects
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = soundVolume;
+    }
+  }, [soundVolume]);
+
+  useEffect(() => {
+    if (audioRef.current && selectedSoundId) {
+      if (isSoundPlaying) {
+        audioRef.current.play().catch(console.error);
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isSoundPlaying, selectedSoundId]);
+
   const startExercise = () => {
     setIsActive(true);
   };
@@ -62,6 +99,28 @@ export const BreathingExercise: React.FC = () => {
     setTimeLeft(4);
     setTotalTime(0);
     setCurrentColor('#3B82F6');
+  };
+
+  const handleSoundSelect = (soundId: string) => {
+    if (selectedSoundId === soundId) {
+      // If same sound is selected, toggle play/pause
+      setIsSoundPlaying(!isSoundPlaying);
+    } else {
+      // If different sound is selected, switch to it and start playing
+      setSelectedSoundId(soundId);
+      setIsSoundPlaying(true);
+    }
+  };
+
+  const toggleSoundPlayback = () => {
+    if (selectedSoundId) {
+      setIsSoundPlaying(!isSoundPlaying);
+    }
+  };
+
+  const stopAllSounds = () => {
+    setIsSoundPlaying(false);
+    setSelectedSoundId(null);
   };
 
   const formatTime = (seconds: number) => {
@@ -93,6 +152,16 @@ export const BreathingExercise: React.FC = () => {
         background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)` 
       }}
     >
+      {/* Audio Element */}
+      {selectedSoundId && (
+        <audio
+          ref={audioRef}
+          src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
+          loop
+          preload="auto"
+        />
+      )}
+      
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex justify-center mb-6">
           <img 
@@ -293,21 +362,121 @@ export const BreathingExercise: React.FC = () => {
         </div>
 
         {/* Sound Controls */}
-        <div className="bg-white rounded-2xl shadow-lg p-6">
-          <div className="flex items-center justify-center space-x-4">
+        <div className="bg-white rounded-3xl shadow-2xl p-8">
+          <div className="flex items-center justify-center space-x-2 mb-6">
             <Volume2 className="w-6 h-6 text-gray-600" />
-            <span className="text-gray-700">Sons Harmonizantes</span>
-            <div className="flex space-x-2">
+            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
+          </div>
+          
+          {/* Free Sounds Section */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {freeSounds.map((sound) => (
+                <button
+                  key={sound.id}
+                  onClick={() => handleSoundSelect(sound.id)}
+                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                    selectedSoundId === sound.id
+                      ? 'border-blue-500 bg-blue-50 shadow-lg'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 rounded-full ${
+                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      {sound.icon}
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-gray-800">{sound.name}</div>
+                      <div className="text-sm text-gray-600">{sound.description}</div>
+                    </div>
+                    {selectedSoundId === sound.id && isSoundPlaying && (
+                      <div className="ml-auto">
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+            
+            {/* Audio Controls */}
+            {selectedSoundId && (
+              <div className="bg-gray-50 rounded-xl p-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                  {/* Play/Pause Button */}
+                  <button
+                    onClick={toggleSoundPlayback}
+                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                      isSoundPlaying
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                    }`}
+                  >
+                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
+                  </button>
+                  
+                  {/* Volume Control */}
+                  <div className="flex items-center space-x-3">
+                    <VolumeX className="w-5 h-5 text-gray-500" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={soundVolume}
+                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <Volume2 className="w-5 h-5 text-gray-500" />
+                    <span className="text-sm text-gray-600 min-w-[3rem]">
+                      {Math.round(soundVolume * 100)}%
+                    </span>
+                  </div>
+                  
+                  {/* Stop Button */}
+                  <button
+                    onClick={stopAllSounds}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
+                  >
+                    Parar Tudo
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Premium Sounds Teaser */}
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Sons Premium</h4>
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
+              <p className="text-gray-700 mb-4">
+                Desbloqueie nossa biblioteca completa com mais de 50 sons relaxantes e integração com Spotify Premium
+              </p>
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 Lareira</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 Música Clássica</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 Mantras</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">+ 46 mais</span>
+              </div>
               <a
                 href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-600 transition-colors"
+                className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors mr-3"
               >
-                Spotify Premium
+                <span>Spotify Premium</span>
               </a>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors">
-                Sons Gratuitos
+              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all">
+                Fazer Upgrade
               </button>
             </div>
           </div>
