@@ -176,13 +176,6 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
               className="h-16 w-auto opacity-80"
             />
           </div>
-          <div className="flex justify-center mb-6">
-            <img 
-              src="/Logo Xzenpress oficial.png" 
-              alt="XZenPress Logo" 
-              className="h-16 w-auto opacity-80"
-            />
-          </div>
           <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full text-lg font-semibold mb-6">
             <Crown className="w-6 h-6" />
             <span>Premium</span>
