@@ -35,7 +35,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     {
       icon: <Star className="w-8 h-8 text-yellow-500" />,
       title: 'Consultoria Especializada',
-      description: 'Acompanhamento profissional de Acupressão, Cranioterapia e MTC apenas para usuários Premium',
+      description: 'Acompanhamento profissional de Acupressão, Cranioterapia e MTC apenas para usuários Premium (via Whatsapp)',
     },
   ];
 
