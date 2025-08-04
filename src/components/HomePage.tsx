@@ -135,7 +135,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               </div>
               <div className="flex items-center space-x-2">
                 <span className="text-yellow-300">🏆</span>
-                <span><strong>Certificação:</strong> Selo oficial de qualidade</span>
+                <span><strong>Certificação:</strong> Objetivo do Selo de qualidade</span>
               </div>
             </div>
           </div>
