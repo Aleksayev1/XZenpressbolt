@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Volume2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const BreathingExercise: React.FC = () => {
+  const { t } = useLanguage();
   const [isActive, setIsActive] = useState(false);
   const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [timeLeft, setTimeLeft] = useState(4);
@@ -11,9 +13,9 @@ export const BreathingExercise: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const phases = {
-    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: 'Inspire' },
-    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: 'Segure' },
-    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: 'Expire' },
+    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.phase.inhale') },
+    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: t('breathing.phase.hold') },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: t('breathing.phase.exhale') },
   };
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
@@ -83,6 +85,18 @@ export const BreathingExercise: React.FC = () => {
   const circleRadius = 120;
   const circumference = 2 * Math.PI * circleRadius;
   const progress = ((phases[phase].duration - timeLeft) / phases[phase].duration) * circumference;
+  
+  // Calculate pulse scale based on phase and time
+  const getPulseScale = () => {
+    const phaseProgress = (phases[phase].duration - timeLeft) / phases[phase].duration;
+    if (phase === 'inhale') {
+      return 60 + (30 * phaseProgress); // Expand from 60 to 90
+    } else if (phase === 'hold') {
+      return 90; // Stay at maximum
+    } else {
+      return 90 - (30 * phaseProgress); // Contract from 90 to 60
+    }
+  };
 
   return (
     <div 
@@ -133,10 +147,10 @@ export const BreathingExercise: React.FC = () => {
               <circle
                 cx="140"
                 cy="140"
-                r={phase === 'inhale' ? 80 : phase === 'hold' ? 90 : 60}
+                r={getPulseScale()}
                 fill={currentColor}
                 fillOpacity="0.2"
-                className="transition-all duration-1000 ease-in-out"
+                className="transition-all duration-500 ease-in-out"
               />
             </svg>
             
@@ -160,17 +174,20 @@ export const BreathingExercise: React.FC = () => {
           {/* Instructions */}
           <div className="mb-8">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div className={`p-4 rounded-xl transition-all duration-300 ${phase === 'inhale' ? 'bg-blue-50 border-2 border-blue-200' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-50 border-2 border-blue-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">4s</div>
-                <div className="text-sm text-gray-600">Inspire</div>
+                <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
+                <div className="text-xs text-blue-500 mt-1">Azul da Calma</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-300 ${phase === 'hold' ? 'bg-green-50 border-2 border-green-200' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-50 border-2 border-green-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-green-600 mb-1">7s</div>
-                <div className="text-sm text-gray-600">Segure</div>
+                <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
+                <div className="text-xs text-green-500 mt-1">Verde do Equilíbrio</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-300 ${phase === 'exhale' ? 'bg-purple-50 border-2 border-purple-200' : 'bg-gray-50'}`}>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-50 border-2 border-purple-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-purple-600 mb-1">8s</div>
-                <div className="text-sm text-gray-600">Expire</div>
+                <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
+                <div className="text-xs text-purple-500 mt-1">Magenta da Renovação</div>
               </div>
             </div>
           </div>
@@ -211,6 +228,82 @@ export const BreathingExercise: React.FC = () => {
           </div>
         </div>
 
+        {/* Chromotherapy Education Section */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+            {t('breathing.chromotherapy.title')}
+          </h2>
+          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
+            Cada cor possui propriedades terapêuticas específicas que potencializam os benefícios da respiração 4-7-8
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-blue-800">{t('breathing.chromotherapy.blue')}</h3>
+              </div>
+              <p className="text-blue-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.blue.desc')}
+              </p>
+              <div className="mt-4 text-xs text-blue-600 bg-blue-50 rounded-lg p-2">
+                <strong>Fase:</strong> Inspiração (4 segundos)
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-green-800">{t('breathing.chromotherapy.green')}</h3>
+              </div>
+              <p className="text-green-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.green.desc')}
+              </p>
+              <div className="mt-4 text-xs text-green-600 bg-green-50 rounded-lg p-2">
+                <strong>Fase:</strong> Retenção (7 segundos)
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-purple-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-purple-800">{t('breathing.chromotherapy.magenta')}</h3>
+              </div>
+              <p className="text-purple-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.magenta.desc')}
+              </p>
+              <div className="mt-4 text-xs text-purple-600 bg-purple-50 rounded-lg p-2">
+                <strong>Fase:</strong> Expiração (8 segundos)
+              </div>
+            </div>
+          </div>
+          
+          {/* Benefits Section */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+              {t('breathing.benefits.title')}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.stress')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.sleep')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.focus')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.pressure')}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Sound Controls */}
         <div className="bg-white rounded-2xl shadow-lg p-6">
           <div className="flex items-center justify-center space-x-4">
@@ -228,6 +321,33 @@ export const BreathingExercise: React.FC = () => {
               <button className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors">
                 Sons Gratuitos
               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Scientific Background */}
+        <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+            🧬 Base Científica da Técnica 4-7-8
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-bold text-gray-800 mb-3">📚 Evidências Científicas</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• Ativa o sistema nervoso parassimpático</li>
+                <li>• Reduz cortisol (hormônio do estresse)</li>
+                <li>• Melhora variabilidade da frequência cardíaca</li>
+                <li>• Aumenta produção de GABA (neurotransmissor calmante)</li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-bold text-gray-800 mb-3">🎨 Cromoterapia Científica</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• Azul: Reduz pressão arterial e frequência cardíaca</li>
+                <li>• Verde: Equilibra sistema nervoso autônomo</li>
+                <li>• Magenta: Estimula liberação de endorfinas</li>
+                <li>• Cores influenciam produção de melatonina</li>
+              </ul>
             </div>
           </div>
         </div>
