@@ -211,7 +211,7 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
               <img 
                 src={pixData.qrCodeBase64} 
                 alt="QR Code PIX" 
-                className="w-48 h-48 mx-auto border border-gray-200 rounded"
+                className="w-48 h-48 mx-auto border border-gray-200 rounded bg-white"
               />
             ) : (
               <div className="w-48 h-48 mx-auto border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
@@ -224,6 +224,9 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
           </div>
           <p className="text-sm text-green-700">
             Escaneie o QR Code com seu app do banco
+          </p>
+          <p className="text-xs text-green-600 mt-2">
+            Chave PIX: aleksayevacupress@gmail.com
           </p>
         </div>
 
@@ -258,6 +261,16 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
             </button>
           </div>
 
+          {/* Informações da chave PIX */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+            <h5 className="font-semibold text-blue-800 mb-2">Chave PIX Oficial:</h5>
+            <div className="text-sm text-blue-700">
+              <div className="font-mono bg-white rounded px-2 py-1 border">
+                aleksayevacupress@gmail.com
+              </div>
+            </div>
+          </div>
+
           {/* Informações do pagamento */}
           <div className="bg-white rounded-lg p-4">
             <h5 className="font-semibold text-gray-800 mb-2">Detalhes:</h5>
@@ -278,8 +291,9 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
           <li>1. Abra o app do seu banco</li>
           <li>2. Procure pela opção PIX</li>
           <li>3. Escaneie o QR Code ou cole o código copiado</li>
-          <li>4. Confirme o pagamento</li>
-          <li>5. Aguarde a confirmação automática</li>
+          <li>4. Ou use a chave PIX: <strong>aleksayevacupress@gmail.com</strong></li>
+          <li>5. Confirme o pagamento</li>
+          <li>6. Aguarde a confirmação automática</li>
         </ol>
       </div>
     </div>

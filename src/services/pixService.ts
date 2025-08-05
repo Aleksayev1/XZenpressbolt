@@ -208,16 +208,18 @@ export class MercadoPagoPixProvider implements PixProvider {
 // Implementação Mock para desenvolvimento/demonstração
 export class MockPixProvider implements PixProvider {
   name = 'Mock PIX (Demonstração)';
+  private officialPixKey = 'aleksayevacupress@gmail.com';
 
   async generatePixPayment(data: PixPaymentData): Promise<PixResponse> {
     // Simular delay da API
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    const mockQrCode = `00020126580014BR.GOV.BCB.PIX013636c4b8e8-1234-4567-8901-${Date.now()}5204000053039865802BR5925XZENPRESS WELLNESS LTDA6009SAO PAULO62070503***6304${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+    // Gerar código PIX real com a chave oficial
+    const mockQrCode = this.generateRealPixCode(data);
     
     return {
       qrCode: mockQrCode,
-      qrCodeBase64: this.generateMockQRCodeBase64(),
+      qrCodeBase64: this.generateRealQRCodeBase64(mockQrCode),
       pixKey: mockQrCode,
       expiresAt: new Date(Date.now() + 30 * 60 * 1000), // 30 minutos
       paymentId: `mock_${Date.now()}`,
@@ -242,9 +244,86 @@ export class MockPixProvider implements PixProvider {
     };
   }
 
-  private generateMockQRCodeBase64(): string {
-    // Retorna um QR Code base64 de demonstração (pequeno quadrado preto)
-    return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+  private generateRealPixCode(data: PixPaymentData): string {
+    // Gerar código PIX real seguindo o padrão EMV
+    const amount = data.amount.toFixed(2);
+    const merchantName = 'XZENPRESS WELLNESS';
+    const merchantCity = 'SAO PAULO';
+    const pixKey = this.officialPixKey;
+    const txId = data.orderId.substring(0, 25); // Máximo 25 caracteres
+    
+    // Construir código PIX seguindo padrão EMV QR Code
+    let pixCode = '';
+    pixCode += '00020126'; // Payload Format Indicator
+    pixCode += '01040014'; // Point of Initiation Method
+    
+    // Merchant Account Information
+    const pixKeyLength = pixKey.length.toString().padStart(2, '0');
+    const pixKeyField = `0014BR.GOV.BCB.PIX01${pixKeyLength}${pixKey}`;
+    const pixKeyFieldLength = pixKeyField.length.toString().padStart(2, '0');
+    pixCode += `26${pixKeyFieldLength}${pixKeyField}`;
+    
+    pixCode += '52040000'; // Merchant Category Code
+    pixCode += '5303986'; // Transaction Currency (BRL)
+    
+    // Transaction Amount
+    const amountLength = amount.length.toString().padStart(2, '0');
+    pixCode += `54${amountLength}${amount}`;
+    
+    pixCode += '5802BR'; // Country Code
+    
+    // Merchant Name
+    const merchantNameLength = merchantName.length.toString().padStart(2, '0');
+    pixCode += `59${merchantNameLength}${merchantName}`;
+    
+    // Merchant City
+    const merchantCityLength = merchantCity.length.toString().padStart(2, '0');
+    pixCode += `60${merchantCityLength}${merchantCity}`;
+    
+    // Additional Data Field
+    const txIdLength = txId.length.toString().padStart(2, '0');
+    const additionalData = `05${txIdLength}${txId}`;
+    const additionalDataLength = additionalData.length.toString().padStart(2, '0');
+    pixCode += `62${additionalDataLength}${additionalData}`;
+    
+    // CRC16 (simplificado para demonstração)
+    const crc = this.calculateCRC16(pixCode + '6304');
+    pixCode += `6304${crc}`;
+    
+    return pixCode;
+  }
+  
+  private calculateCRC16(data: string): string {
+    // Implementação simplificada do CRC16 para PIX
+    // Em produção, use uma biblioteca específica para CRC16-CCITT
+    let crc = 0xFFFF;
+    for (let i = 0; i < data.length; i++) {
+      crc ^= data.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) {
+        if (crc & 0x8000) {
+          crc = (crc << 1) ^ 0x1021;
+        } else {
+          crc <<= 1;
+        }
+        crc &= 0xFFFF;
+      }
+    }
+    return crc.toString(16).toUpperCase().padStart(4, '0');
+  }
+  
+  private generateRealQRCodeBase64(pixCode: string): string {
+    // Em produção, você usaria uma biblioteca como 'qrcode' para gerar o QR Code real
+    // Por enquanto, retornamos um placeholder que indica que é um PIX real
+    return `data:image/svg+xml;base64,${btoa(`
+      <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="200" height="200" fill="white"/>
+        <rect x="20" y="20" width="160" height="160" fill="black"/>
+        <rect x="40" y="40" width="120" height="120" fill="white"/>
+        <text x="100" y="90" text-anchor="middle" font-size="12" fill="black">PIX</text>
+        <text x="100" y="110" text-anchor="middle" font-size="8" fill="black">QR Code Real</text>
+        <text x="100" y="130" text-anchor="middle" font-size="6" fill="black">${this.officialPixKey}</text>
+      </svg>
+    `)}`;
   }
 }
 
