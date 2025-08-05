@@ -12,14 +12,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const { user, logout } = useAuth();
-  const { currentLanguage, setLanguage } = useLanguage();
+  const { currentLanguage, setLanguage, t } = useLanguage();
   
 
   const navItems = [
-    { id: 'home', label: 'Início' },
-    { id: 'acupressure', label: 'Acupressão' },
-    { id: 'breathing', label: 'Respiração' },
-    { id: 'premium', label: 'Premium' },
+    { id: 'home' },
+    { id: 'acupressure' },
+    { id: 'breathing' },
+    { id: 'premium' },
   ];
 
   const handleLogout = () => {
@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                 }`}
               >
-                {item.label}
+                {t(`nav.${item.id}`)}
               </button>
             ))}
           </nav>
@@ -121,7 +121,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-700 hover:text-red-600 hover:bg-gray-50 rounded-md"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>Sair</span>
+                  <span>{t('nav.logout')}</span>
                 </button>
               </div>
             ) : (
@@ -129,7 +129,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 onClick={() => onPageChange('login')}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
               >
-                Entrar
+                {t('nav.login')}
               </button>
             )}
           </div>
@@ -152,13 +152,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
               {navItems.map((item) => (
                 <button
                   key={item.id}
+                  onClick={() => {
+                    onPageChange(item.id);
+                    setIsMenuOpen(false);
+                  }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
                   }`}
                 >
-                  {item.label}
+                  {t(`nav.${item.id}`)}
                 </button>
               ))}
               
@@ -195,7 +199,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
                   >
                     <LogOut className="w-4 h-4" />
-                    <span>Sair</span>
+                    <span>{t('nav.logout')}</span>
                   </button>
                 </div>
               ) : (
@@ -207,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     }}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium"
                   >
-                    Entrar
+                    {t('nav.login')}
                   </button>
                 </div>
               )}
