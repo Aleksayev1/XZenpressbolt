@@ -42,9 +42,10 @@ export const AcupressurePage: React.FC = () => {
 
   const categories = [
     { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
-    { id: 'mtc', name: 'MTC (Medicina Tradicional Chinesa)', icon: '☯️' },
+    { id: 'general', name: 'MTC (Medicina Tradicional Chinesa)', icon: '☯️' },
     { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
-    { id: 'general', name: 'Pontos Gerais', icon: '⭐', premium: true },
+    { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
+    { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
   ];
 
   const getLocalizedName = (point: AcupressurePoint) => {
@@ -110,10 +111,11 @@ export const AcupressurePage: React.FC = () => {
     if (isChromotherapyEnabled) {
       setIsColorTherapyActive(true);
       let colorIndex = 0;
+      setCurrentColor(colors[colorIndex]); // Set initial color immediately
       colorIntervalRef.current = setInterval(() => {
-        setCurrentColor(colors[colorIndex]);
         colorIndex = (colorIndex + 1) % colors.length;
-      }, Math.floor(duration * 1000 / colors.length)); // Distribute colors evenly over duration
+        setCurrentColor(colors[colorIndex]);
+      }, 4000); // Change color every 4 seconds
     }
     
     // Start sound if enabled and selected
