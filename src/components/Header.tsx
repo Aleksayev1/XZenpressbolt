@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Globe, User, LogOut } from 'lucide-react';
+import { Menu, X, Globe, User, LogOut, Crown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
@@ -114,9 +114,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   <User className="w-4 h-4 text-gray-600" />
                   <span className="text-sm text-gray-700">{user.name}</span>
                   {user.isPremium && (
-                    <span className="px-2 py-1 text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full">
-                      Premium
-                    </span>
+                    <div className="flex items-center">
+                      <Crown className="w-4 h-4 text-yellow-500" />
+                    </div>
                   )}
                 </div>
                 <button
@@ -190,6 +190,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   <div className="flex items-center space-x-2 mb-2">
                     <User className="w-4 h-4 text-gray-600" />
                     <span className="text-sm text-gray-700">{user.name}</span>
+                    {user.isPremium && (
+                      <Crown className="w-4 h-4 text-yellow-500" />
+                    )}
                   </div>
                   <button
                     onClick={() => {
