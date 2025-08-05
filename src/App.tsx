@@ -6,7 +6,6 @@ import { BreathingExercise } from './components/BreathingExercise';
 import { AcupressurePage } from './components/AcupressurePage';
 import { PremiumPage } from './components/PremiumPage';
 import { WhatsAppConsultationPage } from './components/WhatsAppConsultationPage';
-import { WhatsAppConsultationPage } from './components/WhatsAppConsultationPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
