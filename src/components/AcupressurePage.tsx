@@ -44,8 +44,7 @@ export const AcupressurePage: React.FC = () => {
     { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
     { id: 'mtc', name: 'MTC (Medicina Tradicional Chinesa)', icon: '☯️' },
     { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
-    { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
-    { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
+    { id: 'general', name: 'Pontos Gerais', icon: '⭐', premium: true },
   ];
 
   const getLocalizedName = (point: AcupressurePoint) => {
