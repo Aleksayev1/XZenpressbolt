@@ -3,8 +3,11 @@ import { MapPin, Lock, Star, Info, Clock, Zap, Target, Crown, Volume2, VolumeX, 
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcupressurePoint } from '../types';
-  onPageChange?: (page: string) => void;
 import { acupressurePoints } from '../data/acupressurePoints';
+
+interface AcupressurePageProps {
+  onPageChange?: (page: string) => void;
+}
 
 export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange = () => {} }) => {
   const { user } = useAuth();
