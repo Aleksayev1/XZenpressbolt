@@ -90,11 +90,17 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
                 href="https://wa.me/5511999999999?text=Olá! Sou usuário Premium e gostaria de uma consulta"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transform hover:scale-105 transition-all duration-200"
+                className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transform hover:scale-105 transition-all duration-200 mb-3"
               >
                 <MessageCircle className="w-5 h-5" />
                 <span>Iniciar Consulta</span>
               </a>
+              <button
+                onClick={() => onPageChange('whatsapp-consultation')}
+                className="block w-full bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transform hover:scale-105 transition-all duration-200"
+              >
+                📋 Formulário Detalhado
+              </button>
             </div>
 
             {/* Specific Points */}
