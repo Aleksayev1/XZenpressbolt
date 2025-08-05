@@ -97,7 +97,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
               </a>
               <button
                 onClick={() => onPageChange('whatsapp-consultation')}
-                className="block w-full bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transform hover:scale-105 transition-all duration-200"
+                className="block w-full bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transform hover:scale-105 transition-all duration-200 mt-3"
               >
                 📋 Formulário Detalhado
               </button>
