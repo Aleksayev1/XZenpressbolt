@@ -480,7 +480,7 @@ export const AcupressurePage: React.FC = () => {
                 )}
 
                 {/* Timer */}
-                {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) ? (
+                {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) && (
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="text-lg font-semibold text-gray-800">Terapia Integrada</h4>
@@ -603,8 +603,13 @@ export const AcupressurePage: React.FC = () => {
                     </div>
                     
                     <button
-                      onClick={() => isTimerActive ? stopIntegratedTherapy() : startIntegratedTherapy(selectedPoint.duration || 120)}
-                      disabled={isTimerActive}
+                      onClick={() => {
+                        if (isTimerActive) {
+                          stopIntegratedTherapy();
+                        } else {
+                          startIntegratedTherapy(selectedPoint.duration || 120);
+                        }
+                      }}
                       className={`w-full py-4 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 ${
                         isTimerActive
                           ? 'bg-red-500 text-white hover:bg-red-600'
@@ -638,7 +643,6 @@ export const AcupressurePage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                ) : null}
 
                 {selectedPoint.isPremium && !user?.isPremium && (
                   <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
