@@ -364,6 +364,21 @@ export const AcupressurePage: React.FC = () => {
                   {getLocalizedDescription(selectedPoint)}
                 </p>
                 
+                {/* Point Image */}
+                {selectedPoint.image && (
+                  <div className="mb-6">
+                    <img
+                      src={selectedPoint.image}
+                      alt={selectedPoint.imageAlt || `Localização do ponto ${getLocalizedName(selectedPoint)}`}
+                      className="w-full max-w-md mx-auto rounded-xl shadow-lg"
+                      onError={(e) => {
+                        // Hide image if it fails to load
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+                
                 {/* Point Details */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                   <div className="bg-blue-50 rounded-lg p-4 text-center">

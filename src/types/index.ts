@@ -20,6 +20,8 @@ export interface AcupressurePoint {
     x: number;
     y: number;
   };
+  image?: string;
+  imageAlt?: string;
   benefits: string[];
   benefitsEn: string[];
   benefitsEs: string[];
