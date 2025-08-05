@@ -493,6 +493,59 @@ export const AcupressurePage: React.FC = () => {
                       )}
                     </div>
                     
+                    {/* Breathing Integration Guide */}
+                    <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 mb-6 border border-blue-200">
+                      <div className="flex items-center space-x-2 mb-4">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                          <span className="text-blue-600 text-lg">🫁</span>
+                        </div>
+                        <h4 className="text-lg font-semibold text-gray-800">Respiração Integrada 4-7-8</h4>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div className="bg-blue-100 rounded-lg p-3 text-center">
+                          <div className="text-blue-600 font-bold text-lg mb-1">4s</div>
+                          <div className="text-sm text-blue-800">Inspire</div>
+                          <div className="text-xs text-blue-600">Azul Calmante</div>
+                        </div>
+                        <div className="bg-green-100 rounded-lg p-3 text-center">
+                          <div className="text-green-600 font-bold text-lg mb-1">7s</div>
+                          <div className="text-sm text-green-800">Segure</div>
+                          <div className="text-xs text-green-600">Verde Equilibrante</div>
+                        </div>
+                        <div className="bg-purple-100 rounded-lg p-3 text-center">
+                          <div className="text-purple-600 font-bold text-lg mb-1">8s</div>
+                          <div className="text-sm text-purple-800">Expire</div>
+                          <div className="text-xs text-purple-600">Magenta Renovador</div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-lg p-4">
+                        <h5 className="font-semibold text-gray-800 mb-2">📋 Instruções Integradas:</h5>
+                        <ol className="text-sm text-gray-700 space-y-1">
+                          <li><strong>1.</strong> Posicione o dedo no ponto de acupressão</li>
+                          <li><strong>2.</strong> Inicie o timer integrado abaixo</li>
+                          <li><strong>3.</strong> Siga o ritmo da respiração 4-7-8:</li>
+                          <li className="ml-4">• <span className="text-blue-600">Azul</span> = Inspire por 4s aplicando pressão suave</li>
+                          <li className="ml-4">• <span className="text-green-600">Verde</span> = Segure por 7s mantendo pressão</li>
+                          <li className="ml-4">• <span className="text-purple-600">Magenta</span> = Expire por 8s com movimentos circulares</li>
+                          <li><strong>4.</strong> Repita até o timer finalizar</li>
+                        </ol>
+                      </div>
+                      
+                      {isTimerActive && (
+                        <div className="mt-4 bg-white rounded-lg p-3 border-l-4" style={{ borderColor: currentColor }}>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded-full animate-pulse" style={{ backgroundColor: currentColor }}></div>
+                            <span className="font-semibold" style={{ color: currentColor }}>
+                              {currentColor === '#3B82F6' && 'INSPIRE (4s) - Pressão suave no ponto'}
+                              {currentColor === '#10B981' && 'SEGURE (7s) - Mantenha pressão constante'}
+                              {currentColor === '#8B5CF6' && 'EXPIRE (8s) - Movimentos circulares suaves'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     {/* Therapy Controls */}
                     <div className="bg-gray-50 rounded-xl p-4 mb-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -621,12 +674,12 @@ export const AcupressurePage: React.FC = () => {
                       {isTimerActive ? (
                         <>
                           <Pause className="w-5 h-5" />
-                          <span>Parar Terapia</span>
+                          <span>Parar Terapia Integrada</span>
                         </>
                       ) : (
                         <>
                           <Play className="w-5 h-5" />
-                          <span>Iniciar Terapia Integrada</span>
+                          <span>🫁 Iniciar Acupressão + Respiração 4-7-8</span>
                         </>
                       )}
                     </button>
@@ -634,13 +687,15 @@ export const AcupressurePage: React.FC = () => {
                     {/* Therapy Description */}
                     <div className="mt-3 text-center">
                       <p className="text-sm text-gray-600">
-                        {isChromotherapyEnabled && isSoundEnabled && selectedSoundId
-                          ? 'Timer + Cromoterapia + Sons harmonizantes'
+                        {isTimerActive 
+                          ? '🎯 Siga as cores para respirar corretamente durante a acupressão'
+                          : isChromotherapyEnabled && isSoundEnabled && selectedSoundId
+                          ? '🫁 Acupressão + Respiração 4-7-8 + Cromoterapia + Sons'
                           : isChromotherapyEnabled && (!isSoundEnabled || !selectedSoundId)
-                          ? 'Timer + Cromoterapia'
+                          ? '🫁 Acupressão + Respiração 4-7-8 + Cromoterapia'
                           : !isChromotherapyEnabled && isSoundEnabled && selectedSoundId
-                          ? 'Timer + Sons harmonizantes'
-                          : 'Timer simples'
+                          ? '🫁 Acupressão + Respiração 4-7-8 + Sons'
+                          : '🫁 Acupressão + Respiração 4-7-8'
                         }
                       </p>
                     </div>
@@ -692,28 +747,37 @@ export const AcupressurePage: React.FC = () => {
             <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
               <div className="flex items-center space-x-2 mb-4">
                 <Info className="w-6 h-6 text-blue-600" />
-                <h3 className="text-xl font-semibold text-gray-800">Guia de Aplicação</h3>
+                <h3 className="text-xl font-semibold text-gray-800">Guia de Aplicação Integrada</h3>
               </div>
               <div className="space-y-3 text-gray-600">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-2">Técnica Básica:</h4>
+                    <h4 className="font-semibold text-gray-800 mb-2">🫁 Respiração + Acupressão:</h4>
                     <ul className="space-y-1 text-sm">
-                      <li>• Pressione suavemente com dedo indicador ou médio</li>
-                      <li>• Mantenha pressão constante e confortável</li>
-                      <li>• Respire profundamente durante aplicação</li>
-                      <li>• Use movimentos circulares se indicado</li>
+                      <li>• <span className="text-blue-600">Azul</span>: Inspire 4s + pressão suave</li>
+                      <li>• <span className="text-green-600">Verde</span>: Segure 7s + pressão constante</li>
+                      <li>• <span className="text-purple-600">Magenta</span>: Expire 8s + movimentos circulares</li>
+                      <li>• Siga as cores do timer para sincronizar</li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-800 mb-2">Potencialização:</h4>
+                    <h4 className="font-semibold text-gray-800 mb-2">🎯 Maximização dos Resultados:</h4>
                     <ul className="space-y-1 text-sm">
-                      <li>• Combine com respiração 4-7-8</li>
-                      <li>• Use cromoterapia durante aplicação</li>
+                      <li>• Use timer integrado para sincronização perfeita</li>
+                      <li>• Cromoterapia potencializa os efeitos</li>
                       <li>• Aplique em ambiente tranquilo</li>
-                      <li>• Mantenha regularidade na prática</li>
+                      <li>• Sons harmonizantes amplificam relaxamento</li>
                     </ul>
                   </div>
+                </div>
+                
+                <div className="mt-6 bg-white rounded-xl p-4 border border-blue-200">
+                  <h4 className="font-semibold text-gray-800 mb-2 text-center">🧬 Ciência por trás da Integração</h4>
+                  <p className="text-sm text-gray-600 text-center">
+                    A combinação de <strong>acupressão + respiração 4-7-8 + cromoterapia</strong> ativa simultaneamente:
+                    o sistema nervoso parassimpático, pontos de acupuntura tradicionais e receptores visuais,
+                    criando um efeito sinérgico para máximo relaxamento e bem-estar.
+                  </p>
                 </div>
               </div>
             </div>
