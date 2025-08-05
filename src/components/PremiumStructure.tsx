@@ -10,7 +10,7 @@ interface PremiumStructureProps {
 }
 
 export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange }) => {
-  const { user } = useAuth();
+  const { user, upgradeToPremium } = useAuth();
   const { t } = useLanguage();
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [showPayment, setShowPayment] = useState(false);
@@ -332,14 +332,17 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   };
 
   const handlePayment = () => {
-    // Simular processamento de pagamento
-    alert(`${t('premium.payment.processing')} ${paymentMethod.toUpperCase()}`);
-    // Aqui você integraria com gateway de pagamento real
+    // Simular processamento de pagamento bem-sucedido
+    setTimeout(() => {
+      alert(`Pagamento ${paymentMethod.toUpperCase()} confirmado! Bem-vindo ao Premium!`);
+      upgradeToPremium();
+      setShowPayment(false);
+    }, 2000);
   };
 
   const handlePixPaymentSuccess = (paymentData: any) => {
     alert('Pagamento PIX confirmado! Bem-vindo ao Premium!');
-    // Aqui você ativaria o premium do usuário
+    upgradeToPremium();
     setShowPayment(false);
   };
 

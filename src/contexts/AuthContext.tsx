@@ -6,6 +6,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
+  upgradeToPremium: () => void;
   isLoading: boolean;
 }
 
@@ -28,7 +29,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       try {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        // Ensure isPremium is properly set for demo purposes
+        if (parsedUser && !parsedUser.hasOwnProperty('isPremium')) {
+          parsedUser.isPremium = false;
+        }
+        setUser(parsedUser);
       } catch (error) {
         localStorage.removeItem('user');
       }
@@ -46,11 +52,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('Invalid credentials');
       }
       
+      // Check if user should be premium (demo purposes)
+      const isPremiumUser = email.toLowerCase().includes('premium') || 
+                           email.toLowerCase().includes('vip') ||
+                           password.toLowerCase().includes('premium');
+      
       const mockUser: User = {
         id: '1',
         email,
         name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-        isPremium: false,
+        isPremium: isPremiumUser,
         createdAt: new Date().toISOString(),
       };
       setUser(mockUser);
@@ -60,6 +71,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const upgradeToPremium = () => {
+    if (user) {
+      const updatedUser = { ...user, isPremium: true };
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+  };
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -77,7 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, resetPassword, isLoading }}>
+    <AuthContext.Provider value={{ user, login, logout, resetPassword, upgradeToPremium, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
