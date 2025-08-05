@@ -7,6 +7,7 @@ import { AcupressurePage } from './components/AcupressurePage';
 import { PremiumPage } from './components/PremiumPage';
 import { WhatsAppConsultationPage } from './components/WhatsAppConsultationPage';
 import { PremiumStructure } from './components/PremiumStructure';
+import { CorporatePlansPage } from './components/CorporatePlansPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
@@ -27,6 +28,8 @@ function App() {
         return <PremiumStructure onPageChange={setCurrentPage} />;
       case 'whatsapp-consultation':
         return <WhatsAppConsultationPage onPageChange={setCurrentPage} />;
+      case 'corporate':
+        return <CorporatePlansPage onPageChange={setCurrentPage} />;
       default:
         return <HomePage onPageChange={setCurrentPage} />;
     }

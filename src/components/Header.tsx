@@ -20,6 +20,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
     { id: 'acupressure' },
     { id: 'breathing' },
     { id: 'premium' },
+    { id: 'corporate' },
   ];
 
   const handleLogout = () => {
