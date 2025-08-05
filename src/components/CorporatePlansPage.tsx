@@ -30,7 +30,6 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
       ],
       compliance: [
         'Atendimento à Lei 14.831/2024',
-        'Conformidade com NR-1',
         'Certificação de Empresa Promotora da Saúde Mental'
       ],
       popular: false,
