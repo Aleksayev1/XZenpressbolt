@@ -50,3 +50,36 @@ export interface PaymentMethod {
   type: 'pix' | 'credit' | 'crypto';
   details: any;
 }
+
+export interface UserProfile {
+  id: string;
+  stressLevel: 'low' | 'medium' | 'high';
+  sleepQuality: 'poor' | 'fair' | 'good' | 'excellent';
+  mainConcerns: string[];
+  preferredTime: 'morning' | 'afternoon' | 'evening' | 'night';
+  experienceLevel: 'beginner' | 'intermediate' | 'advanced';
+  goals: string[];
+  usageHistory: SessionHistory[];
+}
+
+export interface SessionHistory {
+  date: string;
+  type: 'breathing' | 'acupressure' | 'chromotherapy';
+  duration: number;
+  pointsUsed?: string[];
+  effectiveness: number; // 1-5 rating
+}
+
+export interface AIRecommendation {
+  id: string;
+  type: 'point' | 'breathing' | 'routine' | 'timing';
+  title: string;
+  description: string;
+  reason: string;
+  confidence: number; // 0-1
+  priority: 'low' | 'medium' | 'high';
+  estimatedBenefit: string;
+  pointId?: string;
+  duration?: number;
+  schedule?: string;
+}
