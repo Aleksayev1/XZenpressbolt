@@ -152,10 +152,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
               {navItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => {
-                    onPageChange(item.id);
-                    setIsMenuOpen(false);
-                  }}
                   className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
