@@ -236,10 +236,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           <div className="mt-12 bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-2xl p-8">
             <div className="text-center">
               <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                🏆 {t('home.wellness.title')}
+                🏆 Objetiva Wellness Corporativo
               </h3>
               <p className="text-gray-700 mb-6 max-w-3xl mx-auto">
-                {t('home.wellness.desc')}
+                Empresa Promotora da Saúde Integrativa Mental online
               </p>
               <div className="inline-flex items-center space-x-2 bg-yellow-100 border border-yellow-300 rounded-full px-6 py-3">
                 <span className="text-yellow-700 font-semibold">📊 Análise Gratuita:</span>
