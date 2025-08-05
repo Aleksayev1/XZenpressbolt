@@ -159,6 +159,11 @@ export const BreathingExercise: React.FC = () => {
           src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
           loop
           preload="auto"
+          onError={(e) => {
+            console.warn('Audio file not found:', e.currentTarget.src);
+            setSelectedSoundId(null);
+            setIsSoundPlaying(false);
+          }}
         />
       )}
       
