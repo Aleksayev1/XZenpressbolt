@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X, Globe, User, LogOut, Crown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage, languages } from '../contexts/LanguageContext';
 
 interface HeaderProps {
   currentPage: string;
@@ -11,13 +12,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { currentLanguage, setLanguage } = useLanguage();
   
-  const currentLanguage = { code: 'pt', name: 'Português', flag: '🇧🇷' };
-  const languages = [
-    { code: 'pt', name: 'Português', flag: '🇧🇷' },
-    { code: 'en', name: 'English', flag: '🇺🇸' },
-    { code: 'es', name: 'Español', flag: '🇪🇸' },
-  ];
 
   const navItems = [
     { id: 'home', label: 'Início' },
@@ -156,10 +152,15 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 <button
                   key={item.id}
                   onClick={() => {
+                    setLanguage(lang);
                     onPageChange(item.id);
                     setIsMenuOpen(false);
                   }}
-                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                  className={`flex items-center space-x-3 w-full px-4 py-2 text-sm hover:bg-gray-100 ${
+                    currentLanguage.code === lang.code 
+                      ? 'text-blue-600 bg-blue-50 font-medium' 
+                      : 'text-gray-700'
+                  }`}
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'

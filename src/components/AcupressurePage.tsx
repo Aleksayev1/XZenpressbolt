@@ -517,7 +517,12 @@ export const AcupressurePage: React.FC = () => {
                     <img
                       src={selectedPoint.image}
                       alt={selectedPoint.imageAlt || `Localização do ponto ${getLocalizedName(selectedPoint)}`}
-                      className="w-full max-w-md mx-auto rounded-xl shadow-lg"
+                     className="w-full max-w-md mx-auto rounded-xl shadow-lg transition-all duration-1000"
+                     style={{
+                       filter: isTimerActive && isChromotherapyEnabled 
+                         ? `hue-rotate(${currentColor === '#3B82F6' ? '0deg' : currentColor === '#10B981' ? '120deg' : '300deg'}) saturate(1.5) brightness(1.1)`
+                         : 'none'
+                     }}
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}
