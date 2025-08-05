@@ -12,6 +12,8 @@ const languages: Language[] = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
 ];
 
 const translations: Record<string, Record<string, string>> = {
