@@ -20,7 +20,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Reduce estrés y ansiedad diaria', 'Alivia tensión mental', 'Promueve relajación profunda', 'Calma la mente agitada'],
     benefitsFr: ['Réduit stress et anxiété quotidiens', 'Soulage tension mentale', 'Favorise relaxation profonde', 'Calme esprit agité'],
     isPremium: false,
-    category: 'mtc',
+    category: 'general',
     instructions: 'Pressione suavemente com o dedo médio por 1-2 minutos, respirando profundamente.',
     duration: 120,
     pressure: 'leve'
@@ -43,7 +43,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Eleva mente y conciencia', 'Combate fatiga mental', 'Mejora claridad de pensamiento', 'Fortalece energía yang'],
     benefitsFr: ['Élève esprit et conscience', 'Combat fatigue mentale', 'Améliore clarté pensée', 'Renforce énergie yang'],
     isPremium: false,
-    category: 'mtc', 
+    category: 'general',
     instructions: 'Pressione suavemente o topo da cabeça com o dedo médio por 2-3 minutos, focando na elevação da energia yang.',
     duration: 120,
     pressure: 'leve'
@@ -68,7 +68,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Reduce estrés y ansiedad', 'Calma sistema nervioso', 'Promueve relajación cerebral', 'Disminuye tensión craneal'],
     benefitsFr: ['Réduit stress et anxiété', 'Calme système nerveux', 'Favorise relaxation cérébrale', 'Diminue tension crânienne'],
     isPremium: false,
-    category: 'craniopuntura',
+    category: 'general',
     instructions: 'Aplicar pressão suave com movimentos circulares na região frontal por 2-3 minutos, focando no relaxamento.',
     duration: 180,
     pressure: 'muito leve'
@@ -91,7 +91,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Combate fatiga mental', 'Mejora claridad mental', 'Aumenta capacidad de enfoque', 'Revitaliza energía cerebral'],
     benefitsFr: ['Combat fatigue mentale', 'Améliore clarté mentale', 'Augmente capacité concentration', 'Revitalise énergie cérébrale'],
     isPremium: false,
-    category: 'craniopuntura',
+    category: 'general',
     instructions: 'Pressione firmemente entre polegar e indicador por 1-2 minutos em cada mão, focando nos reflexos cranianos.',
     duration: 180,
     pressure: 'firme'
@@ -114,7 +114,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Equilibrio emocional profundo', 'Reduce ansiedad crónica', 'Mejora calidad del sueño', 'Fortalece sistema nervioso'],
     benefitsFr: ['Équilibre émotionnel profond', 'Réduit anxiété chronique', 'Améliore qualité sommeil', 'Renforce système nerveux'],
     isPremium: true,
-    category: 'mtc',
+    category: 'general',
     instructions: 'Pressione com o polegar na dobra do pulso, lado do mindinho, por 1-3 minutos.',
     duration: 180,
     pressure: 'moderada'
@@ -135,7 +135,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Revitalización energética completa', 'Mejora memoria y cognición', 'Eleva conciencia', 'Fortalece energía vital'],
     benefitsFr: ['Revitalisation énergétique complète', 'Améliore mémoire et cognition', 'Élève conscience', 'Renforce énergie vitale'],
     isPremium: true,
-    category: 'mtc',
+    category: 'general',
     instructions: 'Pressione suavemente o topo da cabeça com a palma da mão por 2-3 minutos.',
     duration: 180,
     pressure: 'leve'
@@ -246,7 +246,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Optimización cognitiva', 'Mejora memoria a largo plazo', 'Aumenta capacidad de aprendizaje', 'Fortalece conexiones neurales'],
     benefitsFr: ['Optimisation cognitive', 'Améliore mémoire long terme', 'Augmente capacité apprentissage', 'Renforce connexions neurales'],
     isPremium: true,
-    category: 'craniopuntura',
+    category: 'general',
     instructions: 'Aplicar pressão muito suave com movimentos específicos por 4-5 minutos.',
     duration: 300,
     pressure: 'muito leve'
