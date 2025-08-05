@@ -526,26 +526,23 @@ export const AcupressurePage: React.FC = () => {
                 )}
                 
                 {/* Point Details */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="bg-blue-50 rounded-lg p-4 text-center">
-                    <Clock className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600">Duração</div>
-                    <div className="font-semibold text-blue-800">
-                      {formatTime(selectedPoint.duration || 120)}
+                {/* Compact Point Details */}
+                <div className="bg-gradient-to-r from-blue-50 via-green-50 to-purple-50 rounded-xl p-4 mb-6">
+                  <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <Clock className="w-4 h-4 text-blue-600" />
+                      <span className="text-gray-600">Duração:</span>
+                      <span className="font-semibold text-blue-800">{formatTime(selectedPoint.duration || 120)}</span>
                     </div>
-                  </div>
-                  <div className="bg-green-50 rounded-lg p-4 text-center">
-                    <Zap className="w-6 h-6 text-green-600 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600">Pressão</div>
-                    <div className="font-semibold text-green-800 capitalize">
-                      {selectedPoint.pressure || 'Moderada'}
+                    <div className="flex items-center space-x-2">
+                      <Zap className="w-4 h-4 text-green-600" />
+                      <span className="text-gray-600">Pressão:</span>
+                      <span className="font-semibold text-green-800 capitalize">{selectedPoint.pressure || 'Moderada'}</span>
                     </div>
-                  </div>
-                  <div className="bg-purple-50 rounded-lg p-4 text-center">
-                    <Target className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600">Categoria</div>
-                    <div className="font-semibold text-purple-800 capitalize">
-                      {selectedPoint.category}
+                    <div className="flex items-center space-x-2">
+                      <Target className="w-4 h-4 text-purple-600" />
+                      <span className="text-gray-600">Categoria:</span>
+                      <span className="font-semibold text-purple-800 capitalize">{selectedPoint.category}</span>
                     </div>
                   </div>
                 </div>
@@ -585,50 +582,52 @@ export const AcupressurePage: React.FC = () => {
                     </div>
                     
                     {/* Breathing Integration Guide */}
-                    <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 mb-6 border border-blue-200">
+                    <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-4 mb-4 border border-blue-200">
                       <div className="flex items-center space-x-2 mb-4">
                         <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                           <span className="text-blue-600 text-lg">🫁</span>
                         </div>
-                        <h4 className="text-lg font-semibold text-gray-800">Respiração Integrada 4-7-8</h4>
+                        <h4 className="text-base font-semibold text-gray-800">🫁 Respiração Integrada 4-7-8</h4>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div className="bg-blue-100 rounded-lg p-3 text-center">
-                          <div className="text-blue-600 font-bold text-lg mb-1">4s</div>
-                          <div className="text-sm text-blue-800">Inspire</div>
-                          <div className="text-xs text-blue-600">Azul Calmante</div>
-                        </div>
-                        <div className="bg-green-100 rounded-lg p-3 text-center">
-                          <div className="text-green-600 font-bold text-lg mb-1">7s</div>
-                          <div className="text-sm text-green-800">Segure</div>
-                          <div className="text-xs text-green-600">Verde Equilibrante</div>
-                        </div>
-                        <div className="bg-purple-100 rounded-lg p-3 text-center">
-                          <div className="text-purple-600 font-bold text-lg mb-1">8s</div>
-                          <div className="text-sm text-purple-800">Expire</div>
-                          <div className="text-xs text-purple-600">Magenta Renovador</div>
+                      {/* Compact Breathing Steps */}
+                      <div className="bg-white rounded-lg p-3 mb-4">
+                        <div className="flex flex-wrap justify-center gap-4 text-sm">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">4</div>
+                            <span className="text-blue-800 font-medium">Inspire</span>
+                            <span className="text-blue-600 text-xs">Azul</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">7</div>
+                            <span className="text-green-800 font-medium">Segure</span>
+                            <span className="text-green-600 text-xs">Verde</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">8</div>
+                            <span className="text-purple-800 font-medium">Expire</span>
+                            <span className="text-purple-600 text-xs">Magenta</span>
+                          </div>
                         </div>
                       </div>
                       
-                      <div className="bg-white rounded-lg p-4">
-                        <h5 className="font-semibold text-gray-800 mb-2">📋 Instruções Integradas:</h5>
-                        <ol className="text-sm text-gray-700 space-y-1">
-                          <li><strong>1.</strong> Posicione o dedo no ponto de acupressão</li>
-                          <li><strong>2.</strong> Inicie o timer integrado abaixo</li>
-                          <li><strong>3.</strong> Siga o ritmo da respiração 4-7-8:</li>
-                          <li className="ml-4">• <span className="text-blue-600">Azul</span> = Inspire por 4s aplicando pressão suave</li>
-                          <li className="ml-4">• <span className="text-green-600">Verde</span> = Segure por 7s mantendo pressão</li>
-                          <li className="ml-4">• <span className="text-purple-600">Magenta</span> = Expire por 8s com movimentos circulares</li>
-                          <li><strong>4.</strong> Repita até o timer finalizar</li>
-                        </ol>
+                      {/* Compact Instructions */}
+                      <div className="bg-white rounded-lg p-3">
+                        <div className="text-xs text-gray-600 space-y-1">
+                          <div><strong>1.</strong> Posicione o dedo no ponto • <strong>2.</strong> Inicie o timer • <strong>3.</strong> Siga as cores:</div>
+                          <div className="flex flex-wrap gap-2 text-xs">
+                            <span><span className="text-blue-600">●</span> Azul = Inspire 4s + pressão</span>
+                            <span><span className="text-green-600">●</span> Verde = Segure 7s + manter</span>
+                            <span><span className="text-purple-600">●</span> Magenta = Expire 8s + circular</span>
+                          </div>
+                        </div>
                       </div>
                       
                       {isTimerActive && (
-                        <div className="mt-4 bg-white rounded-lg p-3 border-l-4" style={{ borderColor: currentColor }}>
+                        <div className="mt-3 bg-white rounded-lg p-2 border-l-4" style={{ borderColor: currentColor }}>
                           <div className="flex items-center space-x-2">
                             <div className="w-3 h-3 rounded-full animate-pulse" style={{ backgroundColor: currentColor }}></div>
-                            <span className="font-semibold" style={{ color: currentColor }}>
+                            <span className="font-semibold text-sm" style={{ color: currentColor }}>
                               {currentColor === '#3B82F6' && 'INSPIRE (4s) - Pressão suave no ponto'}
                               {currentColor === '#10B981' && 'SEGURE (7s) - Mantenha pressão constante'}
                               {currentColor === '#8B5CF6' && 'EXPIRE (8s) - Movimentos circulares suaves'}
@@ -639,22 +638,22 @@ export const AcupressurePage: React.FC = () => {
                     </div>
 
                     {/* Therapy Controls */}
-                    <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="bg-gray-50 rounded-xl p-3 mb-4">
+                      <div className="flex flex-wrap items-center justify-center gap-4 mb-3">
                         {/* Chromotherapy Control */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Palette className="w-5 h-5 text-purple-600" />
-                            <span className="text-sm font-medium text-gray-700">Cromoterapia</span>
+                            <span className="text-xs font-medium text-gray-700">Cromoterapia</span>
                           </div>
                           <button
                             onClick={() => setIsChromotherapyEnabled(!isChromotherapyEnabled)}
-                            className={`w-12 h-6 rounded-full transition-colors ${
+                            className={`w-10 h-5 rounded-full transition-colors ml-2 ${
                               isChromotherapyEnabled ? 'bg-purple-500' : 'bg-gray-300'
                             }`}
                           >
-                            <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                              isChromotherapyEnabled ? 'translate-x-6' : 'translate-x-1'
+                            <div className={`w-4 h-4 bg-white rounded-full transition-transform ${
+                              isChromotherapyEnabled ? 'translate-x-5' : 'translate-x-0.5'
                             }`} />
                           </button>
                         </div>
@@ -663,16 +662,16 @@ export const AcupressurePage: React.FC = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Volume2 className="w-5 h-5 text-blue-600" />
-                            <span className="text-sm font-medium text-gray-700">Sons</span>
+                            <span className="text-xs font-medium text-gray-700">Sons</span>
                           </div>
                           <button
                             onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-                            className={`w-12 h-6 rounded-full transition-colors ${
+                            className={`w-10 h-5 rounded-full transition-colors ml-2 ${
                               isSoundEnabled ? 'bg-blue-500' : 'bg-gray-300'
                             }`}
                           >
-                            <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                              isSoundEnabled ? 'translate-x-6' : 'translate-x-1'
+                            <div className={`w-4 h-4 bg-white rounded-full transition-transform ${
+                              isSoundEnabled ? 'translate-x-5' : 'translate-x-0.5'
                             }`} />
                           </button>
                         </div>
@@ -680,25 +679,24 @@ export const AcupressurePage: React.FC = () => {
                       
                       {/* Sound Selection */}
                       {isSoundEnabled && (
-                        <div className="mb-4">
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <div className="mb-3">
+                          <label className="block text-xs font-medium text-gray-700 mb-2">
                             Selecionar Som:
                           </label>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          <div className="flex flex-wrap gap-2">
                             {freeSounds.map((sound) => (
                               <button
                                 key={sound.id}
                                 onClick={() => handleSoundSelect(sound.id)}
-                                className={`p-3 rounded-lg border text-left transition-all ${
+                                className={`p-2 rounded-lg border text-left transition-all flex-1 min-w-0 ${
                                   selectedSoundId === sound.id
                                     ? 'border-blue-500 bg-blue-50'
                                     : 'border-gray-200 hover:border-gray-300'
                                 }`}
                               >
-                                <div className="font-medium text-sm">{sound.name}</div>
-                                <div className="text-xs text-gray-500">{sound.description}</div>
+                                <div className="font-medium text-xs">{sound.name}</div>
                                 {selectedSoundId === sound.id && isSoundPlaying && (
-                                  <div className="text-xs text-blue-600 mt-1">🔊 Reproduzindo...</div>
+                                  <div className="text-xs text-blue-600">🔊</div>
                                 )}
                               </button>
                             ))}
@@ -706,7 +704,7 @@ export const AcupressurePage: React.FC = () => {
                           
                           {/* Volume Control */}
                           {selectedSoundId && (
-                            <div className="flex items-center space-x-3 mt-3">
+                            <div className="flex items-center space-x-2 mt-2">
                               <VolumeX className="w-4 h-4 text-gray-500" />
                               <input
                                 type="range"
@@ -718,7 +716,7 @@ export const AcupressurePage: React.FC = () => {
                                 className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                               />
                               <Volume2 className="w-4 h-4 text-gray-500" />
-                              <span className="text-xs text-gray-600 min-w-[3rem]">
+                              <span className="text-xs text-gray-600 min-w-[2rem]">
                                 {Math.round(soundVolume * 100)}%
                               </span>
                             </div>
@@ -728,7 +726,7 @@ export const AcupressurePage: React.FC = () => {
                       
                       {/* Active Therapy Indicator */}
                       {(isChromotherapyEnabled || (isSoundEnabled && selectedSoundId)) && (
-                        <div className="text-center">
+                        <div className="text-center mt-2">
                           <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 shadow-sm">
                             {isChromotherapyEnabled && (
                               <div className="flex items-center space-x-1">
@@ -742,9 +740,7 @@ export const AcupressurePage: React.FC = () => {
                             {isSoundEnabled && selectedSoundId && (
                               <div className="flex items-center space-x-1">
                                 <Volume2 className="w-3 h-3 text-blue-500" />
-                                <span className="text-xs text-gray-600">
-                                  {freeSounds.find(s => s.id === selectedSoundId)?.name}
-                                </span>
+                                <span className="text-xs text-gray-600">Som</span>
                               </div>
                             )}
                           </div>
@@ -781,7 +777,7 @@ export const AcupressurePage: React.FC = () => {
                     
                     {/* Therapy Description */}
                     <div className="mt-3 text-center">
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs text-gray-600">
                         {isTimerActive 
                           ? '🎯 Siga as cores para respirar corretamente durante a acupressão'
                           : isChromotherapyEnabled && isSoundEnabled && selectedSoundId
