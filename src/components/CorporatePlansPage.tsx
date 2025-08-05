@@ -24,9 +24,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         'Acesso completo à plataforma para todos os funcionários',
         'Pontos de acupressão básicos e avançados',
         'Respiração 4-7-8 com cromoterapia',
-        'Relatórios mensais de uso',
+        'Acompanhamento de uso da plataforma',
         'Suporte por email',
-        'Treinamento inicial da equipe'
+        'Suporte para início rápido'
       ],
       compliance: [
         'Atendimento à Lei 14.831/2024',
@@ -45,18 +45,16 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
       employees: '51-200 funcionários',
       features: [
         'Tudo do plano Starter',
-        'Consultas WhatsApp especializadas ilimitadas',
-        'Dashboard executivo em tempo real',
-        'Relatórios personalizados semanais',
-        'API para integração com sistemas RH',
-        'Suporte prioritário 24/7',
-        'Workshops mensais de bem-estar',
-        'Gestor de conta dedicado'
+        'Consultas WhatsApp especializadas',
+        'Relatórios avançados de engajamento',
+        'Opções de integração para grandes empresas',
+        'Suporte prioritário',
+        'Conteúdo exclusivo de bem-estar',
+        'Atendimento dedicado'
       ],
       compliance: [
         'Tudo do plano Starter',
-        'Auditoria de conformidade trimestral',
-        'Relatórios para órgãos reguladores'
+        'Relatórios de conformidade simplificados'
       ],
       popular: true,
       color: 'green'
@@ -72,18 +70,16 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         'Tudo do plano Business',
         'Customização completa da plataforma',
         'White-label com marca da empresa',
-        'IA personalizada para cada funcionário',
-        'Integração completa com sistemas corporativos',
-        'Consultoria especializada em bem-estar corporativo',
-        'Treinamento de multiplicadores internos',
-        'SLA garantido de 99.9%',
-        'Suporte on-site quando necessário'
+        'Recomendações personalizadas (via IA em desenvolvimento)',
+        'Integração avançada com sistemas existentes',
+        'Consultoria estratégica de bem-estar',
+        'Treinamento para líderes internos',
+        'Alta disponibilidade da plataforma',
+        'Suporte especializado'
       ],
       compliance: [
         'Tudo do plano Business',
-        'Consultoria jurídica especializada',
-        'Implementação de políticas de bem-estar',
-        'Certificações internacionais'
+        'Suporte completo à conformidade'
       ],
       popular: false,
       color: 'purple'
@@ -99,10 +95,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
       description: 'Métricas essenciais de bem-estar corporativo',
       features: [
         'Dashboard básico de uso',
-        'Relatórios mensais automatizados',
-        'Métricas de engajamento dos funcionários',
-        'Indicadores de estresse por departamento',
-        'Exportação de dados em CSV',
+        'Relatórios mensais de uso',
+        'Métricas básicas de uso e engajamento',
+        'Exportação de dados',
         'Suporte por email'
       ],
       metrics: [
@@ -122,20 +117,18 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
       description: 'Analytics avançados com insights comportamentais',
       features: [
         'Tudo do plano Básico',
-        'Dashboard interativo avançado',
-        'Relatórios semanais personalizados',
-        'Análise preditiva de bem-estar',
+        'Dashboard e relatórios detalhados',
+        'Insights de tendências de bem-estar',
         'Segmentação por departamento/cargo',
-        'API para integração com BI',
-        'Alertas automáticos de tendências',
+        'Integração com ferramentas de BI',
+        'Alertas sobre padrões de uso',
         'Suporte prioritário'
       ],
       metrics: [
         'Tudo do plano Básico',
-        'Correlação estresse x produtividade',
+        'Análise de impacto no bem-estar',
         'Padrões de uso por perfil demográfico',
-        'Eficácia das intervenções de bem-estar',
-        'ROI em saúde mental'
+        'Eficácia das intervenções de bem-estar'
       ],
       popular: true,
       color: 'green'
@@ -148,20 +141,17 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
       description: 'Suite completa de inteligência em bem-estar',
       features: [
         'Tudo do plano Profissional',
-        'IA para insights personalizados',
-        'Benchmarking com mercado',
-        'Consultoria em ciência de dados',
+        'Insights avançados com IA',
+        'Comparativo de mercado',
+        'Consultoria de dados',
         'Relatórios executivos customizados',
-        'Integração com wearables',
-        'Análise de sentimento em tempo real',
-        'Cientista de dados dedicado'
+        'Preparado para integração com wearables',
+        'Análise de feedback',
+        'Especialista em dados dedicado'
       ],
       metrics: [
         'Tudo do plano Profissional',
-        'Predição de burnout',
-        'Análise de clima organizacional',
-        'Impacto financeiro do bem-estar',
-        'Comparação com benchmarks do setor'
+        'Métricas estratégicas de bem-estar'
       ],
       popular: false,
       color: 'purple'
