@@ -121,25 +121,25 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
           </div>
 
           {/* Premium Stats */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8">
+          <div className="bg-gradient-to-r from-white to-gray-50 rounded-3xl shadow-2xl p-8 border border-gray-100">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
               Seus Benefícios Premium
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-2">11</div>
+                <div className="text-4xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent mb-2">11</div>
                 <div className="text-sm text-gray-600">Pontos Exclusivos</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600 mb-2">24/7</div>
+                <div className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent mb-2">24/7</div>
                 <div className="text-sm text-gray-600">Suporte WhatsApp</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600 mb-2">∞</div>
+                <div className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-pink-600 bg-clip-text text-transparent mb-2">∞</div>
                 <div className="text-sm text-gray-600">Uso Ilimitado</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-orange-600 mb-2">🔜</div>
+                <div className="text-4xl font-bold mb-2">🔜</div>
                 <div className="text-sm text-gray-600">Novos Recursos</div>
               </div>
             </div>
