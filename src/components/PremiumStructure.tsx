@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Crown, Star, Lock, Zap, MessageCircle, Target, Brain, Shield, CheckCircle, Clock, ArrowRight, CreditCard, Smartphone, Bitcoin } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { AIRecommendationsPanel } from './AIRecommendationsPanel';
 
 interface PremiumStructureProps {
   onPageChange: (page: string) => void;
@@ -13,6 +14,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [showPayment, setShowPayment] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit' | 'crypto'>('pix');
+  const [showAIPanel, setShowAIPanel] = useState(false);
 
   // Se o usuário já é premium, mostrar dashboard premium
   if (user?.isPremium) {
@@ -90,19 +92,24 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
             <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200">
               <div className="flex items-center mb-6">
                 <div className="p-3 bg-gray-100 rounded-xl">
-                  <Star className="w-8 h-8 text-gray-600" />
+                  <Brain className="w-8 h-8 text-purple-600" />
                 </div>
                 <div className="ml-4">
-                  <h3 className="text-xl font-bold text-gray-900">Recursos Avançados</h3>
-                  <p className="text-gray-600 font-medium">Em Desenvolvimento</p>
+                  <h3 className="text-xl font-bold text-gray-900">Recomendações IA</h3>
+                  <p className="text-purple-600 font-medium">Demonstração Disponível</p>
                 </div>
               </div>
               <p className="text-gray-600 mb-4">
-                IA personalizada, biblioteca de sons premium, cromoterapia avançada e modo offline
+                Inteligência artificial que analisa seus padrões e sugere terapias personalizadas
               </p>
-              <div className="flex items-center text-gray-500 font-medium">
-                <Clock className="w-4 h-4 mr-2" />
-                <span>Em breve</span>
+              <div className="flex items-center text-purple-600 font-medium">
+                <button
+                  onClick={() => setShowAIPanel(true)}
+                  className="flex items-center space-x-2 bg-purple-100 hover:bg-purple-200 px-4 py-2 rounded-lg transition-colors"
+                >
+                  <Brain className="w-4 h-4" />
+                  <span>Ver Demonstração</span>
+                </button>
               </div>
             </div>
           </div>
@@ -132,6 +139,12 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
             </div>
           </div>
         </div>
+        
+        {/* AI Recommendations Panel */}
+        <AIRecommendationsPanel 
+          isVisible={showAIPanel} 
+          onClose={() => setShowAIPanel(false)} 
+        />
       </div>
     );
   }
