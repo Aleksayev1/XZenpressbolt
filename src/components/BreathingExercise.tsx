@@ -196,9 +196,7 @@ export const BreathingExercise: React.FC = () => {
             className="h-16 w-auto opacity-80"
           />
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-          {t('breathing.title')}
-        </h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">{t('breathing.title')}</h1>
         
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
           {/* Breathing Circle */}
@@ -313,12 +311,8 @@ export const BreathingExercise: React.FC = () => {
 
         {/* Chromotherapy Education Section */}
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-            {t('breathing.chromotherapy.title')}
-          </h2>
-          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
-            {t('breathing.chromotherapy.description')}
-          </p>
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('breathing.chromotherapy.title')}</h2>
+          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">{t('breathing.chromotherapy.description')}</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
@@ -363,9 +357,7 @@ export const BreathingExercise: React.FC = () => {
           
           {/* Benefits Section */}
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-              {t('breathing.benefits.title')}
-            </h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">{t('breathing.benefits.title')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -389,14 +381,11 @@ export const BreathingExercise: React.FC = () => {
 
         {/* Sound Controls */}
         <div className="bg-white rounded-3xl shadow-2xl p-8">
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Volume2 className="w-6 h-6 text-gray-600" />
-            <h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3>
-          </div>
+          <div className="flex items-center justify-center space-x-2 mb-6"><Volume2 className="w-6 h-6 text-gray-600" /><h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3></div>
           
           {/* Free Sounds Section */}
           <div className="mb-8">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">{t('breathing.sounds.free.title')}</h4>
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 {t('breathing.sounds.free.title')}</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               {freeSounds.map((sound) => (
                 <button
@@ -481,11 +470,9 @@ export const BreathingExercise: React.FC = () => {
           
           {/* Premium Sounds Teaser */}
           <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">{t('breathing.sounds.premium.title')}</h4>
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 {t('breathing.sounds.premium.title')}</h4>
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
-              <p className="text-gray-700 mb-4">
-                {t('breathing.sounds.premium.desc')}
-              </p>
+              <p className="text-gray-700 mb-4">{t('breathing.sounds.premium.desc')}</p>
               <div className="flex flex-wrap justify-center gap-2 mb-4">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
@@ -510,9 +497,7 @@ export const BreathingExercise: React.FC = () => {
 
         {/* Scientific Background */}
         <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-            🧬 {t('breathing.science.title')}
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">🧬 {t('breathing.science.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl p-6">
               <h3 className="font-bold text-gray-800 mb-3">📚 {t('breathing.science.evidence')}</h3>
