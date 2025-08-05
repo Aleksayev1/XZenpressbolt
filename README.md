@@ -69,3 +69,57 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 ---
 
 **Status**: ✅ Base sólida implementada - Login funcionando perfeitamente!
+
+## 💳 Integração de Pagamentos
+
+### PIX Real Implementado
+
+A plataforma agora suporta PIX real através de múltiplos provedores:
+
+#### Provedores Suportados:
+- **PagSeguro** - Integração completa com API
+- **Mercado Pago** - Integração completa com API  
+- **Mock Provider** - Para desenvolvimento e demonstração
+
+#### Configuração:
+
+1. **Copie o arquivo de exemplo:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Configure suas credenciais:**
+   ```env
+   # Para PagSeguro
+   VITE_PIX_PROVIDER=pagseguro
+   VITE_PAGSEGURO_TOKEN=seu_token_aqui
+   VITE_PAGSEGURO_EMAIL=seu_email_aqui
+   
+   # Para Mercado Pago
+   VITE_PIX_PROVIDER=mercadopago
+   VITE_MERCADOPAGO_ACCESS_TOKEN=seu_access_token_aqui
+   
+   # Para desenvolvimento (padrão)
+   VITE_PIX_PROVIDER=mock
+   ```
+
+#### Funcionalidades PIX:
+- ✅ Geração automática de QR Code
+- ✅ Código PIX copiável
+- ✅ Verificação automática de status
+- ✅ Timer de expiração
+- ✅ Notificações de pagamento
+- ✅ Múltiplos provedores
+- ✅ Fallback para modo demonstração
+
+#### Como Usar:
+
+1. **Desenvolvimento:** Use `VITE_PIX_PROVIDER=mock` para testes
+2. **Produção:** Configure com PagSeguro ou Mercado Pago
+3. **Webhooks:** Configure URLs de notificação nos provedores
+
+#### Próximos Passos:
+- [ ] Implementar webhooks para confirmação automática
+- [ ] Adicionar mais provedores (Asaas, Gerencianet, etc.)
+- [ ] Integrar com Supabase para persistência
+- [ ] Adicionar relatórios de pagamento

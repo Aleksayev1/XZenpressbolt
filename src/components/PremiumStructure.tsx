@@ -3,6 +3,7 @@ import { Crown, Star, Lock, Zap, MessageCircle, Target, Brain, Shield, CheckCirc
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AIRecommendationsPanel } from './AIRecommendationsPanel';
+import { PixPaymentComponent } from './PixPaymentComponent';
 
 interface PremiumStructureProps {
   onPageChange: (page: string) => void;
@@ -15,6 +16,11 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   const [showPayment, setShowPayment] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit' | 'crypto'>('pix');
   const [showAIPanel, setShowAIPanel] = useState(false);
+  const [pixPaymentData, setPixPaymentData] = useState<{
+    amount: number;
+    description: string;
+    orderId: string;
+  } | null>(null);
 
   // Se o usuário já é premium, mostrar dashboard premium
   if (user?.isPremium) {
@@ -310,6 +316,18 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
 
   const handlePlanSelect = (planId: string) => {
     setSelectedPlan(planId);
+    
+    // Preparar dados do pagamento PIX
+    const plan = pricingPlans.find(p => p.id === planId);
+    if (plan) {
+      const amount = parseFloat(plan.price.replace('R$ ', '').replace('.', '').replace(',', '.'));
+      setPixPaymentData({
+        amount,
+        description: `XZenPress Premium - ${plan.name}`,
+        orderId: `XZP-${Date.now()}-${planId.toUpperCase()}`
+      });
+    }
+    
     setShowPayment(true);
   };
 
@@ -319,8 +337,14 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     // Aqui você integraria com gateway de pagamento real
   };
 
-  const generatePixCode = () => {
-    return "00020126580014BR.GOV.BCB.PIX013636c4b8e8-1234-4567-8901-123456789abc5204000053039865802BR5925XZENPRESS WELLNESS LTDA6009SAO PAULO62070503***6304ABCD";
+  const handlePixPaymentSuccess = (paymentData: any) => {
+    alert('Pagamento PIX confirmado! Bem-vindo ao Premium!');
+    // Aqui você ativaria o premium do usuário
+    setShowPayment(false);
+  };
+
+  const handlePixPaymentError = (error: string) => {
+    console.error('Erro no pagamento PIX:', error);
   };
 
   if (showPayment) {
@@ -401,17 +425,17 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
             {paymentMethod === 'pix' && (
               <div className="bg-green-50 rounded-xl p-6 mb-6">
                 <h4 className="font-semibold text-green-800 mb-4">{t('premium.payment.pix.title')}</h4>
-                <div className="bg-white rounded-lg p-4 mb-4">
-                  <div className="text-center">
-                    <div className="w-48 h-48 bg-gray-200 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                      <span className="text-gray-500">QR Code PIX</span>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-2">{t('premium.payment.pix.scan')}</p>
-                    <div className="bg-gray-100 rounded p-2 text-xs font-mono break-all">
-                      {generatePixCode()}
-                    </div>
-                  </div>
-                </div>
+                {pixPaymentData && (
+                  <PixPaymentComponent
+                    amount={pixPaymentData.amount}
+                    description={pixPaymentData.description}
+                    orderId={pixPaymentData.orderId}
+                    customerEmail={user?.email}
+                    customerName={user?.name}
+                    onPaymentSuccess={handlePixPaymentSuccess}
+                    onPaymentError={handlePixPaymentError}
+                  />
+                )}
               </div>
             )}
 
