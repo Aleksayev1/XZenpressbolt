@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         id: '1',
         email,
         name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-        isPremium: false,
+        isPremium: true,
         createdAt: new Date().toISOString(),
       };
       setUser(mockUser);
