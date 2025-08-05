@@ -117,30 +117,6 @@ export const acupressurePoints: AcupressurePoint[] = [
     instructions: 'Aplicar pressão suave com movimentos circulares na região frontal por 2-3 minutos, focando no relaxamento.',
     duration: 180,
     pressure: 'muito leve'
-  },
-  {
-    id: 'cranio-cerebro-cerebelo',
-    name: 'Pontos Cérebro e Cerebelo',
-    nameEn: 'Brain and Cerebellum Points',
-    nameEs: 'Puntos Cerebro y Cerebelo',
-    nameFr: 'Points Cerveau et Cervelet',
-    description: 'Pontos específicos do cérebro e cerebelo para sono, tonturas, dores crônicas, fadiga mental e clareza. Técnica craniana avançada para otimização das funções cerebrais.',
-    descriptionEn: 'Specific brain and cerebellum points for sleep, dizziness, chronic pain, mental fatigue and clarity. Advanced cranial technique for brain function optimization.',
-    descriptionEs: 'Puntos específicos del cerebro y cerebelo para sueño, mareos, dolores crónicos, fatiga mental y claridad. Técnica craneal avanzada para optimización de funciones cerebrales.',
-    descriptionFr: 'Points spécifiques du cerveau et cervelet pour sommeil, vertiges, douleurs chroniques, fatigue mentale et clarté. Technique crânienne avancée pour optimisation des fonctions cérébrales.',
-    position: { x: 30, y: 20 },
-    image: '/Pontos Cerebro e cerebelo Sono, Tonturas, Depressão.jpg',
-    imageAlt: 'Pontos Cérebro e Cerebelo para sono, tonturas, dores crônicas, fadiga mental e clareza',
-    benefits: ['Combate fadiga mental', 'Melhora clareza mental', 'Aumenta capacidade de foco', 'Revitaliza energia cerebral'],
-    benefitsEn: ['Combats mental fatigue', 'Improves mental clarity', 'Increases focus capacity', 'Revitalizes brain energy'],
-    benefitsEs: ['Combate fatiga mental', 'Mejora claridad mental', 'Aumenta capacidad de enfoque', 'Revitaliza energía cerebral'],
-    benefitsFr: ['Combat fatigue mentale', 'Améliore clarté mentale', 'Augmente capacité concentration', 'Revitalise énergie cérébrale'],
-    isPremium: false,
-    category: 'cranio',
-    instructions: 'Pressione firmemente entre polegar e indicador por 1-2 minutos em cada mão, focando nos reflexos cranianos.',
-    duration: 180,
-    pressure: 'firme'
-  },
 
   // Pontos Premium - MTC
   {
