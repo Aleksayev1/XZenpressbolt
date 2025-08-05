@@ -239,7 +239,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 🏆 Objetiva Wellness Corporativo
               </h3>
               <p className="text-gray-700 mb-6 max-w-3xl mx-auto">
-                Empresa Promotora da Saúde Integrativa Mental online
+                Foco na Promoção da Saúde integrativa e Mental
               </p>
               <div className="inline-flex items-center space-x-2 bg-yellow-100 border border-yellow-300 rounded-full px-6 py-3">
                 <span className="text-yellow-700 font-semibold">📊 Análise Gratuita:</span>
