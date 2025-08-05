@@ -14,6 +14,7 @@ export const AcupressurePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
+  const [initialDuration, setInitialDuration] = useState(0);
   const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
   const [isChromotherapyEnabled, setIsChromotherapyEnabled] = useState(true);
@@ -108,9 +109,11 @@ export const AcupressurePage: React.FC = () => {
     return () => {
       if (colorIntervalRef.current) {
         clearInterval(colorIntervalRef.current);
+        colorIntervalRef.current = null;
       }
       if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
+        timerIntervalRef.current = null;
       }
       if (audioRef.current) {
         audioRef.current.pause();
@@ -120,6 +123,17 @@ export const AcupressurePage: React.FC = () => {
   }, []);
 
   const startIntegratedTherapy = (duration: number) => {
+    // Clear any existing intervals first
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    if (colorIntervalRef.current) {
+      clearInterval(colorIntervalRef.current);
+      colorIntervalRef.current = null;
+    }
+    
+    setInitialDuration(duration);
     setTimeRemaining(duration);
     setIsTimerActive(true);
     
@@ -140,7 +154,13 @@ export const AcupressurePage: React.FC = () => {
     }
     
     // Start timer countdown
+    let startTime = Date.now();
+    let expectedTime = startTime + 1000;
+    
     timerIntervalRef.current = setInterval(() => {
+      const now = Date.now();
+      const drift = now - expectedTime;
+      
       setTimeRemaining((prev) => {
         if (prev <= 1) {
           stopIntegratedTherapy();
@@ -148,6 +168,8 @@ export const AcupressurePage: React.FC = () => {
         }
         return prev - 1;
       });
+      
+      expectedTime += 1000;
     }, 1000);
   };
 
