@@ -116,7 +116,7 @@ export const AcupressurePage: React.FC = () => {
         audioRef.current.pause();
       }
       stopFallbackTone();
-    };
+    }
   }, []);
 
   const startIntegratedTherapy = (duration: number) => {
