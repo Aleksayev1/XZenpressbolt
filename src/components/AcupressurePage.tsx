@@ -284,50 +284,104 @@ export const AcupressurePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Body Diagram */}
+          {/* Visual Points Gallery */}
           <div className="bg-white rounded-3xl shadow-2xl p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-              Mapa de Pontos Terapêuticos
+              Pontos Terapêuticos Visuais
             </h2>
-            <div className="relative">
-              {/* Simplified body outline */}
-              <svg viewBox="0 0 300 400" className="w-full max-w-md mx-auto">
-                {/* Head */}
-                <ellipse cx="150" cy="60" rx="40" ry="50" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
-                {/* Body */}
-                <rect x="120" y="100" width="60" height="120" rx="30" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
-                {/* Arms */}
-                <ellipse cx="90" cy="140" rx="15" ry="40" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
-                <ellipse cx="210" cy="140" rx="15" ry="40" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
-                {/* Legs */}
-                <ellipse cx="135" cy="280" rx="15" ry="60" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
-                <ellipse cx="165" cy="280" rx="15" ry="60" fill="#f3f4f6" stroke="#d1d5db" strokeWidth="2"/>
-                
-                {/* Acupressure Points */}
-                {filteredPoints.map((point) => (
-                  <g key={point.id}>
-                    <circle
-                      cx={point.position.x * 3}
-                      cy={point.position.y * 4}
-                      r="8"
-                      fill={point.isPremium ? '#fbbf24' : currentColor}
-                      stroke="white"
-                      strokeWidth="2"
-                      className="cursor-pointer hover:r-10 transition-all duration-200"
-                      onClick={() => setSelectedPoint(point)}
-                    />
-                    {point.isPremium && (
-                      <Star 
-                        x={point.position.x * 3 - 4} 
-                        y={point.position.y * 4 - 4} 
-                        width="8" 
-                        height="8" 
-                        fill="white"
-                      />
-                    )}
-                  </g>
-                ))}
-              </svg>
+            
+            {/* Category Description */}
+            {selectedCategory !== 'all' && (
+              <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+                <h3 className="font-semibold text-gray-800 mb-2">
+                  {categories.find(c => c.id === selectedCategory)?.icon} {categories.find(c => c.id === selectedCategory)?.name}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {selectedCategory === 'mtc' && 'Medicina Tradicional Chinesa - Pontos baseados em meridianos energéticos para equilíbrio do Qi e harmonização do organismo.'}
+                  {selectedCategory === 'cranio' && 'Craniopuntura - Técnicas específicas de estimulação craniana para otimização das funções cerebrais e sistema nervoso.'}
+                  {selectedCategory === 'septicemia' && 'Pontos especializados para fortalecimento do sistema imunológico e combate a infecções sistêmicas.'}
+                  {selectedCategory === 'atm' && 'Técnicas específicas para disfunção da articulação temporomandibular, bruxismo e tensões faciais.'}
+                </p>
+              </div>
+            )}
+            
+            {/* Points Grid */}
+            <div className="space-y-4">
+              {filteredPoints.length > 0 ? (
+                filteredPoints.map((point) => (
+                  <div
+                    key={point.id}
+                    onClick={() => setSelectedPoint(point)}
+                    className={`cursor-pointer border-2 rounded-xl p-4 transition-all duration-200 hover:shadow-lg ${
+                      selectedPoint?.id === point.id
+                        ? 'border-blue-500 bg-blue-50 shadow-lg'
+                        : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <div className="flex items-start space-x-4">
+                      {/* Point Image */}
+                      {point.image ? (
+                        <div className="flex-shrink-0">
+                          <img
+                            src={point.image}
+                            alt={point.imageAlt || `Localização do ponto ${getLocalizedName(point)}`}
+                            className="w-20 h-20 object-cover rounded-lg shadow-md"
+                            onError={(e) => {
+                              // Replace with placeholder if image fails
+                              e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik00MCAyMEM0Ni42Mjc0IDIwIDUyIDI1LjM3MjYgNTIgMzJDNTIgMzguNjI3NCA0Ni42Mjc0IDQ0IDQwIDQ0QzMzLjM3MjYgNDQgMjggMzguNjI3NCAyOCAzMkMyOCAyNS4zNzI2IDMzLjM3MjYgMjAgNDAgMjBaIiBmaWxsPSIjOUI5QkEwIi8+CjxwYXRoIGQ9Ik00MCA0OEM0Ni42Mjc0IDQ4IDUyIDUzLjM3MjYgNTIgNjBDNTIgNjYuNjI3NCA0Ni42Mjc0IDcyIDQwIDcyQzMzLjM3MjYgNzIgMjggNjYuNjI3NCAyOCA2MEMyOCA1My4zNzI2IDMzLjM3MjYgNDggNDAgNDhaIiBmaWxsPSIjOUI5QkEwIi8+Cjwvc3ZnPgo=';
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                          <MapPin className="w-8 h-8 text-blue-600" />
+                        </div>
+                      )}
+                      
+                      {/* Point Info */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h3 className="font-semibold text-gray-800 truncate">
+                            {getLocalizedName(point)}
+                          </h3>
+                          {point.isPremium && (
+                            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-1 rounded-full text-xs">
+                              <Star className="w-3 h-3" />
+                              <span>Premium</span>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600 line-clamp-2 mb-2">
+                          {getLocalizedDescription(point)}
+                        </p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <div className="flex items-center space-x-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{formatTime(point.duration || 120)}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Zap className="w-3 h-3" />
+                            <span className="capitalize">{point.pressure || 'Moderada'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-12">
+                  <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    Nenhum ponto disponível
+                  </h3>
+                  <p className="text-gray-500">
+                    {selectedCategory === 'septicemia' || selectedCategory === 'atm' 
+                      ? 'Estes pontos estão disponíveis apenas para usuários Premium'
+                      : 'Selecione uma categoria para ver os pontos disponíveis'
+                    }
+                  </p>
+                </div>
+              )}
             </div>
             
             {/* Legend */}
