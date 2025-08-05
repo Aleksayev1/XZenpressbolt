@@ -121,7 +121,7 @@ ${formData.horarioPreferencia}
                   </div>
                   <div>
                     <div className="font-semibold text-gray-800 text-sm">Resposta Rápida</div>
-                    <div className="text-xs text-gray-600">Retorno em até 2 horas durante horário comercial</div>
+                    <div className="text-xs text-gray-600">Prioridade de resposta máxima</div>
                   </div>
                 </div>
 

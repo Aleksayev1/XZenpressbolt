@@ -97,7 +97,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
                 <Zap className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Resposta Rápida</h3>
-              <p className="text-gray-600 text-sm">Retorno em até 2 horas durante horário comercial</p>
+              <p className="text-gray-600 text-sm">Prioridade de resposta máxima</p>
             </div>
             <div className="text-center">
               <div className="p-3 bg-purple-100 rounded-xl w-fit mx-auto mb-4">
