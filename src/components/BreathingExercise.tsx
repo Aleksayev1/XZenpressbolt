@@ -23,6 +23,7 @@ export const BreathingExercise: React.FC = () => {
   };
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
+  const colorNames = ['Azul', 'Verde', 'Roxo'];
   
   const freeSounds = [
     {
