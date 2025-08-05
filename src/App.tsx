@@ -23,7 +23,7 @@ function App() {
       case 'breathing':
         return <BreathingExercise />;
       case 'acupressure':
-        return <AcupressurePage />;
+        return <AcupressurePage onPageChange={setCurrentPage} />;
       case 'premium':
         return <PremiumStructure onPageChange={setCurrentPage} />;
       case 'whatsapp-consultation':
