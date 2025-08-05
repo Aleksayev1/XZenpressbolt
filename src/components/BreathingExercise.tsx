@@ -197,7 +197,7 @@ export const BreathingExercise: React.FC = () => {
           />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-          {t('breathing.title')}
+          Técnica de Respiração 4-7-8
         </h1>
         
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
@@ -283,7 +283,7 @@ export const BreathingExercise: React.FC = () => {
                 className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Play className="w-6 h-6" />
-                <span>{t('breathing.start')}</span>
+                <span>Iniciar Sessão</span>
               </button>
             ) : (
               <button
@@ -391,12 +391,12 @@ export const BreathingExercise: React.FC = () => {
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <div className="flex items-center justify-center space-x-2 mb-6">
             <Volume2 className="w-6 h-6 text-gray-600" />
-            <h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3>
+            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
           </div>
           
           {/* Free Sounds Section */}
           <div className="mb-8">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 {t('breathing.sounds.free')}</h4>
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               {freeSounds.map((sound) => (
                 <button
@@ -481,17 +481,17 @@ export const BreathingExercise: React.FC = () => {
           
           {/* Premium Sounds Teaser */}
           <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 {t('breathing.sounds.premium')}</h4>
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Sons Premium</h4>
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
               <p className="text-gray-700 mb-4">
-                {t('breathing.sounds.premium.desc')}
+                Desbloqueie nossa biblioteca completa com mais de 50 sons relaxantes e integração com Spotify Premium
               </p>
               <div className="flex flex-wrap justify-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 {t('breathing.sounds.mantras')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">{t('breathing.sounds.more')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 Lareira</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 Música Clássica</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 Mantras</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">+ 46 mais</span>
               </div>
               <a
                 href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
@@ -499,10 +499,10 @@ export const BreathingExercise: React.FC = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors mr-3"
               >
-                <span>{t('breathing.sounds.premium.spotify')}</span>
+                <span>Spotify Premium</span>
               </a>
               <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all">
-                {t('breathing.sounds.premium.upgrade')}
+                Fazer Upgrade
               </button>
             </div>
           </div>
