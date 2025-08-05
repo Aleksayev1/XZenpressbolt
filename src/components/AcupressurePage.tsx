@@ -249,7 +249,7 @@ export const AcupressurePage: React.FC = () => {
 
   return (
     <div 
-      className="min-h-screen transition-all duration-1000 ease-in-out"
+      className="min-h-screen transition-all duration-1000 ease-in-out pt-16"
       style={{ 
         background: isColorTherapyActive || isTimerActive
           ? `linear-gradient(135deg, ${currentColor}30, ${currentColor}10, white)`

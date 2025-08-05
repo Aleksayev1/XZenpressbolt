@@ -147,7 +147,7 @@ export const BreathingExercise: React.FC = () => {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center transition-all duration-1000 ease-in-out"
+      className="min-h-screen flex items-center justify-center transition-all duration-1000 ease-in-out pt-16"
       style={{ 
         background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)` 
       }}

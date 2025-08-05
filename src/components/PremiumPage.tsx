@@ -7,7 +7,7 @@ interface PremiumPageProps {
 
 export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 pt-16">
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-amber-600 via-orange-500 to-yellow-500 text-white">
         <div className="absolute inset-0 bg-black/10"></div>
