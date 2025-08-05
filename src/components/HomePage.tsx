@@ -26,16 +26,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       icon: <Palette className="w-8 h-8 text-purple-500" />,
       title: 'Cromoterapia Ambiental',
       description: 'Aplicação de cores terapêuticas para otimização do ambiente de trabalho e redução de riscos psicossociais',
+      isPremium: true
     },
     {
       icon: <Music className="w-8 h-8 text-orange-500" />,
       title: 'Soundscaping Corporativo',
       description: 'Paisagens sonoras especializadas para mascaramento de ruído ocupacional e promoção de foco e concentração',
+      isPremium: true
     },
     {
       icon: <Star className="w-8 h-8 text-yellow-500" />,
       title: 'Consultoria Especializada',
       description: 'Acompanhamento profissional de Acupressão, Cranioterapia e MTC apenas para usuários Premium (via Whatsapp)',
+      isPremium: true
     },
   ];
 
@@ -102,8 +105,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 key={index}
                 className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200 group"
               >
-                <div className="flex items-center justify-center w-16 h-16 bg-gray-50 rounded-2xl mb-6 group-hover:bg-purple-50 transition-colors">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center justify-center w-16 h-16 bg-gray-50 rounded-2xl group-hover:bg-purple-50 transition-colors">
                   {feature.icon}
+                  </div>
+                  {feature.isPremium && (
+                    <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                      <Star className="w-3 h-3" />
+                      <span>Premium</span>
+                    </div>
+                  )}
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
                   {feature.title}
