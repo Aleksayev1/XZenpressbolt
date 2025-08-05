@@ -76,7 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Transforme sua vida com terapias Wellness
+              Transforme sua vida com terapias
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
