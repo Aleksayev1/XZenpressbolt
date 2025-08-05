@@ -79,34 +79,6 @@ ${formData.horarioPreferencia}
     window.open(whatsappUrl, '_blank');
   };
 
-  if (!user?.isPremium) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <div className="bg-white rounded-3xl shadow-2xl p-12">
-              <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <MessageCircle className="w-10 h-10 text-yellow-600" />
-              </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                Consulta Especializada Premium
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                Este serviço está disponível apenas para usuários Premium
-              </p>
-              <button
-                onClick={() => onPageChange('premium')}
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transform hover:scale-105 transition-all duration-200"
-              >
-                Fazer Upgrade Premium
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
