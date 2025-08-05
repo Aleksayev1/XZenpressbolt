@@ -64,7 +64,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEn: ['Deep energetic grounding', 'Yin and kidney energy strengthening', 'Fights chronic fatigue', 'Overall vitality improvement'],
     benefitsEs: ['Anclaje energético profundo', 'Fortalecimiento del yin y energía renal', 'Combate fatiga crónica', 'Mejora de la vitalidad general'],
     benefitsFr: ['Ancrage énergétique profond', 'Renforcement yin et énergie rénale', 'Combat fatigue chronique', 'Amélioration vitalité générale'],
-    isPremium: true,
+    isPremium: false,
     category: 'general',
     instructions: 'Massageie a sola do pé em movimentos circulares por 2 minutos, depois pressione firmemente o centro por 1 minuto. Use óleo essencial se disponível.',
     duration: 180,
