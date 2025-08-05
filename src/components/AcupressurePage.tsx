@@ -30,13 +30,13 @@ export const AcupressurePage: React.FC = () => {
       id: 'ocean',
       name: 'Sons do Mar',
       description: 'Ondas relaxantes do oceano',
-      src: '/sounds/ocean.mp3'
+      src: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
     },
     {
       id: 'rain',
       name: 'Chuva Suave',
       description: 'Som calmante de chuva',
-      src: '/sounds/rain.mp3'
+      src: 'https://www.soundjay.com/misc/sounds/bell-ringing-04.wav'
     }
   ];
 
@@ -85,13 +85,18 @@ export const AcupressurePage: React.FC = () => {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = soundVolume;
+      audioRef.current.crossOrigin = "anonymous";
     }
   }, [soundVolume]);
 
   // Cleanup intervals on unmount
   useEffect(() => {
     return () => {
-      if (colorIntervalRef.current) {
+        audioRef.current.play().catch(error => {
+          console.warn('Erro ao reproduzir áudio:', error);
+          // Fallback: usar Web Audio API para gerar tom
+          playFallbackTone();
+        });
         clearInterval(colorIntervalRef.current);
       }
       if (timerIntervalRef.current) {
@@ -155,8 +160,48 @@ export const AcupressurePage: React.FC = () => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
+    
+    // Stop fallback tone
+    stopFallbackTone();
   };
 
+  // Fallback audio using Web Audio API
+  const playFallbackTone = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Different frequencies for different sounds
+      const frequency = selectedSoundId === 'ocean' ? 220 : 440;
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(soundVolume * 0.1, audioContext.currentTime);
+      
+      oscillator.start();
+      
+      // Store reference to stop later
+      (window as any).currentTone = { oscillator, audioContext };
+    } catch (error) {
+      console.warn('Web Audio API não suportado:', error);
+    }
+  };
+  
+  const stopFallbackTone = () => {
+    if ((window as any).currentTone) {
+      try {
+        (window as any).currentTone.oscillator.stop();
+        (window as any).currentTone.audioContext.close();
+        (window as any).currentTone = null;
+      } catch (error) {
+        console.warn('Erro ao parar tom:', error);
+      }
+    }
+  };
   const startColorTherapy = () => {
     setIsColorTherapyActive(true);
     let colorIndex = 0;
@@ -198,9 +243,14 @@ export const AcupressurePage: React.FC = () => {
           src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
           loop
           preload="auto"
+          crossOrigin="anonymous"
           onError={(e) => {
-            console.warn('Audio file not found:', e.currentTarget.src);
-            setSelectedSoundId(null);
+            console.warn('Arquivo de áudio não encontrado, usando tom sintético');
+            if (isSoundPlaying) {
+              playFallbackTone();
+            }
+          onCanPlay={() => {
+            console.log('Áudio carregado com sucesso');
           }}
         />
       )}
