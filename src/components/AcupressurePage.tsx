@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Lock, Star, Info, Clock, Zap, Target, Crown } from 'lucide-react';
+import { MapPin, Lock, Star, Info, Clock, Zap, Target, Crown, Volume2, VolumeX, Palette, Play, Pause } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcupressurePoint } from '../types';
@@ -14,9 +14,31 @@ export const AcupressurePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
+  const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+  const [isChromotherapyEnabled, setIsChromotherapyEnabled] = useState(true);
+  const [soundVolume, setSoundVolume] = useState(0.5);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
   const colorNames = ['Azul Calmante', 'Verde Equilibrante', 'Magenta Energizante'];
+  
+  const freeSounds = [
+    {
+      id: 'ocean',
+      name: 'Sons do Mar',
+      description: 'Ondas relaxantes do oceano',
+      src: '/sounds/ocean.mp3'
+    },
+    {
+      id: 'rain',
+      name: 'Chuva Suave',
+      description: 'Som calmante de chuva',
+      src: '/sounds/rain.mp3'
+    }
+  ];
 
   const categories = [
     { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
@@ -59,20 +81,79 @@ export const AcupressurePage: React.FC = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const startPointTimer = (duration: number) => {
+  // Audio control effects
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = soundVolume;
+    }
+  }, [soundVolume]);
+
+  // Cleanup intervals on unmount
+  useEffect(() => {
+    return () => {
+      if (colorIntervalRef.current) {
+        clearInterval(colorIntervalRef.current);
+      }
+      if (timerIntervalRef.current) {
+        clearInterval(timerIntervalRef.current);
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  const startIntegratedTherapy = (duration: number) => {
     setTimeRemaining(duration);
     setIsTimerActive(true);
     
-    const timer = setInterval(() => {
+    // Start chromotherapy if enabled
+    if (isChromotherapyEnabled) {
+      setIsColorTherapyActive(true);
+      let colorIndex = 0;
+      colorIntervalRef.current = setInterval(() => {
+        setCurrentColor(colors[colorIndex]);
+        colorIndex = (colorIndex + 1) % colors.length;
+      }, Math.floor(duration * 1000 / colors.length)); // Distribute colors evenly over duration
+    }
+    
+    // Start sound if enabled and selected
+    if (isSoundEnabled && selectedSoundId && audioRef.current) {
+      audioRef.current.play().catch(console.error);
+    }
+    
+    // Start timer countdown
+    timerIntervalRef.current = setInterval(() => {
       setTimeRemaining((prev) => {
         if (prev <= 1) {
-          setIsTimerActive(false);
-          clearInterval(timer);
+          stopIntegratedTherapy();
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
+  };
+
+  const stopIntegratedTherapy = () => {
+    setIsTimerActive(false);
+    setIsColorTherapyActive(false);
+    setCurrentColor('#3B82F6');
+    
+    // Clear intervals
+    if (colorIntervalRef.current) {
+      clearInterval(colorIntervalRef.current);
+      colorIntervalRef.current = null;
+    }
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    
+    // Stop audio
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
   };
 
   const startColorTherapy = () => {
@@ -104,11 +185,25 @@ export const AcupressurePage: React.FC = () => {
     <div 
       className="min-h-screen transition-all duration-1000 ease-in-out"
       style={{ 
-        background: isColorTherapyActive 
+        background: isColorTherapyActive || isTimerActive
           ? `linear-gradient(135deg, ${currentColor}30, ${currentColor}10, white)`
           : 'linear-gradient(135deg, #f0f9ff, #e0e7ff, white)'
       }}
     >
+      {/* Audio Element */}
+      {selectedSoundId && (
+        <audio
+          ref={audioRef}
+          src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
+          loop
+          preload="auto"
+          onError={(e) => {
+            console.warn('Audio file not found:', e.currentTarget.src);
+            setSelectedSoundId(null);
+          }}
+        />
+      )}
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
@@ -157,6 +252,9 @@ export const AcupressurePage: React.FC = () => {
           {/* Color Therapy Controls */}
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-2xl mx-auto">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Cromoterapia</h3>
+            <p className="text-sm text-gray-600 mb-4 text-center">
+              A cromoterapia é automaticamente integrada ao timer dos pontos quando ativada
+            </p>
             <div className="flex flex-wrap justify-center gap-4 mb-4">
               {colors.map((color, index) => (
                 <div key={index} className="text-center">
@@ -172,14 +270,17 @@ export const AcupressurePage: React.FC = () => {
             <button
               onClick={startColorTherapy}
               disabled={isColorTherapyActive}
-              className={`px-6 py-3 rounded-full font-semibold transition-all ${
+              className={`px-6 py-3 rounded-full font-semibold transition-all disabled:opacity-50 ${
                 isColorTherapyActive
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transform hover:scale-105'
               }`}
             >
-              {isColorTherapyActive ? 'Cromoterapia Ativa...' : 'Iniciar Cromoterapia (1min)'}
+              {isColorTherapyActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
             </button>
+            <p className="text-xs text-gray-500 text-center mt-2">
+              Use este botão apenas para cromoterapia independente
+            </p>
           </div>
         </div>
 
@@ -313,25 +414,161 @@ export const AcupressurePage: React.FC = () => {
                 {/* Timer */}
                 {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) ? (
                   <div className="mb-6">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="text-lg font-semibold text-gray-800">Timer de Aplicação</h4>
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="text-lg font-semibold text-gray-800">Terapia Integrada</h4>
                       {isTimerActive && (
-                        <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-2xl font-bold" style={{ color: currentColor }}>
                           {formatTime(timeRemaining)}
                         </div>
                       )}
                     </div>
+                    
+                    {/* Therapy Controls */}
+                    <div className="bg-gray-50 rounded-xl p-4 mb-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        {/* Chromotherapy Control */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Palette className="w-5 h-5 text-purple-600" />
+                            <span className="text-sm font-medium text-gray-700">Cromoterapia</span>
+                          </div>
+                          <button
+                            onClick={() => setIsChromotherapyEnabled(!isChromotherapyEnabled)}
+                            className={`w-12 h-6 rounded-full transition-colors ${
+                              isChromotherapyEnabled ? 'bg-purple-500' : 'bg-gray-300'
+                            }`}
+                          >
+                            <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
+                              isChromotherapyEnabled ? 'translate-x-6' : 'translate-x-1'
+                            }`} />
+                          </button>
+                        </div>
+                        
+                        {/* Sound Control */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <Volume2 className="w-5 h-5 text-blue-600" />
+                            <span className="text-sm font-medium text-gray-700">Sons</span>
+                          </div>
+                          <button
+                            onClick={() => setIsSoundEnabled(!isSoundEnabled)}
+                            className={`w-12 h-6 rounded-full transition-colors ${
+                              isSoundEnabled ? 'bg-blue-500' : 'bg-gray-300'
+                            }`}
+                          >
+                            <div className={`w-5 h-5 bg-white rounded-full transition-transform ${
+                              isSoundEnabled ? 'translate-x-6' : 'translate-x-1'
+                            }`} />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Sound Selection */}
+                      {isSoundEnabled && (
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Selecionar Som:
+                          </label>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            {freeSounds.map((sound) => (
+                              <button
+                                key={sound.id}
+                                onClick={() => setSelectedSoundId(sound.id)}
+                                className={`p-3 rounded-lg border text-left transition-all ${
+                                  selectedSoundId === sound.id
+                                    ? 'border-blue-500 bg-blue-50'
+                                    : 'border-gray-200 hover:border-gray-300'
+                                }`}
+                              >
+                                <div className="font-medium text-sm">{sound.name}</div>
+                                <div className="text-xs text-gray-500">{sound.description}</div>
+                              </button>
+                            ))}
+                          </div>
+                          
+                          {/* Volume Control */}
+                          {selectedSoundId && (
+                            <div className="flex items-center space-x-3 mt-3">
+                              <VolumeX className="w-4 h-4 text-gray-500" />
+                              <input
+                                type="range"
+                                min="0"
+                                max="1"
+                                step="0.1"
+                                value={soundVolume}
+                                onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                                className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                              />
+                              <Volume2 className="w-4 h-4 text-gray-500" />
+                              <span className="text-xs text-gray-600 min-w-[3rem]">
+                                {Math.round(soundVolume * 100)}%
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      
+                      {/* Active Therapy Indicator */}
+                      {(isChromotherapyEnabled || (isSoundEnabled && selectedSoundId)) && (
+                        <div className="text-center">
+                          <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 shadow-sm">
+                            {isChromotherapyEnabled && (
+                              <div className="flex items-center space-x-1">
+                                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: currentColor }}></div>
+                                <span className="text-xs text-gray-600">Cromoterapia</span>
+                              </div>
+                            )}
+                            {isChromotherapyEnabled && isSoundEnabled && selectedSoundId && (
+                              <div className="w-px h-4 bg-gray-300"></div>
+                            )}
+                            {isSoundEnabled && selectedSoundId && (
+                              <div className="flex items-center space-x-1">
+                                <Volume2 className="w-3 h-3 text-blue-500" />
+                                <span className="text-xs text-gray-600">
+                                  {freeSounds.find(s => s.id === selectedSoundId)?.name}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
                     <button
-                      onClick={() => startPointTimer(selectedPoint.duration || 120)}
+                      onClick={() => isTimerActive ? stopIntegratedTherapy() : startIntegratedTherapy(selectedPoint.duration || 120)}
                       disabled={isTimerActive}
-                      className={`w-full py-3 rounded-lg font-semibold transition-all ${
+                      className={`w-full py-4 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 ${
                         isTimerActive
-                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700'
+                          ? 'bg-red-500 text-white hover:bg-red-600'
+                          : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
                       }`}
                     >
-                      {isTimerActive ? 'Timer Ativo...' : 'Iniciar Timer'}
+                      {isTimerActive ? (
+                        <>
+                          <Pause className="w-5 h-5" />
+                          <span>Parar Terapia</span>
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-5 h-5" />
+                          <span>Iniciar Terapia Integrada</span>
+                        </>
+                      )}
                     </button>
+                    
+                    {/* Therapy Description */}
+                    <div className="mt-3 text-center">
+                      <p className="text-sm text-gray-600">
+                        {isChromotherapyEnabled && isSoundEnabled && selectedSoundId
+                          ? 'Timer + Cromoterapia + Sons harmonizantes'
+                          : isChromotherapyEnabled && (!isSoundEnabled || !selectedSoundId)
+                          ? 'Timer + Cromoterapia'
+                          : !isChromotherapyEnabled && isSoundEnabled && selectedSoundId
+                          ? 'Timer + Sons harmonizantes'
+                          : 'Timer simples'
+                        }
+                      </p>
+                    </div>
                   </div>
                 ) : null}
 
