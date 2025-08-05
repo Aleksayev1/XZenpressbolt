@@ -67,11 +67,11 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
-                {t('home.hero.title')}
+                Bem-estar Holístico
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              {t('home.hero.subtitle')}
+              Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes para transformar sua qualidade de vida
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
