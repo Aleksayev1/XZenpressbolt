@@ -18,6 +18,7 @@ export const AcupressurePage: React.FC = () => {
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
   const [isChromotherapyEnabled, setIsChromotherapyEnabled] = useState(true);
   const [soundVolume, setSoundVolume] = useState(0.5);
+  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -30,13 +31,13 @@ export const AcupressurePage: React.FC = () => {
       id: 'ocean',
       name: 'Sons do Mar',
       description: 'Ondas relaxantes do oceano',
-      src: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+      src: '/sounds/ocean.mp3'
     },
     {
       id: 'rain',
       name: 'Chuva Suave',
       description: 'Som calmante de chuva',
-      src: 'https://www.soundjay.com/misc/sounds/bell-ringing-04.wav'
+      src: '/sounds/rain.mp3'
     }
   ];
 
@@ -85,18 +86,27 @@ export const AcupressurePage: React.FC = () => {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = soundVolume;
-      audioRef.current.crossOrigin = "anonymous";
     }
   }, [soundVolume]);
+
+  useEffect(() => {
+    if (audioRef.current && selectedSoundId) {
+      if (isSoundPlaying) {
+        audioRef.current.play().catch(error => {
+          console.warn('Erro ao reproduzir áudio:', error);
+          playFallbackTone();
+        });
+      } else {
+        audioRef.current.pause();
+        stopFallbackTone();
+      }
+    }
+  }, [isSoundPlaying, selectedSoundId]);
 
   // Cleanup intervals on unmount
   useEffect(() => {
     return () => {
-        audioRef.current.play().catch(error => {
-          console.warn('Erro ao reproduzir áudio:', error);
-          // Fallback: usar Web Audio API para gerar tom
-          playFallbackTone();
-        });
+      if (colorIntervalRef.current) {
         clearInterval(colorIntervalRef.current);
       }
       if (timerIntervalRef.current) {
@@ -105,6 +115,7 @@ export const AcupressurePage: React.FC = () => {
       if (audioRef.current) {
         audioRef.current.pause();
       }
+      stopFallbackTone();
     };
   }, []);
 
@@ -116,16 +127,16 @@ export const AcupressurePage: React.FC = () => {
     if (isChromotherapyEnabled) {
       setIsColorTherapyActive(true);
       let colorIndex = 0;
-      setCurrentColor(colors[colorIndex]); // Set initial color immediately
+      setCurrentColor(colors[colorIndex]);
       colorIntervalRef.current = setInterval(() => {
         colorIndex = (colorIndex + 1) % colors.length;
         setCurrentColor(colors[colorIndex]);
-      }, 4000); // Change color every 4 seconds
+      }, 4000);
     }
     
     // Start sound if enabled and selected
-    if (isSoundEnabled && selectedSoundId && audioRef.current) {
-      audioRef.current.play().catch(console.error);
+    if (isSoundEnabled && selectedSoundId) {
+      setIsSoundPlaying(true);
     }
     
     // Start timer countdown
@@ -143,6 +154,7 @@ export const AcupressurePage: React.FC = () => {
   const stopIntegratedTherapy = () => {
     setIsTimerActive(false);
     setIsColorTherapyActive(false);
+    setIsSoundPlaying(false);
     setCurrentColor('#3B82F6');
     
     // Clear intervals
@@ -175,7 +187,6 @@ export const AcupressurePage: React.FC = () => {
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
       
-      // Different frequencies for different sounds
       const frequency = selectedSoundId === 'ocean' ? 220 : 440;
       oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
       oscillator.type = 'sine';
@@ -184,7 +195,6 @@ export const AcupressurePage: React.FC = () => {
       
       oscillator.start();
       
-      // Store reference to stop later
       (window as any).currentTone = { oscillator, audioContext };
     } catch (error) {
       console.warn('Web Audio API não suportado:', error);
@@ -202,6 +212,7 @@ export const AcupressurePage: React.FC = () => {
       }
     }
   };
+
   const startColorTherapy = () => {
     setIsColorTherapyActive(true);
     let colorIndex = 0;
@@ -214,7 +225,16 @@ export const AcupressurePage: React.FC = () => {
       clearInterval(interval);
       setIsColorTherapyActive(false);
       setCurrentColor('#3B82F6');
-    }, 60000); // 1 minute
+    }, 60000);
+  };
+
+  const handleSoundSelect = (soundId: string) => {
+    if (selectedSoundId === soundId) {
+      setIsSoundPlaying(!isSoundPlaying);
+    } else {
+      setSelectedSoundId(soundId);
+      setIsSoundPlaying(true);
+    }
   };
 
   const filteredPoints = acupressurePoints.filter(point => {
@@ -243,12 +263,12 @@ export const AcupressurePage: React.FC = () => {
           src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
           loop
           preload="auto"
-          crossOrigin="anonymous"
           onError={(e) => {
             console.warn('Arquivo de áudio não encontrado, usando tom sintético');
             if (isSoundPlaying) {
               playFallbackTone();
             }
+          }}
           onCanPlay={() => {
             console.log('Áudio carregado com sucesso');
           }}
@@ -349,7 +369,7 @@ export const AcupressurePage: React.FC = () => {
                   {categories.find(c => c.id === selectedCategory)?.icon} {categories.find(c => c.id === selectedCategory)?.name}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  {selectedCategory === 'mtc' && 'Medicina Tradicional Chinesa - Pontos baseados em meridianos energéticos para equilíbrio do Qi e harmonização do organismo.'}
+                  {selectedCategory === 'general' && 'Medicina Tradicional Chinesa - Pontos baseados em meridianos energéticos para equilíbrio do Qi e harmonização do organismo.'}
                   {selectedCategory === 'cranio' && 'Craniopuntura - Técnicas específicas de estimulação craniana para otimização das funções cerebrais e sistema nervoso.'}
                   {selectedCategory === 'septicemia' && 'Pontos especializados para fortalecimento do sistema imunológico e combate a infecções sistêmicas.'}
                   {selectedCategory === 'atm' && 'Técnicas específicas para disfunção da articulação temporomandibular, bruxismo e tensões faciais.'}
@@ -477,7 +497,6 @@ export const AcupressurePage: React.FC = () => {
                       alt={selectedPoint.imageAlt || `Localização do ponto ${getLocalizedName(selectedPoint)}`}
                       className="w-full max-w-md mx-auto rounded-xl shadow-lg"
                       onError={(e) => {
-                        // Hide image if it fails to load
                         e.currentTarget.style.display = 'none';
                       }}
                     />
@@ -596,6 +615,7 @@ export const AcupressurePage: React.FC = () => {
                         </div>
                       )}
                     </div>
+
                     {/* Therapy Controls */}
                     <div className="bg-gray-50 rounded-xl p-4 mb-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -646,7 +666,7 @@ export const AcupressurePage: React.FC = () => {
                             {freeSounds.map((sound) => (
                               <button
                                 key={sound.id}
-                                onClick={() => setSelectedSoundId(sound.id)}
+                                onClick={() => handleSoundSelect(sound.id)}
                                 className={`p-3 rounded-lg border text-left transition-all ${
                                   selectedSoundId === sound.id
                                     ? 'border-blue-500 bg-blue-50'
@@ -655,6 +675,9 @@ export const AcupressurePage: React.FC = () => {
                               >
                                 <div className="font-medium text-sm">{sound.name}</div>
                                 <div className="text-xs text-gray-500">{sound.description}</div>
+                                {selectedSoundId === sound.id && isSoundPlaying && (
+                                  <div className="text-xs text-blue-600 mt-1">🔊 Reproduzindo...</div>
+                                )}
                               </button>
                             ))}
                           </div>
@@ -907,7 +930,7 @@ export const AcupressurePage: React.FC = () => {
             <div className="bg-white rounded-xl p-6">
               <h3 className="font-semibold text-gray-800 mb-3">🌅 Rotina Matinal</h3>
               <p className="text-gray-600 text-sm">
-                Comece o dia aplicando o ponto Baihui (GV20) por 2 minutos para aumentar energia e clareza mental.
+                Comece o dia aplicando o ponto Baihui (VG20) por 2 minutos para aumentar energia e clareza mental.
               </p>
             </div>
             <div className="bg-white rounded-xl p-6">
