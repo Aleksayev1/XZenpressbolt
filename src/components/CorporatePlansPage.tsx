@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, Users, BarChart3, Shield, CheckCircle, Star, Crown, TrendingUp, FileText, Phone, Mail, ArrowRight, Target, Zap, Award, Globe } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { submitCorporateLead, CorporateLeadData } from '../lib/supabase';
 
 interface CorporatePlansPageProps {
   onPageChange: (page: string) => void;
@@ -11,6 +12,20 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
   const [selectedPlanType, setSelectedPlanType] = useState<'corporate' | 'analytics'>('corporate');
   const [showContactForm, setShowContactForm] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [formData, setFormData] = useState({
+    name: '',
+    position: '',
+    company: '',
+    cnpj: '',
+    email: '',
+    phone: '',
+    employees_count: '',
+    sector: '',
+    specific_needs: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const corporatePlans = [
     {
@@ -183,6 +198,58 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
   const handlePlanSelect = (planId: string) => {
     setSelectedPlan(planId);
     setShowContactForm(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const leadData: CorporateLeadData = {
+        ...formData,
+        plan_type: selectedPlanType,
+        selected_plan: selectedPlan
+      };
+
+      await submitCorporateLead(leadData);
+      setSubmitStatus('success');
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        setShowContactForm(false);
+        setFormData({
+          name: '',
+          position: '',
+          company: '',
+          cnpj: '',
+          email: '',
+          phone: '',
+          employees_count: '',
+          sector: '',
+          specific_needs: ''
+        });
+        setSubmitStatus('idle');
+      }, 3000);
+
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Erro ao enviar formulário. Tente novamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const currentPlans = selectedPlanType === 'corporate' ? corporatePlans : analyticsPlans;
@@ -210,6 +277,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Seu nome completo"
                     required
@@ -221,6 +291,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </label>
                   <input
                     type="text"
+                    name="position"
+                    value={formData.position}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Ex: Gerente de RH"
                     required
@@ -235,6 +308,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </label>
                   <input
                     type="text"
+                    name="company"
+                    value={formData.company}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Nome da empresa"
                     required
@@ -246,6 +322,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </label>
                   <input
                     type="text"
+                    name="cnpj"
+                    value={formData.cnpj}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="00.000.000/0000-00"
                     required
@@ -260,6 +339,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="email@empresa.com"
                     required
@@ -271,6 +353,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </label>
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="(11) 99999-9999"
                     required
@@ -283,7 +368,13 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Número de Funcionários *
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <select 
+                    name="employees_count"
+                    value={formData.employees_count}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  >
                     <option value="">Selecione</option>
                     <option value="1-50">1-50 funcionários</option>
                     <option value="51-200">51-200 funcionários</option>
@@ -295,7 +386,12 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Setor da Empresa
                   </label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <select 
+                    name="sector"
+                    value={formData.sector}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
                     <option value="">Selecione</option>
                     <option value="tecnologia">Tecnologia</option>
                     <option value="financeiro">Financeiro</option>
@@ -313,11 +409,37 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   Necessidades Específicas
                 </label>
                 <textarea
+                  name="specific_needs"
+                  value={formData.specific_needs}
+                  onChange={handleInputChange}
                   rows={4}
                   className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                   placeholder="Descreva suas necessidades específicas, desafios atuais com bem-estar corporativo, integrações necessárias, etc."
                 />
               </div>
+
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="w-5 h-5 text-green-600" />
+                    <span className="text-green-800 font-medium">
+                      Proposta enviada com sucesso! Nossa equipe entrará em contato em até 24h.
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {submitStatus === 'error' && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-red-600">⚠️</span>
+                    <span className="text-red-800 font-medium">
+                      {errorMessage}
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <div className="bg-blue-50 rounded-xl p-6">
                 <h3 className="font-semibold text-blue-800 mb-4">O que acontece depois?</h3>
@@ -345,16 +467,27 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                 <button
                   type="button"
                   onClick={() => setShowContactForm(false)}
+                  disabled={isSubmitting}
                   className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Voltar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all font-semibold flex items-center justify-center space-x-2"
+                  disabled={isSubmitting}
+                  className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all font-semibold flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Solicitar Proposta</span>
-                  <ArrowRight className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Enviando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Solicitar Proposta</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
               </div>
             </form>
