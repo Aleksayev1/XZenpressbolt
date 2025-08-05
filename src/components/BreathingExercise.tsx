@@ -13,6 +13,7 @@ export const BreathingExercise: React.FC = () => {
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
   const [soundVolume, setSoundVolume] = useState(0.5);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const phases = {
@@ -53,17 +54,29 @@ export const BreathingExercise: React.FC = () => {
           }
           return prev - 1;
         });
+      }, 1000);
+      
+      // Separate interval for total time
+      totalTimeIntervalRef.current = setInterval(() => {
         setTotalTime((prev) => prev + 1);
       }, 1000);
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      if (totalTimeIntervalRef.current) {
+        clearInterval(totalTimeIntervalRef.current);
+        totalTimeIntervalRef.current = null;
       }
     }
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+      }
+      if (totalTimeIntervalRef.current) {
+        clearInterval(totalTimeIntervalRef.current);
       }
     };
   }, [isActive, phase]);
@@ -95,6 +108,14 @@ export const BreathingExercise: React.FC = () => {
 
   const resetExercise = () => {
     setIsActive(false);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    if (totalTimeIntervalRef.current) {
+      clearInterval(totalTimeIntervalRef.current);
+      totalTimeIntervalRef.current = null;
+    }
     setPhase('inhale');
     setTimeLeft(4);
     setTotalTime(0);
