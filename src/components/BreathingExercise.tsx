@@ -14,7 +14,9 @@ export const BreathingExercise: React.FC = () => {
   const [soundVolume, setSoundVolume] = useState(0.5);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const manualColorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
 
   const phases = {
     inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.inhale') },
@@ -78,6 +80,9 @@ export const BreathingExercise: React.FC = () => {
       }
       if (totalTimeIntervalRef.current) {
         clearInterval(totalTimeIntervalRef.current);
+      }
+      if (manualColorIntervalRef.current) {
+        clearInterval(manualColorIntervalRef.current);
       }
     };
   }, [isActive, phase]);
@@ -143,6 +148,28 @@ export const BreathingExercise: React.FC = () => {
   const stopAllSounds = () => {
     setIsSoundPlaying(false);
     setSelectedSoundId(null);
+  };
+
+  const startColorTherapy = () => {
+    if (isColorTherapyActive) return;
+    
+    setIsColorTherapyActive(true);
+    let colorIndex = 0;
+    
+    // Change color every 20 seconds (60 seconds total / 3 colors)
+    manualColorIntervalRef.current = setInterval(() => {
+      colorIndex = (colorIndex + 1) % colors.length;
+      setCurrentColor(colors[colorIndex]);
+    }, 20000);
+    
+    // Stop after 1 minute
+    setTimeout(() => {
+      if (manualColorIntervalRef.current) {
+        clearInterval(manualColorIntervalRef.current);
+        manualColorIntervalRef.current = null;
+      }
+      setIsColorTherapyActive(false);
+    }, 60000);
   };
 
   const formatTime = (seconds: number) => {
