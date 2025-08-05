@@ -735,7 +735,13 @@ export const AcupressurePage: React.FC = () => {
                           <div className="inline-flex items-center space-x-2 bg-white rounded-full px-4 py-2 shadow-sm">
                             {isChromotherapyEnabled && (
                               <div className="flex items-center space-x-1">
-                                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: currentColor }}></div>
+                                <div 
+                                  className="w-3 h-3 rounded-full shadow-md" 
+                                  style={{ 
+                                    backgroundColor: currentColor,
+                                    boxShadow: isTimerActive ? `0 0 8px ${currentColor}60` : 'none'
+                                  }}
+                                ></div>
                                 <span className="text-xs text-gray-600">Cromoterapia</span>
                               </div>
                             )}

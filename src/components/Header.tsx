@@ -91,6 +91,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     <button
                       key={lang.code}
                       onClick={() => {
+                        setLanguage(lang);
                         setIsLanguageOpen(false);
                       }}
                       className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -156,11 +157,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     onPageChange(item.id);
                     setIsMenuOpen(false);
                   }}
-                  className={`flex items-center space-x-3 w-full px-4 py-2 text-sm hover:bg-gray-100 ${
-                    currentLanguage.code === lang.code 
-                      ? 'text-blue-600 bg-blue-50 font-medium' 
-                      : 'text-gray-700'
-                  }`}
+                  className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left ${
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
