@@ -325,15 +325,15 @@ export const AcupressurePage: React.FC = () => {
                           <img
                             src={point.image}
                             alt={point.imageAlt || `Localização do ponto ${getLocalizedName(point)}`}
-                            className="w-20 h-20 object-cover rounded-lg shadow-md"
+                            className="w-24 h-24 object-cover rounded-lg shadow-md border border-gray-200"
                             onError={(e) => {
-                              // Replace with placeholder if image fails
-                              e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik00MCAyMEM0Ni42Mjc0IDIwIDUyIDI1LjM3MjYgNTIgMzJDNTIgMzguNjI3NCA0Ni42Mjc0IDQ0IDQwIDQ0QzMzLjM3MjYgNDQgMjggMzguNjI3NCAyOCAzMkMyOCAyNS4zNzI2IDMzLjM3MjYgMjAgNDAgMjBaIiBmaWxsPSIjOUI5QkEwIi8+CjxwYXRoIGQ9Ik00MCA0OEM0Ni42Mjc0IDQ4IDUyIDUzLjM3MjYgNTIgNjBDNTIgNjYuNjI3NCA0Ni42Mjc0IDcyIDQwIDcyQzMzLjM3MjYgNzIgMjggNjYuNjI3NCAyOCA2MEMyOCA1My4zNzI2IDMzLjM3MjYgNDggNDAgNDhaIiBmaWxsPSIjOUI5QkEwIi8+Cjwvc3ZnPgo=';
+                              console.log('Erro ao carregar imagem:', point.image);
+                              e.currentTarget.style.display = 'none';
                             }}
                           />
                         </div>
                       ) : (
-                        <div className="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
+                        <div className="flex-shrink-0 w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center border border-gray-200">
                           <MapPin className="w-8 h-8 text-blue-600" />
                         </div>
                       )}
