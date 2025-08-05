@@ -196,6 +196,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     {user.isPremium && (
                       <Crown className="w-4 h-4 text-yellow-500" />
                     )}
+                    {user.isAdmin && (
+                      <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full ml-2">ADMIN</span>
+                    )}
                   </div>
                   <button
                     onClick={() => {

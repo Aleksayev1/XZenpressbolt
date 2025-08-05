@@ -889,7 +889,7 @@ export const AcupressurePage: React.FC = () => {
         </div>
 
         {/* Premium CTA */}
-        {!user?.isPremium && (
+        {!(user?.isPremium || user?.isAdmin) && (
           <div className="mt-12 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl p-8 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">🔒 Conteúdo Premium Bloqueado</h2>
             <p className="text-xl mb-6 opacity-90">
