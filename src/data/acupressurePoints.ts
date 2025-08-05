@@ -118,7 +118,6 @@ export const acupressurePoints: AcupressurePoint[] = [
     duration: 180,
     pressure: 'muito leve'
   },
-  },
 
   // Pontos Premium - MTC
   {
