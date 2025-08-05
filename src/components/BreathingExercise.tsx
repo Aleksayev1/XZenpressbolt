@@ -300,7 +300,7 @@ export const BreathingExercise: React.FC = () => {
               className="flex items-center space-x-2 bg-gray-500 text-white px-6 py-4 rounded-full text-lg font-semibold hover:bg-gray-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
             >
               <RotateCcw className="w-5 h-5" />
-              <span>Reset</span>
+              <span>{t('breathing.reset')}</span>
             </button>
           </div>
 
