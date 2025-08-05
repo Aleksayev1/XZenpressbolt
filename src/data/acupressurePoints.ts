@@ -190,6 +190,31 @@ export const acupressurePoints: AcupressurePoint[] = [
     pressure: 'moderada'
   },
 
+  // Ponto R1 - Yongquan (Sola do Pé)
+  {
+    id: 'yongquan-r1-kd1',
+    name: 'Yongquan (R1/KD1) - Fonte Borbulhante',
+    nameEn: 'Yongquan (R1/KD1) - Bubbling Spring',
+    nameEs: 'Yongquan (R1/KD1) - Fuente Burbujeante', 
+    nameFr: 'Yongquan (R1/KD1) - Source Bouillonnante',
+    description: 'Ponto dos rins na sola do pé. Acalma a mente, trata vertigem, tontura e agitação. Ponto fundamental para ancoragem energética.',
+    descriptionEn: 'Kidney point on sole of foot. Calms mind, treats vertigo, dizziness and agitation. Fundamental point for energetic grounding.',
+    descriptionEs: 'Punto de riñones en planta del pie. Calma mente, trata vértigo, mareos y agitación. Punto fundamental para anclaje energético.',
+    descriptionFr: 'Point des reins sur plante du pied. Calme esprit, traite vertiges, étourdissements et agitation. Point fondamental pour ancrage énergétique.',
+    position: { x: 50, y: 90 },
+    image: '/R1 Acalma a mente, Vertigem, Tontura Agitação.jpg',
+    imageAlt: 'Localização do ponto Yongquan R1 na sola do pé',
+    benefits: ['Acalma a mente agitada', 'Trata vertigem e tontura', 'Reduz agitação e ansiedade', 'Promove ancoragem energética'],
+    benefitsEn: ['Calms agitated mind', 'Treats vertigo and dizziness', 'Reduces agitation and anxiety', 'Promotes energetic grounding'],
+    benefitsEs: ['Calma mente agitada', 'Trata vértigo y mareos', 'Reduce agitación y ansiedad', 'Promueve anclaje energético'],
+    benefitsFr: ['Calme esprit agité', 'Traite vertiges et étourdissements', 'Réduit agitation et anxiété', 'Favorise ancrage énergétique'],
+    isPremium: false,
+    category: 'general',
+    instructions: 'Localizar na sola do pé, na depressão que se forma quando você dobra os dedos. Pressionar firmemente por 2-3 minutos.',
+    duration: 180,
+    pressure: 'moderada'
+  },
+
   // Pontos Premium - Septicemia
   {
     id: 'septicemia-quchi-li11',

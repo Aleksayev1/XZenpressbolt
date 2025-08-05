@@ -266,18 +266,21 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   };
 
   const filteredPoints = acupressurePoints.filter(point => {
-    const categoryMatch = selectedCategory === 'all' || point.category === selectedCategory;
+    const categoryMatch = selectedCategory === 'all' || 
+                         point.category === selectedCategory ||
+                         (selectedCategory === 'mtc-premium' && point.category === 'general' && point.isPremium);
     const accessMatch = !point.isPremium || (user && user.isPremium);
     
     // Debug log para verificar acesso
-    if (point.isPremium && user) {
-      console.log(`🔍 Verificando acesso ao ponto ${point.name}:`, {
-        pointName: point.name,
-        isPremium: point.isPremium,
-        userPremium: user.isPremium,
-        hasAccess: accessMatch
-      });
-    }
+    console.log(`🔍 Ponto ${point.name}:`, {
+      category: point.category,
+      selectedCategory,
+      categoryMatch,
+      isPremium: point.isPremium,
+      userPremium: user?.isPremium,
+      accessMatch,
+      willShow: categoryMatch && accessMatch
+    });
     
     return categoryMatch && accessMatch;
   });
