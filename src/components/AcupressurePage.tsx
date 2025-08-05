@@ -479,7 +479,7 @@ export const AcupressurePage: React.FC = () => {
                   </div>
                 )}
 
-                {/* Timer */}
+                {/* Timer - Only show for accessible points */}
                 {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) && (
                   <div className="mb-6">
                     <div className="flex items-center justify-between mb-4">
@@ -643,7 +643,9 @@ export const AcupressurePage: React.FC = () => {
                       </p>
                     </div>
                   </div>
+                )}
 
+                {/* Premium Lock Message */}
                 {selectedPoint.isPremium && !user?.isPremium && (
                   <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
                     <div className="flex items-center space-x-2 mb-2">
