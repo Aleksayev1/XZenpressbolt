@@ -20,7 +20,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Reduce estrés y ansiedad diaria', 'Alivia tensión mental', 'Promueve relajación profunda', 'Calma la mente agitada'],
     benefitsFr: ['Réduit stress et anxiété quotidiens', 'Soulage tension mentale', 'Favorise relaxation profonde', 'Calme esprit agité'],
     isPremium: false,
-    category: 'mtc',
+    category: 'general',
     instructions: 'Pressione suavemente com o dedo médio por 1-2 minutos, respirando profundamente.',
     duration: 120,
     pressure: 'leve'
