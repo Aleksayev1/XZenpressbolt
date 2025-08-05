@@ -6,6 +6,7 @@ import { BreathingExercise } from './components/BreathingExercise';
 import { AcupressurePage } from './components/AcupressurePage';
 import { PremiumPage } from './components/PremiumPage';
 import { WhatsAppConsultationPage } from './components/WhatsAppConsultationPage';
+import { PremiumStructure } from './components/PremiumStructure';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
@@ -23,7 +24,7 @@ function App() {
       case 'acupressure':
         return <AcupressurePage />;
       case 'premium':
-        return <PremiumPage onPageChange={setCurrentPage} />;
+        return <PremiumStructure onPageChange={setCurrentPage} />;
       case 'whatsapp-consultation':
         return <WhatsAppConsultationPage onPageChange={setCurrentPage} />;
       default:
