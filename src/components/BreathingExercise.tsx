@@ -27,17 +27,17 @@ export const BreathingExercise: React.FC = () => {
   const freeSounds = [
     {
       id: 'ocean',
-      name: 'Sons do Mar',
+      name: t('breathing.sounds.ocean'),
       icon: <Waves className="w-5 h-5" />,
       src: '/sounds/ocean.mp3',
-      description: 'Ondas relaxantes do oceano'
+      description: t('breathing.sounds.ocean.desc')
     },
     {
       id: 'rain',
-      name: 'Chuva Suave',
+      name: t('breathing.sounds.rain'),
       icon: <CloudRain className="w-5 h-5" />,
       src: '/sounds/rain.mp3',
-      description: 'Som calmante de chuva'
+      description: t('breathing.sounds.rain.desc')
     }
   ];
 
@@ -197,7 +197,7 @@ export const BreathingExercise: React.FC = () => {
           />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-          Técnica de Respiração 4-7-8
+          {t('breathing.title')}
         </h1>
         
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
@@ -283,7 +283,7 @@ export const BreathingExercise: React.FC = () => {
                 className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Play className="w-6 h-6" />
-                <span>Iniciar Sessão</span>
+                <span>{t('breathing.start')}</span>
               </button>
             ) : (
               <button
@@ -291,7 +291,7 @@ export const BreathingExercise: React.FC = () => {
                 className="flex items-center space-x-2 bg-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Pause className="w-6 h-6" />
-                <span>Parar</span>
+                <span>{t('breathing.stop')}</span>
               </button>
             )}
             
@@ -391,12 +391,12 @@ export const BreathingExercise: React.FC = () => {
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <div className="flex items-center justify-center space-x-2 mb-6">
             <Volume2 className="w-6 h-6 text-gray-600" />
-            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
+            <h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3>
           </div>
           
           {/* Free Sounds Section */}
           <div className="mb-8">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 {t('breathing.sounds.free')}</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               {freeSounds.map((sound) => (
                 <button
@@ -446,7 +446,7 @@ export const BreathingExercise: React.FC = () => {
                     }`}
                   >
                     {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                    <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
+                    <span>{isSoundPlaying ? t('breathing.sounds.pause') : t('breathing.sounds.play')}</span>
                   </button>
                   
                   {/* Volume Control */}
@@ -472,7 +472,7 @@ export const BreathingExercise: React.FC = () => {
                     onClick={stopAllSounds}
                     className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
                   >
-                    Parar Tudo
+                    {t('breathing.sounds.stop')}
                   </button>
                 </div>
               </div>
@@ -481,10 +481,10 @@ export const BreathingExercise: React.FC = () => {
           
           {/* Premium Sounds Teaser */}
           <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Sons Premium</h4>
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 {t('breathing.sounds.premium')}</h4>
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
               <p className="text-gray-700 mb-4">
-                Desbloqueie nossa biblioteca completa com mais de 50 sons relaxantes e integração com Spotify Premium
+                {t('breathing.sounds.premium.desc')}
               </p>
               <div className="flex flex-wrap justify-center gap-2 mb-4">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
@@ -499,10 +499,10 @@ export const BreathingExercise: React.FC = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors mr-3"
               >
-                <span>Spotify Premium</span>
+                <span>{t('breathing.sounds.premium.spotify')}</span>
               </a>
               <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all">
-                Fazer Upgrade
+                {t('breathing.sounds.premium.upgrade')}
               </button>
             </div>
           </div>
@@ -511,11 +511,11 @@ export const BreathingExercise: React.FC = () => {
         {/* Scientific Background */}
         <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-            🧬 Base Científica da Técnica 4-7-8
+            🧬 {t('breathing.science.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl p-6">
-              <h3 className="font-bold text-gray-800 mb-3">📚 Evidências Científicas</h3>
+              <h3 className="font-bold text-gray-800 mb-3">📚 {t('breathing.science.evidence')}</h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• Ativa o sistema nervoso parassimpático</li>
                 <li>• Reduz cortisol (hormônio do estresse)</li>
@@ -524,7 +524,7 @@ export const BreathingExercise: React.FC = () => {
               </ul>
             </div>
             <div className="bg-white rounded-xl p-6">
-              <h3 className="font-bold text-gray-800 mb-3">🎨 Cromoterapia Científica</h3>
+              <h3 className="font-bold text-gray-800 mb-3">🎨 {t('breathing.science.chromotherapy')}</h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• Azul: Reduz pressão arterial e frequência cardíaca</li>
                 <li>• Verde: Equilibra sistema nervoso autônomo</li>
