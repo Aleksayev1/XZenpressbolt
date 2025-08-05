@@ -891,36 +891,42 @@ export const AcupressurePage: React.FC = () => {
         {/* Premium CTA */}
         {!user?.isPremium && (
           <div className="mt-12 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl p-8 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">🔓 Desbloqueie Pontos Específicos</h2>
+            <h2 className="text-3xl font-bold mb-4">🔒 Conteúdo Premium Bloqueado</h2>
             <p className="text-xl mb-6 opacity-90">
-              Acesse pontos especializados para septicemia, ATM, cranioterapia e muito mais
+              Para acessar estes pontos especializados, você precisa ser um usuário Premium
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🛡️</div>
                 <div className="font-semibold">Septicemia</div>
-                <div className="text-sm opacity-80">3 pontos MTC especializados</div>
+                <div className="text-sm opacity-80">🔒 3 pontos bloqueados</div>
               </div>
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🦷</div>
                 <div className="font-semibold">ATM</div>
-                <div className="text-sm opacity-80">3 pontos para mandíbula</div>
+                <div className="text-sm opacity-80">🔒 3 pontos bloqueados</div>
               </div>
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🧠</div>
                 <div className="font-semibold">Cranioterapia</div>
-                <div className="text-sm opacity-80">3 zonas cranianas avançadas</div>
+                <div className="text-sm opacity-80">🔒 3 zonas bloqueadas</div>
               </div>
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🧬</div>
                 <div className="font-semibold">Neurologia</div>
-                <div className="text-sm opacity-80">2 pontos neurológicos</div>
+                <div className="text-sm opacity-80">🔒 2 pontos bloqueados</div>
               </div>
             </div>
-            <button className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg inline-flex items-center space-x-2">
+            <button 
+              onClick={() => window.location.href = '#premium'}
+              className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg inline-flex items-center space-x-2"
+            >
               <Crown className="w-5 h-5" />
-              <span>Fazer Upgrade Premium</span>
+              <span>🔓 Desbloquear Agora</span>
             </button>
+            <p className="text-sm opacity-80 mt-4">
+              💳 Pagamento único • ✅ Acesso imediato • 🔒 Seguro
+            </p>
           </div>
         )}
 

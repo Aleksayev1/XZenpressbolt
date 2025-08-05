@@ -14,6 +14,127 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   const [showPayment, setShowPayment] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit' | 'crypto'>('pix');
 
+  // Se o usuário já é premium, mostrar dashboard premium
+  if (user?.isPremium) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          {/* Premium Dashboard Header */}
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-green-500 rounded-full">
+                <Crown className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-green-800">
+              Bem-vindo, Premium! 🎉
+            </h1>
+            <p className="text-xl text-green-700 mb-8">
+              Você tem acesso completo a todos os recursos exclusivos
+            </p>
+            <div className="inline-flex items-center px-6 py-3 bg-green-500 text-white rounded-full">
+              <Crown className="w-5 h-5 mr-2" />
+              <span className="font-semibold">Status: Premium Ativo</span>
+            </div>
+          </div>
+
+          {/* Premium Features Access */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {/* WhatsApp Consultation */}
+            <div 
+              onClick={() => onPageChange('whatsapp-consultation')}
+              className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-green-200 hover:border-green-300"
+            >
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-green-100 rounded-xl group-hover:bg-green-200 transition-colors">
+                  <MessageCircle className="w-8 h-8 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-xl font-bold text-gray-900">Consulta Especializada</h3>
+                  <p className="text-green-600 font-medium">Disponível Agora</p>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Formulário detalhado para casos complexos com atendimento personalizado via WhatsApp
+              </p>
+              <div className="flex items-center text-green-600 font-medium group-hover:text-green-700">
+                <span>Acessar formulário</span>
+                <Zap className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Premium Points */}
+            <div 
+              onClick={() => onPageChange('acupressure')}
+              className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-purple-200 hover:border-purple-300"
+            >
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-purple-100 rounded-xl group-hover:bg-purple-200 transition-colors">
+                  <Target className="w-8 h-8 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-xl font-bold text-gray-900">Pontos Exclusivos</h3>
+                  <p className="text-purple-600 font-medium">11 Pontos Premium</p>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Acesso completo a pontos especializados: Septicemia, ATM, Cranioterapia e Neurologia
+              </p>
+              <div className="flex items-center text-purple-600 font-medium group-hover:text-purple-700">
+                <span>Explorar pontos</span>
+                <Zap className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+
+            {/* Coming Soon Features */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg border-2 border-gray-200">
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-gray-100 rounded-xl">
+                  <Star className="w-8 h-8 text-gray-600" />
+                </div>
+                <div className="ml-4">
+                  <h3 className="text-xl font-bold text-gray-900">Recursos Avançados</h3>
+                  <p className="text-gray-600 font-medium">Em Desenvolvimento</p>
+                </div>
+              </div>
+              <p className="text-gray-600 mb-4">
+                IA personalizada, biblioteca de sons premium, cromoterapia avançada e modo offline
+              </p>
+              <div className="flex items-center text-gray-500 font-medium">
+                <Clock className="w-4 h-4 mr-2" />
+                <span>Em breve</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Premium Stats */}
+          <div className="bg-white rounded-3xl shadow-2xl p-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+              Seus Benefícios Premium
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-green-600 mb-2">11</div>
+                <div className="text-sm text-gray-600">Pontos Exclusivos</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-600 mb-2">24/7</div>
+                <div className="text-sm text-gray-600">Suporte WhatsApp</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-600 mb-2">∞</div>
+                <div className="text-sm text-gray-600">Uso Ilimitado</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-orange-600 mb-2">🔜</div>
+                <div className="text-sm text-gray-600">Novos Recursos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   const premiumFeatures = [
     {
       id: 'whatsapp-consultation',
