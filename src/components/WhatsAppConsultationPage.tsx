@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, MessageCircle, Clock, CheckCircle, Star, AlertTriangle, Send } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface WhatsAppConsultationPageProps {
   onPageChange: (page: string) => void;
@@ -21,6 +22,7 @@ interface FormData {
 
 export const WhatsAppConsultationPage: React.FC<WhatsAppConsultationPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<FormData>({
     nome: user?.name || '',
     email: user?.email || '',
@@ -89,7 +91,7 @@ ${formData.horarioPreferencia}
             className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Voltar</span>
+            <span>{t('whatsapp.back')}</span>
           </button>
         </div>
 
@@ -97,9 +99,9 @@ ${formData.horarioPreferencia}
           {/* Left Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-3xl shadow-2xl p-6 mb-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-6">Consulta Especializada</h2>
+              <h2 className="text-xl font-bold text-gray-800 mb-6">{t('whatsapp.consultation.title')}</h2>
               <p className="text-gray-600 text-sm mb-6">
-                Para casos complexos que precisam de atenção personalizada
+                {t('whatsapp.consultation.description')}
               </p>
 
               {/* Features */}
@@ -109,9 +111,9 @@ ${formData.horarioPreferencia}
                     <CheckCircle className="w-4 h-4 text-blue-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-gray-800 text-sm">Atendimento Especializado</div>
-                    <div className="text-xs text-gray-600">Profissional Qualificado</div>
-                    <div className="text-xs text-blue-600">Alexandre Pinheiro - 15 anos de experiência</div>
+                    <div className="font-semibold text-gray-800 text-sm">{t('whatsapp.features.specialized.title')}</div>
+                    <div className="text-xs text-gray-600">{t('whatsapp.features.specialized.subtitle')}</div>
+                    <div className="text-xs text-blue-600">{t('whatsapp.features.specialized.professional')}</div>
                   </div>
                 </div>
 
@@ -120,8 +122,8 @@ ${formData.horarioPreferencia}
                     <Clock className="w-4 h-4 text-green-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-gray-800 text-sm">Resposta Rápida</div>
-                    <div className="text-xs text-gray-600">Prioridade de resposta máxima</div>
+                    <div className="font-semibold text-gray-800 text-sm">{t('whatsapp.features.fast.title')}</div>
+                    <div className="text-xs text-gray-600">{t('whatsapp.features.fast.subtitle')}</div>
                   </div>
                 </div>
 
@@ -130,8 +132,8 @@ ${formData.horarioPreferencia}
                     <MessageCircle className="w-4 h-4 text-purple-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-gray-800 text-sm">WhatsApp Direto</div>
-                    <div className="text-xs text-gray-600">Atendimento personalizado via mensagem</div>
+                    <div className="font-semibold text-gray-800 text-sm">{t('whatsapp.features.direct.title')}</div>
+                    <div className="text-xs text-gray-600">{t('whatsapp.features.direct.subtitle')}</div>
                   </div>
                 </div>
               </div>
@@ -139,23 +141,23 @@ ${formData.horarioPreferencia}
 
             {/* When to Seek Help */}
             <div className="bg-white rounded-3xl shadow-2xl p-6 mb-6">
-              <h3 className="font-bold text-gray-800 mb-4">Quando Procurar?</h3>
+              <h3 className="font-bold text-gray-800 mb-4">{t('whatsapp.when.title')}</h3>
               <div className="space-y-3">
                 <div className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-red-400 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-600">Dores crônicas que não melhoram</span>
+                  <span className="text-sm text-gray-600">{t('whatsapp.when.chronic')}</span>
                 </div>
                 <div className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-orange-400 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-600">Condições neurológicas complexas</span>
+                  <span className="text-sm text-gray-600">{t('whatsapp.when.neurological')}</span>
                 </div>
                 <div className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-yellow-400 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-600">Casos que não respondem ao tratamento padrão</span>
+                  <span className="text-sm text-gray-600">{t('whatsapp.when.nonresponsive')}</span>
                 </div>
                 <div className="flex items-start space-x-2">
                   <div className="w-2 h-2 bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
-                  <span className="text-sm text-gray-600">Necessidade de protocolo personalizado</span>
+                  <span className="text-sm text-gray-600">{t('whatsapp.when.personalized')}</span>
                 </div>
               </div>
             </div>
@@ -168,18 +170,18 @@ ${formData.horarioPreferencia}
                 ))}
               </div>
               <p className="text-sm text-gray-700 mb-3 italic">
-                "Atendimento excepcional! Resolveu minha dor crônica em poucas sessões."
+                "{t('whatsapp.testimonial.text')}"
               </p>
-              <div className="text-xs text-gray-600">Maria S., São Paulo</div>
+              <div className="text-xs text-gray-600">{t('whatsapp.testimonial.author')}</div>
             </div>
           </div>
 
           {/* Main Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-3xl shadow-2xl p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Formulário de Consulta</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">{t('whatsapp.form.title')}</h2>
               <p className="text-gray-600 mb-8">
-                Preencha os dados abaixo para receber atendimento personalizado via WhatsApp
+                {t('whatsapp.form.subtitle')}
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -187,28 +189,28 @@ ${formData.horarioPreferencia}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nome Completo *
+                      {t('whatsapp.form.name')} *
                     </label>
                     <input
                       type="text"
                       name="nome"
                       value={formData.nome}
                       onChange={handleInputChange}
-                      placeholder="Seu nome completo"
+                      placeholder={t('whatsapp.form.name.placeholder')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email
+                      {t('whatsapp.form.email')}
                     </label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="seu@email.com"
+                      placeholder={t('whatsapp.form.email.placeholder')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     />
                   </div>
@@ -217,21 +219,21 @@ ${formData.horarioPreferencia}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      WhatsApp *
+                      {t('whatsapp.form.whatsapp')} *
                     </label>
                     <input
                       type="tel"
                       name="whatsapp"
                       value={formData.whatsapp}
                       onChange={handleInputChange}
-                      placeholder="(11) 99999-9999"
+                      placeholder={t('whatsapp.form.whatsapp.placeholder')}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       required
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nível de Urgência *
+                      {t('whatsapp.form.urgency')} *
                     </label>
                     <select
                       name="urgencia"
@@ -240,11 +242,11 @@ ${formData.horarioPreferencia}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       required
                     >
-                      <option value="">Selecione a urgência</option>
-                      <option value="baixa">Baixa - Consulta de rotina</option>
-                      <option value="media">Média - Desconforto moderado</option>
-                      <option value="alta">Alta - Dor intensa</option>
-                      <option value="urgente">Urgente - Necessita atenção imediata</option>
+                      <option value="">{t('whatsapp.form.urgency.select')}</option>
+                      <option value="baixa">{t('whatsapp.form.urgency.low')}</option>
+                      <option value="media">{t('whatsapp.form.urgency.medium')}</option>
+                      <option value="alta">{t('whatsapp.form.urgency.high')}</option>
+                      <option value="urgente">{t('whatsapp.form.urgency.urgent')}</option>
                     </select>
                   </div>
                 </div>
@@ -255,20 +257,20 @@ ${formData.horarioPreferencia}
                     <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-2">
                       <span className="text-blue-600 text-sm">🩺</span>
                     </div>
-                    Informações Médicas
+                    {t('whatsapp.form.medical.title')}
                   </h3>
 
                   <div className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Condição Principal *
+                        {t('whatsapp.form.medical.condition')} *
                       </label>
                       <input
                         type="text"
                         name="condicaoPrincipal"
                         value={formData.condicaoPrincipal}
                         onChange={handleInputChange}
-                        placeholder="Ex: Enxaqueca crônica, Fibromialgia, Dor lombar, etc."
+                        placeholder={t('whatsapp.form.medical.condition.placeholder')}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                         required
                       />
@@ -276,27 +278,27 @@ ${formData.horarioPreferencia}
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <span className="text-orange-600">Há quanto tempo tem esses sintomas?</span>
+                        <span className="text-orange-600">{t('whatsapp.form.medical.duration')}</span>
                       </label>
                       <input
                         type="text"
                         name="tempoSintomas"
                         value={formData.tempoSintomas}
                         onChange={handleInputChange}
-                        placeholder="Duração dos sintomas"
+                        placeholder={t('whatsapp.form.medical.duration.placeholder')}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       />
                     </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Descreva seus sintomas detalhadamente *
+                        {t('whatsapp.form.medical.symptoms')} *
                       </label>
                       <textarea
                         name="descricaoSintomas"
                         value={formData.descricaoSintomas}
                         onChange={handleInputChange}
-                        placeholder="Descreva intensidade da dor (1-10), quando piora/melhora, sintomas associados, etc."
+                        placeholder={t('whatsapp.form.medical.symptoms.placeholder')}
                         rows={4}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                         required
@@ -305,13 +307,13 @@ ${formData.horarioPreferencia}
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Tratamentos já realizados
+                        {t('whatsapp.form.medical.treatments')}
                       </label>
                       <textarea
                         name="tratamentosRealizados"
                         value={formData.tratamentosRealizados}
                         onChange={handleInputChange}
-                        placeholder="Ex: Fisioterapia, medicamentos, outras terapias..."
+                        placeholder={t('whatsapp.form.medical.treatments.placeholder')}
                         rows={3}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                       />
@@ -319,13 +321,13 @@ ${formData.horarioPreferencia}
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Medicamentos atuais
+                        {t('whatsapp.form.medical.medications')}
                       </label>
                       <textarea
                         name="medicamentosAtuais"
                         value={formData.medicamentosAtuais}
                         onChange={handleInputChange}
-                        placeholder="Liste medicamentos que usa regularmente..."
+                        placeholder={t('whatsapp.form.medical.medications.placeholder')}
                         rows={3}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
                       />
@@ -333,7 +335,7 @@ ${formData.horarioPreferencia}
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Preferência de horário para retorno
+                        {t('whatsapp.form.medical.schedule')}
                       </label>
                       <select
                         name="horarioPreferencia"
@@ -341,11 +343,11 @@ ${formData.horarioPreferencia}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                       >
-                        <option value="">Quando prefere ser contactado?</option>
-                        <option value="manha">Manhã (8h às 12h)</option>
-                        <option value="tarde">Tarde (12h às 18h)</option>
-                        <option value="noite">Noite (18h às 22h)</option>
-                        <option value="qualquer">Qualquer horário</option>
+                        <option value="">{t('whatsapp.form.medical.schedule.select')}</option>
+                        <option value="manha">{t('whatsapp.form.medical.schedule.morning')}</option>
+                        <option value="tarde">{t('whatsapp.form.medical.schedule.afternoon')}</option>
+                        <option value="noite">{t('whatsapp.form.medical.schedule.evening')}</option>
+                        <option value="qualquer">{t('whatsapp.form.medical.schedule.anytime')}</option>
                       </select>
                     </div>
                   </div>
@@ -355,9 +357,9 @@ ${formData.horarioPreferencia}
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start space-x-3">
                   <AlertTriangle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <div className="font-semibold text-blue-800 text-sm">Importante:</div>
+                    <div className="font-semibold text-blue-800 text-sm">{t('whatsapp.form.notice.title')}</div>
                     <div className="text-blue-700 text-sm">
-                      Este serviço não substitui consulta médica. Em casos de emergência, procure atendimento médico imediatamente.
+                      {t('whatsapp.form.notice.text')}
                     </div>
                   </div>
                 </div>
@@ -368,11 +370,11 @@ ${formData.horarioPreferencia}
                   className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center justify-center space-x-2"
                 >
                   <Send className="w-5 h-5" />
-                  <span>Enviar via WhatsApp</span>
+                  <span>{t('whatsapp.form.submit')}</span>
                 </button>
 
                 <p className="text-center text-sm text-gray-500">
-                  Ao enviar, você será redirecionado para o WhatsApp com sua mensagem pré-formatada
+                  {t('whatsapp.form.redirect')}
                 </p>
               </form>
             </div>

@@ -1,6 +1,7 @@
-import React from 'react';
-import { Crown, Star, Lock, Zap, MessageCircle, Target, Brain, Shield, Bluetooth as Tooth } from 'lucide-react';
+import React, { useState } from 'react';
+import { Crown, Star, Lock, Zap, MessageCircle, Target, Brain, Shield, CheckCircle, Clock, ArrowRight, CreditCard, Smartphone, Bitcoin } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface PremiumStructureProps {
   onPageChange: (page: string) => void;
@@ -8,18 +9,22 @@ interface PremiumStructureProps {
 
 export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange }) => {
   const { user } = useAuth();
+  const { t } = useLanguage();
+  const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [showPayment, setShowPayment] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit' | 'crypto'>('pix');
 
   const premiumFeatures = [
     {
       id: 'whatsapp-consultation',
       icon: <MessageCircle className="w-8 h-8 text-green-600" />,
-      title: 'Consulta WhatsApp Especializada',
-      description: 'Atendimento direto com Alexandre Pinheiro - 15 anos de experiência',
+      title: t('premium.features.whatsapp.title'),
+      description: t('premium.features.whatsapp.description'),
       benefits: [
-        'Formulário detalhado para casos complexos',
-        'Resposta prioritária em até 2 horas',
-        'Protocolo personalizado de tratamento',
-        'Acompanhamento contínuo via WhatsApp'
+        t('premium.features.whatsapp.benefit1'),
+        t('premium.features.whatsapp.benefit2'),
+        t('premium.features.whatsapp.benefit3'),
+        t('premium.features.whatsapp.benefit4')
       ],
       status: 'active',
       action: () => onPageChange('whatsapp-consultation')
@@ -27,13 +32,13 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'premium-points',
       icon: <Target className="w-8 h-8 text-purple-600" />,
-      title: 'Pontos de Acupressão Específicos',
-      description: 'Acesso a pontos especializados para condições específicas',
+      title: t('premium.features.points.title'),
+      description: t('premium.features.points.description'),
       benefits: [
-        'Pontos para Septicemia e fortalecimento imunológico',
-        'Técnicas para ATM e disfunção temporomandibular',
-        'Cranioterapia avançada para otimização cognitiva',
-        'Protocolos para condições neurológicas'
+        t('premium.features.points.benefit1'),
+        t('premium.features.points.benefit2'),
+        t('premium.features.points.benefit3'),
+        t('premium.features.points.benefit4')
       ],
       status: 'active',
       action: () => onPageChange('acupressure')
@@ -41,13 +46,13 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'advanced-chromotherapy',
       icon: <Brain className="w-8 h-8 text-blue-600" />,
-      title: 'Cromoterapia Avançada',
-      description: 'Sequências de cores personalizadas para diferentes condições',
+      title: t('premium.features.chromotherapy.title'),
+      description: t('premium.features.chromotherapy.description'),
       benefits: [
-        'Protocolos específicos para ansiedade, depressão',
-        'Sequências para dor crônica e inflamação',
-        'Cromoterapia para distúrbios do sono',
-        'Cores terapêuticas para hipertensão'
+        t('premium.features.chromotherapy.benefit1'),
+        t('premium.features.chromotherapy.benefit2'),
+        t('premium.features.chromotherapy.benefit3'),
+        t('premium.features.chromotherapy.benefit4')
       ],
       status: 'coming-soon',
       action: () => {}
@@ -55,13 +60,13 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'sound-library',
       icon: <Zap className="w-8 h-8 text-orange-600" />,
-      title: 'Biblioteca Completa de Sons',
-      description: 'Mais de 50 sons terapêuticos + integração Spotify',
+      title: t('premium.features.sounds.title'),
+      description: t('premium.features.sounds.description'),
       benefits: [
-        'Sons binaurais para diferentes frequências cerebrais',
-        'Mantras e cantos tibetanos',
-        'Frequências Solfeggio (528Hz, 432Hz, etc.)',
-        'Integração com Spotify Premium'
+        t('premium.features.sounds.benefit1'),
+        t('premium.features.sounds.benefit2'),
+        t('premium.features.sounds.benefit3'),
+        t('premium.features.sounds.benefit4')
       ],
       status: 'coming-soon',
       action: () => {}
@@ -69,13 +74,13 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'ai-recommendations',
       icon: <Star className="w-8 h-8 text-yellow-600" />,
-      title: 'Recomendações Personalizadas IA',
-      description: 'Sistema inteligente que aprende com seus padrões',
+      title: t('premium.features.ai.title'),
+      description: t('premium.features.ai.description'),
       benefits: [
-        'Análise de padrões de uso e efetividade',
-        'Sugestões de pontos baseadas no histórico',
-        'Horários ótimos para cada técnica',
-        'Progressão personalizada de tratamento'
+        t('premium.features.ai.benefit1'),
+        t('premium.features.ai.benefit2'),
+        t('premium.features.ai.benefit3'),
+        t('premium.features.ai.benefit4')
       ],
       status: 'coming-soon',
       action: () => {}
@@ -83,13 +88,13 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'offline-mode',
       icon: <Shield className="w-8 h-8 text-indigo-600" />,
-      title: 'Modo Offline Completo',
-      description: 'Acesso total sem conexão com internet',
+      title: t('premium.features.offline.title'),
+      description: t('premium.features.offline.description'),
       benefits: [
-        'Todos os pontos disponíveis offline',
-        'Sons e cromoterapia funcionam offline',
-        'Sincronização automática quando online',
-        'Backup seguro na nuvem'
+        t('premium.features.offline.benefit1'),
+        t('premium.features.offline.benefit2'),
+        t('premium.features.offline.benefit3'),
+        t('premium.features.offline.benefit4')
       ],
       status: 'coming-soon',
       action: () => {}
@@ -98,49 +103,248 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
 
   const pricingPlans = [
     {
-      name: 'Premium Mensal',
+      id: 'monthly',
+      name: t('premium.plans.monthly.name'),
       price: 'R$ 29,90',
-      period: '/mês',
+      period: t('premium.plans.monthly.period'),
       features: [
-        'Consulta WhatsApp especializada',
-        'Todos os pontos premium',
-        'Cromoterapia avançada',
-        'Biblioteca completa de sons',
-        'Suporte prioritário'
+        t('premium.plans.monthly.feature1'),
+        t('premium.plans.monthly.feature2'),
+        t('premium.plans.monthly.feature3'),
+        t('premium.plans.monthly.feature4'),
+        t('premium.plans.monthly.feature5')
       ],
-      popular: false
+      popular: false,
+      savings: null
     },
     {
-      name: 'Premium Anual',
+      id: 'annual',
+      name: t('premium.plans.annual.name'),
       price: 'R$ 297,00',
-      period: '/ano',
+      period: t('premium.plans.annual.period'),
       originalPrice: 'R$ 358,80',
       discount: '17% OFF',
       features: [
-        'Tudo do plano mensal',
-        'Recomendações IA personalizadas',
-        'Modo offline completo',
-        'Consultas ilimitadas',
-        'Acesso antecipado a novos recursos'
+        t('premium.plans.annual.feature1'),
+        t('premium.plans.annual.feature2'),
+        t('premium.plans.annual.feature3'),
+        t('premium.plans.annual.feature4'),
+        t('premium.plans.annual.feature5')
       ],
-      popular: true
+      popular: true,
+      savings: 'R$ 61,80'
     },
     {
-      name: 'Premium Vitalício',
+      id: 'lifetime',
+      name: t('premium.plans.lifetime.name'),
       price: 'R$ 997,00',
-      period: 'pagamento único',
+      period: t('premium.plans.lifetime.period'),
       originalPrice: 'R$ 1.794,00',
       discount: '44% OFF',
       features: [
-        'Acesso vitalício a todos os recursos',
-        'Todas as atualizações futuras incluídas',
-        'Consultoria personalizada mensal',
-        'Acesso a webinars exclusivos',
-        'Certificado de conclusão'
+        t('premium.plans.lifetime.feature1'),
+        t('premium.plans.lifetime.feature2'),
+        t('premium.plans.lifetime.feature3'),
+        t('premium.plans.lifetime.feature4'),
+        t('premium.plans.lifetime.feature5')
       ],
-      popular: false
+      popular: false,
+      savings: 'R$ 797,00'
     }
   ];
+
+  const testimonials = [
+    {
+      name: 'Maria S.',
+      location: 'São Paulo',
+      rating: 5,
+      text: t('premium.testimonials.maria')
+    },
+    {
+      name: 'João M.',
+      location: 'Rio de Janeiro', 
+      rating: 5,
+      text: t('premium.testimonials.joao')
+    },
+    {
+      name: 'Ana L.',
+      location: 'Belo Horizonte',
+      rating: 5,
+      text: t('premium.testimonials.ana')
+    }
+  ];
+
+  const handlePlanSelect = (planId: string) => {
+    setSelectedPlan(planId);
+    setShowPayment(true);
+  };
+
+  const handlePayment = () => {
+    // Simular processamento de pagamento
+    alert(`${t('premium.payment.processing')} ${paymentMethod.toUpperCase()}`);
+    // Aqui você integraria com gateway de pagamento real
+  };
+
+  const generatePixCode = () => {
+    return "00020126580014BR.GOV.BCB.PIX013636c4b8e8-1234-4567-8901-123456789abc5204000053039865802BR5925XZENPRESS WELLNESS LTDA6009SAO PAULO62070503***6304ABCD";
+  };
+
+  if (showPayment) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 pt-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="bg-white rounded-3xl shadow-2xl p-8">
+            <div className="text-center mb-8">
+              <Crown className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {t('premium.payment.title')}
+              </h1>
+              <p className="text-gray-600">
+                {pricingPlans.find(p => p.id === selectedPlan)?.name} - {pricingPlans.find(p => p.id === selectedPlan)?.price}
+              </p>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                {t('premium.payment.methods')}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <button
+                  onClick={() => setPaymentMethod('pix')}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    paymentMethod === 'pix' 
+                      ? 'border-green-500 bg-green-50' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Smartphone className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div className="font-semibold text-gray-800">PIX</div>
+                    <div className="text-sm text-gray-600">{t('premium.payment.pix.desc')}</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setPaymentMethod('credit')}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    paymentMethod === 'credit' 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <CreditCard className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div className="font-semibold text-gray-800">{t('premium.payment.credit')}</div>
+                    <div className="text-sm text-gray-600">{t('premium.payment.credit.desc')}</div>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setPaymentMethod('crypto')}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    paymentMethod === 'crypto' 
+                      ? 'border-orange-500 bg-orange-50' 
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Bitcoin className="w-6 h-6 text-orange-600" />
+                    </div>
+                    <div className="font-semibold text-gray-800">Crypto</div>
+                    <div className="text-sm text-gray-600">{t('premium.payment.crypto.desc')}</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Payment Details */}
+            {paymentMethod === 'pix' && (
+              <div className="bg-green-50 rounded-xl p-6 mb-6">
+                <h4 className="font-semibold text-green-800 mb-4">{t('premium.payment.pix.title')}</h4>
+                <div className="bg-white rounded-lg p-4 mb-4">
+                  <div className="text-center">
+                    <div className="w-48 h-48 bg-gray-200 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                      <span className="text-gray-500">QR Code PIX</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-2">{t('premium.payment.pix.scan')}</p>
+                    <div className="bg-gray-100 rounded p-2 text-xs font-mono break-all">
+                      {generatePixCode()}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {paymentMethod === 'credit' && (
+              <div className="bg-blue-50 rounded-xl p-6 mb-6">
+                <h4 className="font-semibold text-blue-800 mb-4">{t('premium.payment.credit.title')}</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder={t('premium.payment.credit.number')}
+                    className="px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                  <input
+                    type="text"
+                    placeholder={t('premium.payment.credit.name')}
+                    className="px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                  <input
+                    type="text"
+                    placeholder="MM/AA"
+                    className="px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                  <input
+                    type="text"
+                    placeholder="CVV"
+                    className="px-4 py-3 border border-gray-300 rounded-lg"
+                  />
+                </div>
+              </div>
+            )}
+
+            {paymentMethod === 'crypto' && (
+              <div className="bg-orange-50 rounded-xl p-6 mb-6">
+                <h4 className="font-semibold text-orange-800 mb-4">{t('premium.payment.crypto.title')}</h4>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <span>Bitcoin (BTC)</span>
+                    <span className="font-mono text-sm">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <span>Ethereum (ETH)</span>
+                    <span className="font-mono text-sm">0x742d35Cc6634C0532925a3b8D4C9db</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => setShowPayment(false)}
+                className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                {t('premium.payment.back')}
+              </button>
+              <button
+                onClick={handlePayment}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all font-semibold"
+              >
+                {t('premium.payment.confirm')}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 pt-16">
@@ -155,20 +359,20 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Desbloqueie Todo o Potencial
+              {t('premium.hero.title')}
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-yellow-100">
-              Acesso completo a consultas especializadas e recursos terapêuticos avançados
+              {t('premium.hero.subtitle')}
             </p>
             {user?.isPremium ? (
               <div className="inline-flex items-center px-6 py-3 bg-green-500 rounded-full backdrop-blur-sm">
                 <Crown className="w-5 h-5 mr-2 text-yellow-200" />
-                <span className="font-semibold">Usuário Premium Ativo</span>
+                <span className="font-semibold">{t('premium.hero.active')}</span>
               </div>
             ) : (
               <div className="inline-flex items-center px-6 py-3 bg-white/20 rounded-full backdrop-blur-sm">
                 <Crown className="w-5 h-5 mr-2 text-yellow-200" />
-                <span className="font-semibold">Upgrade para Premium</span>
+                <span className="font-semibold">{t('premium.hero.upgrade')}</span>
               </div>
             )}
           </div>
@@ -179,7 +383,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
         {/* Premium Features */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Recursos Premium Disponíveis
+            {t('premium.features.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {premiumFeatures.map((feature) => (
@@ -198,11 +402,13 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                   </div>
                   {feature.status === 'active' ? (
                     <div className="flex items-center space-x-1 bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                      <span>Disponível</span>
+                      <CheckCircle className="w-3 h-3" />
+                      <span>{t('premium.features.available')}</span>
                     </div>
                   ) : (
                     <div className="flex items-center space-x-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-semibold">
-                      <span>Em Breve</span>
+                      <Clock className="w-3 h-3" />
+                      <span>{t('premium.features.coming')}</span>
                     </div>
                   )}
                 </div>
@@ -229,10 +435,10 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
         {!user?.isPremium && (
           <div className="mb-16">
             <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
-              Escolha Seu Plano Premium
+              {t('premium.plans.title')}
             </h2>
             <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-              Invista no seu bem-estar com acesso completo a todas as funcionalidades terapêuticas
+              {t('premium.plans.subtitle')}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {pricingPlans.map((plan, index) => (
@@ -247,7 +453,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                       <div className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                        Mais Popular
+                        {t('premium.plans.popular')}
                       </div>
                     </div>
                   )}
@@ -266,13 +472,18 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                         </span>
                       </div>
                     )}
+                    {plan.savings && (
+                      <div className="text-green-600 font-semibold text-sm">
+                        {t('premium.plans.save')} {plan.savings}
+                      </div>
+                    )}
                   </div>
                   
                   <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start space-x-3">
                         <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                          <CheckCircle className="w-3 h-3 text-green-600" />
                         </div>
                         <span className="text-gray-700 text-sm">{feature}</span>
                       </li>
@@ -280,13 +491,15 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                   </ul>
                   
                   <button
-                    className={`w-full py-4 rounded-xl font-semibold transition-all duration-200 ${
+                    onClick={() => handlePlanSelect(plan.id)}
+                    className={`w-full py-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center space-x-2 ${
                       plan.popular
                         ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white hover:from-orange-600 hover:to-red-600 shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
-                    Escolher Plano
+                    <span>{t('premium.plans.choose')}</span>
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               ))}
@@ -297,79 +510,48 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
         {/* Testimonials */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            O que dizem nossos usuários Premium
+            {t('premium.testimonials.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center space-x-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                ))}
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
+                <div className="flex items-center space-x-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-700 mb-4 italic">
+                  "{testimonial.text}"
+                </p>
+                <div className="text-sm text-gray-600">
+                  {testimonial.name}, {testimonial.location}
+                </div>
               </div>
-              <p className="text-gray-700 mb-4 italic">
-                "A consulta via WhatsApp mudou minha vida. Protocolo personalizado que realmente funciona!"
-              </p>
-              <div className="text-sm text-gray-600">Maria S., São Paulo</div>
-            </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center space-x-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="text-gray-700 mb-4 italic">
-                "Os pontos específicos para ATM resolveram minha dor em 2 semanas. Incrível!"
-              </p>
-              <div className="text-sm text-gray-600">João M., Rio de Janeiro</div>
-            </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center space-x-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p className="text-gray-700 mb-4 italic">
-                "Atendimento excepcional do Alexandre. Profissional muito competente e atencioso."
-              </p>
-              <div className="text-sm text-gray-600">Ana L., Belo Horizonte</div>
-            </div>
+            ))}
           </div>
         </div>
 
         {/* FAQ */}
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">
-            Perguntas Frequentes
+            {t('premium.faq.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="font-semibold text-gray-800 mb-2">Como funciona a consulta via WhatsApp?</h3>
-              <p className="text-gray-600 text-sm">
-                Você preenche um formulário detalhado e recebe atendimento personalizado do Alexandre Pinheiro, 
-                com resposta prioritária e protocolo específico para seu caso.
-              </p>
+              <h3 className="font-semibold text-gray-800 mb-2">{t('premium.faq.q1')}</h3>
+              <p className="text-gray-600 text-sm mb-4">{t('premium.faq.a1')}</p>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 mb-2">Posso cancelar a qualquer momento?</h3>
-              <p className="text-gray-600 text-sm">
-                Sim, você pode cancelar seu plano a qualquer momento. Não há fidelidade ou taxas de cancelamento.
-              </p>
+              <h3 className="font-semibold text-gray-800 mb-2">{t('premium.faq.q2')}</h3>
+              <p className="text-gray-600 text-sm mb-4">{t('premium.faq.a2')}</p>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 mb-2">Os pontos premium são seguros?</h3>
-              <p className="text-gray-600 text-sm">
-                Todos os pontos são baseados em técnicas tradicionais validadas e devem ser usados como 
-                complemento ao tratamento médico convencional.
-              </p>
+              <h3 className="font-semibent text-gray-800 mb-2">{t('premium.faq.q3')}</h3>
+              <p className="text-gray-600 text-sm mb-4">{t('premium.faq.a3')}</p>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 mb-2">Funciona offline?</h3>
-              <p className="text-gray-600 text-sm">
-                Sim, a maioria dos recursos funciona offline. Os dados são sincronizados automaticamente 
-                quando você se conecta à internet.
-              </p>
+              <h3 className="font-semibold text-gray-800 mb-2">{t('premium.faq.q4')}</h3>
+              <p className="text-gray-600 text-sm mb-4">{t('premium.faq.a4')}</p>
             </div>
           </div>
         </div>
