@@ -117,6 +117,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     instructions: 'Aplicar pressão suave com movimentos circulares na região frontal por 2-3 minutos, focando no relaxamento.',
     duration: 180,
     pressure: 'muito leve'
+  },
 
   // Pontos Premium - MTC
   {
