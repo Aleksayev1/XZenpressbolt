@@ -71,7 +71,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes para transformar sua qualidade de vida
+              Transforme sua vida com terapias Wellness
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
