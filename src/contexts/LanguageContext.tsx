@@ -68,7 +68,7 @@ const translations = {
     'home.cta.corporate': 'Soluções Corporativas',
 
     'home.compliance.title': 'Compliance Legal Empresarial',
-    'home.compliance.subtitle': 'Atendimento integral às novas regulamentações de saúde mental no trabalho',
+    'home.compliance.subtitle': 'Atendimento integrado às novas regulamentações de saúde mental no trabalho',
 
     'home.wellness.title': 'Selo de Empresa Promotora da Saúde Mental',
     'home.wellness.desc': 'Certificação oficial para empresas que investem no bem-estar dos colaboradores',
