@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, Star, Lock, Zap, MessageCircle, Target, Brain, Shield, Tooth } from 'lucide-react';
+import { Crown, Star, Lock, Zap, MessageCircle, Target, Brain, Shield, Bluetooth as Tooth } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 interface PremiumStructureProps {
