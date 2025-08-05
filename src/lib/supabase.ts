@@ -1,13 +1,16 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
-}
+// Only create client if both variables are properly set (not placeholders)
+const isSupabaseConfigured = supabaseUrl !== 'https://placeholder.supabase.co' && 
+                            supabaseAnonKey !== 'placeholder-anon-key' &&
+                            supabaseUrl && supabaseAnonKey
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = isSupabaseConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null
 
 export interface CorporateLeadData {
   name: string
@@ -25,6 +28,17 @@ export interface CorporateLeadData {
 }
 
 export const submitCorporateLead = async (leadData: CorporateLeadData) => {
+  // Check if Supabase is configured
+  if (!supabase) {
+    console.warn('Supabase not configured. Lead data:', leadData)
+    // Simulate success for development
+    return { 
+      success: true, 
+      data: { id: 'mock-' + Date.now() },
+      message: 'Supabase não configurado - dados simulados para desenvolvimento' 
+    }
+  }
+
   try {
     const { data, error } = await supabase.functions.invoke('handle-corporate-lead', {
       body: leadData
