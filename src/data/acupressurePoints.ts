@@ -25,6 +25,75 @@ export const acupressurePoints: AcupressurePoint[] = [
     duration: 120,
     pressure: 'leve'
   },
+
+  // Pontos Premium - MTC Avançada
+  {
+    id: 'mtc-premium-shenmen-advanced',
+    name: 'Shenmen Avançado (HE7) - Técnica Premium',
+    nameEn: 'Advanced Spirit Gate (HE7) - Premium Technique',
+    nameEs: 'Puerta del Espíritu Avanzada (HE7) - Técnica Premium',
+    nameFr: 'Porte de l\'Esprit Avancée (HE7) - Technique Premium',
+    description: 'Técnica avançada do ponto Shenmen com protocolo específico para ansiedade crônica e distúrbios do sono. Inclui manipulação em 3 fases com pressões diferenciadas.',
+    descriptionEn: 'Advanced Shenmen technique with specific protocol for chronic anxiety and sleep disorders. Includes 3-phase manipulation with differentiated pressures.',
+    descriptionEs: 'Técnica avanzada del punto Shenmen con protocolo específico para ansiedad crónica y trastornos del sueño. Incluye manipulación en 3 fases con presiones diferenciadas.',
+    descriptionFr: 'Technique avancée du point Shenmen avec protocole spécifique pour anxiété chronique et troubles du sommeil. Inclut manipulation en 3 phases avec pressions différenciées.',
+    position: { x: 20, y: 70 },
+    image: '/C 7 Shenmen Acalma a mente Estresse.jpg',
+    imageAlt: 'Localização avançada do ponto Shenmen HE7 para técnica premium',
+    benefits: ['Protocolo avançado para ansiedade crônica', 'Técnica em 3 fases para máxima eficácia', 'Regulação profunda do sistema nervoso', 'Melhoria significativa da qualidade do sono'],
+    benefitsEn: ['Advanced protocol for chronic anxiety', '3-phase technique for maximum efficacy', 'Deep nervous system regulation', 'Significant sleep quality improvement'],
+    benefitsEs: ['Protocolo avanzado para ansiedad crónica', 'Técnica en 3 fases para máxima eficacia', 'Regulación profunda del sistema nervioso', 'Mejora significativa de la calidad del sueño'],
+    benefitsFr: ['Protocole avancé pour anxiété chronique', 'Technique en 3 phases pour efficacité maximale', 'Régulation profonde système nerveux', 'Amélioration significative qualité sommeil'],
+    isPremium: true,
+    category: 'general',
+    instructions: 'FASE 1: Pressão leve por 30s. FASE 2: Pressão moderada com movimentos circulares por 60s. FASE 3: Pressão firme mantida por 30s. Total: 2 minutos.',
+    duration: 120,
+    pressure: 'variável'
+  },
+  {
+    id: 'mtc-premium-baihui-advanced',
+    name: 'Baihui Premium (VG20) - Protocolo Energético',
+    nameEn: 'Premium Baihui (VG20) - Energetic Protocol',
+    nameEs: 'Baihui Premium (VG20) - Protocolo Energético',
+    nameFr: 'Baihui Premium (VG20) - Protocole Énergétique',
+    description: 'Protocolo avançado do ponto Baihui com técnica de ativação energética em espiral. Método premium para revitalização completa do sistema yang.',
+    descriptionEn: 'Advanced Baihui protocol with spiral energetic activation technique. Premium method for complete yang system revitalization.',
+    descriptionEs: 'Protocolo avanzado del punto Baihui con técnica de activación energética en espiral. Método premium para revitalización completa del sistema yang.',
+    descriptionFr: 'Protocole avancé du point Baihui avec technique activation énergétique en spirale. Méthode premium pour revitalisation complète système yang.',
+    position: { x: 50, y: 10 },
+    image: '/VG20Baihui.jpg',
+    imageAlt: 'Localização premium do ponto Baihui VG20 com protocolo energético avançado',
+    benefits: ['Ativação energética completa do yang', 'Revitalização profunda do sistema nervoso', 'Melhoria cognitiva avançada', 'Elevação da consciência e clareza mental'],
+    benefitsEn: ['Complete yang energetic activation', 'Deep nervous system revitalization', 'Advanced cognitive improvement', 'Consciousness elevation and mental clarity'],
+    benefitsEs: ['Activación energética completa del yang', 'Revitalización profunda del sistema nervioso', 'Mejora cognitiva avanzada', 'Elevación de la conciencia y claridad mental'],
+    benefitsFr: ['Activation énergétique complète du yang', 'Revitalisation profonde système nerveux', 'Amélioration cognitive avancée', 'Élévation conscience et clarté mentale'],
+    isPremium: true,
+    category: 'general',
+    instructions: 'Técnica em espiral: Inicie com pressão no centro, faça movimentos circulares expandindo em espiral por 3 minutos. Finalize com pressão central por 30s.',
+    duration: 210,
+    pressure: 'leve a moderada'
+  },
+  {
+    id: 'mtc-premium-yongquan-kd1',
+    name: 'Yongquan Premium (KD1) - Fonte Borbulhante',
+    nameEn: 'Premium Yongquan (KD1) - Bubbling Spring',
+    nameEs: 'Yongquan Premium (KD1) - Fuente Burbujeante',
+    nameFr: 'Yongquan Premium (KD1) - Source Bouillonnante',
+    description: 'Ponto premium dos rins, localizado na sola do pé. Técnica avançada para ancoragem energética e fortalecimento do yin. Protocolo específico para fadiga crônica.',
+    descriptionEn: 'Premium kidney point, located on sole of foot. Advanced technique for energetic grounding and yin strengthening. Specific protocol for chronic fatigue.',
+    descriptionEs: 'Punto premium de los riñones, ubicado en la planta del pie. Técnica avanzada para anclaje energético y fortalecimiento del yin. Protocolo específico para fatiga crónica.',
+    descriptionFr: 'Point premium des reins, situé sur plante du pied. Technique avancée pour ancrage énergétique et renforcement du yin. Protocole spécifique pour fatigue chronique.',
+    position: { x: 50, y: 95 },
+    benefits: ['Ancoragem energética profunda', 'Fortalecimento do yin e energia renal', 'Combate fadiga crônica', 'Melhoria da vitalidade geral'],
+    benefitsEn: ['Deep energetic grounding', 'Yin and kidney energy strengthening', 'Fights chronic fatigue', 'Overall vitality improvement'],
+    benefitsEs: ['Anclaje energético profundo', 'Fortalecimiento del yin y energía renal', 'Combate fatiga crónica', 'Mejora de la vitalidad general'],
+    benefitsFr: ['Ancrage énergétique profond', 'Renforcement yin et énergie rénale', 'Combat fatigue chronique', 'Amélioration vitalité générale'],
+    isPremium: true,
+    category: 'general',
+    instructions: 'Massageie a sola do pé em movimentos circulares por 2 minutos, depois pressione firmemente o centro por 1 minuto. Use óleo essencial se disponível.',
+    duration: 180,
+    pressure: 'moderada a firme'
+  },
   {
     id: 'baihui-vg20',
     name: 'Baihui (VG20)',
@@ -405,7 +474,9 @@ export const acupressurePoints: AcupressurePoint[] = [
 
 export const getPointsByCategory = (category: string, isPremium: boolean = false) => {
   return acupressurePoints.filter(point => 
-    point.category === category && (!point.isPremium || isPremium)
+    (category === 'all' || point.category === category || 
+     (category === 'mtc-premium' && point.category === 'general' && point.isPremium)) && 
+    (!point.isPremium || isPremium)
   );
 };
 

@@ -49,6 +49,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const categories = [
     { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
     { id: 'general', name: 'MTC (Medicina Tradicional Chinesa)', icon: '☯️' },
+    { id: 'mtc-premium', name: 'MTC Premium', icon: '👑', premium: true },
     { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
     { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
     { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
@@ -408,6 +409,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
                 </h3>
                 <p className="text-sm text-gray-600">
                   {selectedCategory === 'general' && 'Medicina Tradicional Chinesa - Pontos baseados em meridianos energéticos para equilíbrio do Qi e harmonização do organismo.'}
+                  {selectedCategory === 'mtc-premium' && 'MTC Premium - Técnicas avançadas da Medicina Tradicional Chinesa com protocolos especializados e métodos de aplicação diferenciados para máxima eficácia terapêutica.'}
                   {selectedCategory === 'cranio' && 'Craniopuntura - Técnicas específicas de estimulação craniana para otimização das funções cerebrais e sistema nervoso.'}
                   {selectedCategory === 'septicemia' && 'Pontos MTC especializados para fortalecimento do sistema imunológico e combate a infecções sistêmicas graves.'}
                   {selectedCategory === 'atm' && 'Pontos específicos dos meridianos para disfunção da articulação temporomandibular, bruxismo e tensões faciais.'}
