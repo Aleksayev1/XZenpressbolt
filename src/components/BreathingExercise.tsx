@@ -309,76 +309,6 @@ export const BreathingExercise: React.FC = () => {
           </div>
         </div>
 
-        {/* Chromotherapy Education Section */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
-          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('breathing.chromotherapy.title')}</h2>
-          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">{t('breathing.chromotherapy.description')}</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-blue-800">{t('breathing.chromotherapy.blue')}</h3>
-              </div>
-              <p className="text-blue-700 text-sm leading-relaxed">
-                {t('breathing.chromotherapy.blue.desc')}
-              </p>
-              <div className="mt-4 text-xs text-blue-600 bg-blue-50 rounded-lg p-2">
-                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.inhale.detail')}
-              </div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-green-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-green-800">{t('breathing.chromotherapy.green')}</h3>
-              </div>
-              <p className="text-green-700 text-sm leading-relaxed">
-                {t('breathing.chromotherapy.green.desc')}
-              </p>
-              <div className="mt-4 text-xs text-green-600 bg-green-50 rounded-lg p-2">
-                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.hold.detail')}
-              </div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-purple-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-purple-800">{t('breathing.chromotherapy.magenta')}</h3>
-              </div>
-              <p className="text-purple-700 text-sm leading-relaxed">
-                {t('breathing.chromotherapy.magenta.desc')}
-              </p>
-              <div className="mt-4 text-xs text-purple-600 bg-purple-50 rounded-lg p-2">
-                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.exhale.detail')}
-              </div>
-            </div>
-          </div>
-          
-          {/* Benefits Section */}
-          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">{t('breathing.benefits.title')}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="text-gray-700 text-sm">{t('breathing.benefits.stress')}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-gray-700 text-sm">{t('breathing.benefits.sleep')}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
-                <span className="text-gray-700 text-sm">{t('breathing.benefits.focus')}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                <span className="text-gray-700 text-sm">{t('breathing.benefits.pressure')}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Sound Controls */}
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <div className="flex items-center justify-center space-x-2 mb-6"><Volume2 className="w-6 h-6 text-gray-600" /><h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3></div>
@@ -491,6 +421,110 @@ export const BreathingExercise: React.FC = () => {
               <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all">
                 {t('breathing.sounds.premium.upgrade')}
               </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Color Therapy Controls */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-2xl mx-auto">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Cromoterapia</h3>
+          <p className="text-sm text-gray-600 mb-4 text-center">
+            A cromoterapia é automaticamente integrada ao timer dos pontos quando ativada
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 mb-4">
+            {colors.map((color, index) => (
+              <div key={index} className="text-center">
+                <div 
+                  className="w-12 h-12 rounded-full mx-auto mb-2 cursor-pointer transform hover:scale-110 transition-transform"
+                  style={{ backgroundColor: color }}
+                  onClick={() => setCurrentColor(color)}
+                />
+                <span className="text-sm text-gray-600">{colorNames[index]}</span>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={startColorTherapy}
+            disabled={isColorTherapyActive}
+            className={`px-6 py-3 rounded-full font-semibold transition-all disabled:opacity-50 ${
+              isColorTherapyActive
+                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transform hover:scale-105'
+            }`}
+          >
+            {isColorTherapyActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
+          </button>
+          <p className="text-xs text-gray-500 text-center mt-2">
+            Use este botão apenas para cromoterapia independente
+          </p>
+        </div>
+
+        {/* Chromotherapy Education Section */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('breathing.chromotherapy.title')}</h2>
+          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">{t('breathing.chromotherapy.description')}</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-blue-800">{t('breathing.chromotherapy.blue')}</h3>
+              </div>
+              <p className="text-blue-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.blue.desc')}
+              </p>
+              <div className="mt-4 text-xs text-blue-600 bg-blue-50 rounded-lg p-2">
+                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.inhale.detail')}
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-green-800">{t('breathing.chromotherapy.green')}</h3>
+              </div>
+              <p className="text-green-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.green.desc')}
+              </p>
+              <div className="mt-4 text-xs text-green-600 bg-green-50 rounded-lg p-2">
+                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.hold.detail')}
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-purple-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-purple-800">{t('breathing.chromotherapy.magenta')}</h3>
+              </div>
+              <p className="text-purple-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.magenta.desc')}
+              </p>
+              <div className="mt-4 text-xs text-purple-600 bg-purple-50 rounded-lg p-2">
+                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.exhale.detail')}
+              </div>
+            </div>
+          </div>
+          
+          {/* Benefits Section */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">{t('breathing.benefits.title')}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.stress')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.sleep')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.focus')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.pressure')}</span>
+              </div>
             </div>
           </div>
         </div>
