@@ -36,7 +36,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     descriptionEs: 'Punto de encuentro de varios meridianos yang. Enfoque energético MTC para elevar la mente, recuperar conciencia y combatir fatiga mental.',
     descriptionFr: 'Point de rencontre de plusieurs méridiens yang. Approche énergétique MTC pour élever esprit, récupérer conscience et combattre fatigue mentale.',
     position: { x: 50, y: 15 },
-    image: '/VG  20 Eleva a mente recuper a Consciência.jpg',
+    image: '/VG 20 Eleva a mente recuper a Consciência.jpg',
     imageAlt: 'Localização do ponto Baihui VG20 - Eleva a mente e recupera a consciência',
     benefits: ['Eleva a mente e consciência', 'Combate fadiga mental', 'Melhora clareza de pensamento', 'Fortalece energia yang'],
     benefitsEn: ['Elevates mind and consciousness', 'Combats mental fatigue', 'Improves mental clarity', 'Strengthens yang energy'],
