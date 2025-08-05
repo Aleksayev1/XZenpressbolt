@@ -52,16 +52,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('Invalid credentials');
       }
       
-      // Check if user should be premium (demo purposes)
+      // Check if user should be premium or admin (demo purposes)
       const isPremiumUser = email.toLowerCase().includes('premium') || 
                            email.toLowerCase().includes('vip') ||
                            password.toLowerCase().includes('premium');
+      
+      // Check if user is admin/developer
+      const isAdminUser = email.toLowerCase().includes('admin') || 
+                         email.toLowerCase().includes('dev') ||
+                         email.toLowerCase().includes('developer') ||
+                         password.toLowerCase().includes('admin');
       
       const mockUser: User = {
         id: '1',
         email,
         name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-        isPremium: isPremiumUser,
+        isPremium: isPremiumUser || isAdminUser,
+        isAdmin: isAdminUser,
         createdAt: new Date().toISOString(),
       };
       setUser(mockUser);

@@ -116,6 +116,11 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                       <Crown className="w-4 h-4 text-yellow-500" />
                     </div>
                   )}
+                  {user.isAdmin && (
+                    <div className="flex items-center">
+                      <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">ADMIN</span>
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={handleLogout}
