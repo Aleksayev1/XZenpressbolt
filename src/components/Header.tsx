@@ -153,11 +153,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 <button
                   key={item.id}
                   onClick={() => {
-                    setLanguage(lang);
                     onPageChange(item.id);
                     setIsMenuOpen(false);
                   }}
-                  className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left ${
+                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
