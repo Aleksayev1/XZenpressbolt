@@ -58,31 +58,6 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
             </div>
           </div>
 
-          {/* Direct WhatsApp */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-green-200">
-            <div className="flex items-center mb-6">
-              <div className="p-3 bg-green-100 rounded-xl">
-                <MessageCircle className="w-8 h-8 text-green-600" />
-              </div>
-              <div className="ml-4">
-                <h3 className="text-xl font-bold text-gray-900">WhatsApp Direto</h3>
-                <p className="text-green-600 font-medium">Atendimento personalizado</p>
-              </div>
-            </div>
-            <p className="text-gray-600 mb-4">
-              Atendimento personalizado via mensagem para orientações específicas
-            </p>
-            <a 
-              href="https://wa.me/5511999999999?text=Olá! Gostaria de uma consulta especializada sobre acupressão e técnicas de bem-estar."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-green-600 font-medium hover:text-green-700"
-            >
-              <span>Iniciar conversa</span>
-              <Zap className="w-4 h-4 ml-2" />
-            </a>
-          </div>
-
           {/* Exclusive Points */}
           <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-amber-200">
             <div className="flex items-center mb-6">
