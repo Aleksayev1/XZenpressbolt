@@ -48,6 +48,7 @@ export const AcupressurePage: React.FC = () => {
     { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
     { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
     { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
+    { id: 'neurologia', name: 'Neurologia Avançada', icon: '🧬', premium: true },
   ];
 
   const getLocalizedName = (point: AcupressurePoint) => {
@@ -393,8 +394,9 @@ export const AcupressurePage: React.FC = () => {
                 <p className="text-sm text-gray-600">
                   {selectedCategory === 'general' && 'Medicina Tradicional Chinesa - Pontos baseados em meridianos energéticos para equilíbrio do Qi e harmonização do organismo.'}
                   {selectedCategory === 'cranio' && 'Craniopuntura - Técnicas específicas de estimulação craniana para otimização das funções cerebrais e sistema nervoso.'}
-                  {selectedCategory === 'septicemia' && 'Pontos especializados para fortalecimento do sistema imunológico e combate a infecções sistêmicas.'}
-                  {selectedCategory === 'atm' && 'Técnicas específicas para disfunção da articulação temporomandibular, bruxismo e tensões faciais.'}
+                  {selectedCategory === 'septicemia' && 'Pontos MTC especializados para fortalecimento do sistema imunológico e combate a infecções sistêmicas graves.'}
+                  {selectedCategory === 'atm' && 'Pontos específicos dos meridianos para disfunção da articulação temporomandibular, bruxismo e tensões faciais.'}
+                  {selectedCategory === 'neurologia' && 'Pontos avançados para condições neurológicas: enxaquecas severas, insônia crônica e distúrbios neurológicos.'}
                 </p>
               </div>
             )}
@@ -897,17 +899,22 @@ export const AcupressurePage: React.FC = () => {
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🛡️</div>
                 <div className="font-semibold">Septicemia</div>
-                <div className="text-sm opacity-80">Fortalecimento imunológico</div>
+                <div className="text-sm opacity-80">3 pontos MTC especializados</div>
               </div>
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🦷</div>
                 <div className="font-semibold">ATM</div>
-                <div className="text-sm opacity-80">Disfunção temporomandibular</div>
+                <div className="text-sm opacity-80">3 pontos para mandíbula</div>
               </div>
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">🧠</div>
                 <div className="font-semibold">Cranioterapia</div>
-                <div className="text-sm opacity-80">Técnicas cranianas avançadas</div>
+                <div className="text-sm opacity-80">3 zonas cranianas avançadas</div>
+              </div>
+              <div className="bg-white bg-opacity-20 rounded-lg p-4">
+                <div className="text-2xl mb-2">🧬</div>
+                <div className="font-semibold">Neurologia</div>
+                <div className="text-sm opacity-80">2 pontos neurológicos</div>
               </div>
             </div>
             <button className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg inline-flex items-center space-x-2">
