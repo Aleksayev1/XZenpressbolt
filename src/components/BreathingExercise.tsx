@@ -17,9 +17,9 @@ export const BreathingExercise: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const phases = {
-    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.phase.inhale') },
-    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: t('breathing.phase.hold') },
-    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: t('breathing.phase.exhale') },
+    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.inhale') },
+    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: t('breathing.hold') },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: t('breathing.exhale') },
   };
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
@@ -197,7 +197,7 @@ export const BreathingExercise: React.FC = () => {
           />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-          {t('breathing.title.main')}
+          {t('breathing.title')}
         </h1>
         
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
@@ -260,17 +260,17 @@ export const BreathingExercise: React.FC = () => {
               <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-50 border-2 border-blue-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-blue-600 mb-1">4s</div>
                 <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
-                <div className="text-xs text-blue-500 mt-1">{t('breathing.chromotherapy.blue.calm')}</div>
+                <div className="text-xs text-blue-500 mt-1">{t('breathing.chromotherapy.blue.short')}</div>
               </div>
               <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-50 border-2 border-green-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-green-600 mb-1">7s</div>
                 <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
-                <div className="text-xs text-green-500 mt-1">{t('breathing.chromotherapy.green.balance')}</div>
+                <div className="text-xs text-green-500 mt-1">{t('breathing.chromotherapy.green.short')}</div>
               </div>
               <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-50 border-2 border-purple-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
                 <div className="text-2xl font-bold text-purple-600 mb-1">8s</div>
                 <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
-                <div className="text-xs text-purple-500 mt-1">{t('breathing.chromotherapy.magenta.renewal')}</div>
+                <div className="text-xs text-purple-500 mt-1">{t('breathing.chromotherapy.magenta.short')}</div>
               </div>
             </div>
           </div>
@@ -283,7 +283,7 @@ export const BreathingExercise: React.FC = () => {
                 className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Play className="w-6 h-6" />
-                <span>{t('breathing.start.session')}</span>
+                <span>{t('breathing.start')}</span>
               </button>
             ) : (
               <button
@@ -391,7 +391,7 @@ export const BreathingExercise: React.FC = () => {
         <div className="bg-white rounded-3xl shadow-2xl p-8">
           <div className="flex items-center justify-center space-x-2 mb-6">
             <Volume2 className="w-6 h-6 text-gray-600" />
-            <h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.harmonizing')}</h3>
+            <h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3>
           </div>
           
           {/* Free Sounds Section */}
@@ -484,12 +484,12 @@ export const BreathingExercise: React.FC = () => {
             <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">{t('breathing.sounds.premium.title')}</h4>
             <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
               <p className="text-gray-700 mb-4">
-                {t('breathing.sounds.premium.description')}
+                {t('breathing.sounds.premium.desc')}
               </p>
               <div className="flex flex-wrap justify-center gap-2 mb-4">
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical.music')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical')}</span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 {t('breathing.sounds.mantras')}</span>
                 <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">{t('breathing.sounds.more')}</span>
               </div>
