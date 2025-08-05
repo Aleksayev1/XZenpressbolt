@@ -114,6 +114,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   {user.isPremium && (
                     <div className="flex items-center">
                       <Crown className="w-4 h-4 text-yellow-500" />
+                      <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full ml-1">PREMIUM</span>
                     </div>
                   )}
                   {user.isAdmin && (

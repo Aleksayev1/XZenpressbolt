@@ -27,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     // Simulate checking for existing session
     const savedUser = localStorage.getItem('user');
+    console.log('🔍 Verificando usuário salvo:', savedUser);
     if (savedUser) {
       try {
         const parsedUser = JSON.parse(savedUser);
@@ -34,8 +35,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (parsedUser && !parsedUser.hasOwnProperty('isPremium')) {
           parsedUser.isPremium = false;
         }
+        console.log('✅ Usuário carregado:', parsedUser);
         setUser(parsedUser);
       } catch (error) {
+        console.error('❌ Erro ao carregar usuário:', error);
         localStorage.removeItem('user');
       }
     }
@@ -43,6 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
+    console.log('🔐 Tentando fazer login:', email);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -71,23 +75,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         isAdmin: isAdminUser,
         createdAt: new Date().toISOString(),
       };
+      
+      console.log('👤 Usuário criado:', mockUser);
       setUser(mockUser);
+      
+      // Salvar no localStorage com confirmação
       localStorage.setItem('user', JSON.stringify(mockUser));
+      const savedCheck = localStorage.getItem('user');
+      console.log('💾 Usuário salvo no localStorage:', savedCheck ? '✅ Sucesso' : '❌ Falhou');
+      
+      // Verificar se realmente salvou
+      if (savedCheck) {
+        const parsedCheck = JSON.parse(savedCheck);
+        console.log('🔍 Verificação do salvamento:', parsedCheck);
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   const upgradeToPremium = () => {
+    console.log('⬆️ Fazendo upgrade para Premium...');
     if (user) {
       const updatedUser = { ...user, isPremium: true };
+      console.log('👑 Usuário atualizado:', updatedUser);
       setUser(updatedUser);
       localStorage.setItem('user', JSON.stringify(updatedUser));
+      
+      // Verificar se o upgrade foi salvo
+      const savedUpgrade = localStorage.getItem('user');
+      if (savedUpgrade) {
+        const parsedUpgrade = JSON.parse(savedUpgrade);
+        console.log('💾 Upgrade salvo:', parsedUpgrade.isPremium ? '✅ Premium ativo' : '❌ Falhou');
+      }
     }
   };
   const logout = () => {
+    console.log('🚪 Fazendo logout...');
     setUser(null);
     localStorage.removeItem('user');
+    console.log('🗑️ Dados removidos do localStorage');
   };
 
   const resetPassword = async (email: string) => {

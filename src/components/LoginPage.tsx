@@ -29,9 +29,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
 
     if (isLogin) {
       try {
+        console.log('🔐 Tentando login com:', formData.email);
         await login(formData.email, formData.password);
+        console.log('✅ Login bem-sucedido, redirecionando...');
         onPageChange('home');
       } catch (err) {
+        console.error('❌ Erro no login:', err);
         setError('Email ou senha incorretos');
       }
     } else {

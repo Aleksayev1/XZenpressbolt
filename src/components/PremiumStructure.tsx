@@ -333,7 +333,9 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
 
   const handlePayment = () => {
     // Simular processamento de pagamento bem-sucedido
+    console.log('💳 Processando pagamento...');
     setTimeout(() => {
+      console.log('✅ Pagamento confirmado, ativando Premium...');
       alert(`Pagamento ${paymentMethod.toUpperCase()} confirmado! Bem-vindo ao Premium!`);
       upgradeToPremium();
       setShowPayment(false);
@@ -341,6 +343,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   };
 
   const handlePixPaymentSuccess = (paymentData: any) => {
+    console.log('🎯 PIX confirmado:', paymentData);
     alert('Pagamento PIX confirmado! Bem-vindo ao Premium!');
     upgradeToPremium();
     setShowPayment(false);
