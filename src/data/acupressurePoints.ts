@@ -26,30 +26,6 @@ export const acupressurePoints: AcupressurePoint[] = [
     pressure: 'leve'
   },
 
-  // Pontos Premium - MTC Avançada
-  {
-    id: 'mtc-premium-shenmen-advanced',
-    name: 'Shenmen Avançado (HE7) - Técnica Premium',
-    nameEn: 'Advanced Spirit Gate (HE7) - Premium Technique',
-    nameEs: 'Puerta del Espíritu Avanzada (HE7) - Técnica Premium',
-    nameFr: 'Porte de l\'Esprit Avancée (HE7) - Technique Premium',
-    description: 'Técnica avançada do ponto Shenmen com protocolo específico para ansiedade crônica e distúrbios do sono. Inclui manipulação em 3 fases com pressões diferenciadas.',
-    descriptionEn: 'Advanced Shenmen technique with specific protocol for chronic anxiety and sleep disorders. Includes 3-phase manipulation with differentiated pressures.',
-    descriptionEs: 'Técnica avanzada del punto Shenmen con protocolo específico para ansiedad crónica y trastornos del sueño. Incluye manipulación en 3 fases con presiones diferenciadas.',
-    descriptionFr: 'Technique avancée du point Shenmen avec protocole spécifique pour anxiété chronique et troubles du sommeil. Inclut manipulation en 3 phases avec pressions différenciées.',
-    position: { x: 20, y: 70 },
-    image: '/C 7 Shenmen Acalma a mente Estresse.jpg',
-    imageAlt: 'Localização avançada do ponto Shenmen HE7 para técnica premium',
-    benefits: ['Protocolo avançado para ansiedade crônica', 'Técnica em 3 fases para máxima eficácia', 'Regulação profunda do sistema nervoso', 'Melhoria significativa da qualidade do sono'],
-    benefitsEn: ['Advanced protocol for chronic anxiety', '3-phase technique for maximum efficacy', 'Deep nervous system regulation', 'Significant sleep quality improvement'],
-    benefitsEs: ['Protocolo avanzado para ansiedad crónica', 'Técnica en 3 fases para máxima eficacia', 'Regulación profunda del sistema nervioso', 'Mejora significativa de la calidad del sueño'],
-    benefitsFr: ['Protocole avancé pour anxiété chronique', 'Technique en 3 phases pour efficacité maximale', 'Régulation profonde système nerveux', 'Amélioration significative qualité sommeil'],
-    isPremium: true,
-    category: 'general',
-    instructions: 'FASE 1: Pressão leve por 30s. FASE 2: Pressão moderada com movimentos circulares por 60s. FASE 3: Pressão firme mantida por 30s. Total: 2 minutos.',
-    duration: 120,
-    pressure: 'variável'
-  },
   {
     id: 'mtc-premium-baihui-advanced',
     name: 'Baihui Premium (VG20) - Protocolo Energético',
