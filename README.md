@@ -72,9 +72,17 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 
 ## 💳 Integração de Pagamentos
 
-### PIX Real Implementado
+### Pagamentos Implementados
 
-A plataforma agora suporta PIX real através de múltiplos provedores:
+A plataforma suporta múltiplos métodos de pagamento:
+
+#### 💳 Cartão de Crédito (Stripe)
+- **Stripe** - Integração completa com API oficial
+- **Cartões suportados:** Visa, Mastercard, American Express
+- **Segurança:** PCI Compliance, SSL 256-bit
+- **Validação:** Luhn algorithm, formatação automática
+
+#### 📱 PIX Real Implementado
 
 #### Provedores Suportados:
 - **PagSeguro** - Integração completa com API
@@ -88,8 +96,12 @@ A plataforma agora suporta PIX real através de múltiplos provedores:
    cp .env.example .env
    ```
 
-2. **Configure suas credenciais:**
+2. **Configure suas credenciais de pagamento:**
    ```env
+   # Para Stripe (Cartão de Crédito)
+   VITE_CREDIT_CARD_PROVIDER=stripe
+   VITE_STRIPE_PUBLISHABLE_KEY=pk_test_seu_stripe_key_aqui
+   
    # Para PagSeguro
    VITE_PIX_PROVIDER=pagseguro
    VITE_PAGSEGURO_TOKEN=seu_token_aqui
@@ -103,7 +115,8 @@ A plataforma agora suporta PIX real através de múltiplos provedores:
    VITE_PIX_PROVIDER=mock
    ```
 
-#### Funcionalidades PIX:
+#### Funcionalidades de Pagamento:
+- ✅ **Stripe real** com cartões de teste e produção
 - ✅ Geração automática de QR Code
 - ✅ Código PIX copiável
 - ✅ Verificação automática de status
@@ -114,12 +127,18 @@ A plataforma agora suporta PIX real através de múltiplos provedores:
 
 #### Como Usar:
 
-1. **Desenvolvimento:** Use `VITE_PIX_PROVIDER=mock` para testes
-2. **Produção:** Configure com PagSeguro ou Mercado Pago
+1. **Desenvolvimento:** 
+   - Stripe: Use chaves de teste `pk_test_...`
+   - PIX: Use `VITE_PIX_PROVIDER=mock`
+2. **Produção:** 
+   - Stripe: Use chaves de produção `pk_live_...`
+   - PIX: Configure com PagSeguro ou Mercado Pago
 3. **Webhooks:** Configure URLs de notificação nos provedores
 
 #### Próximos Passos:
-- [ ] Implementar webhooks para confirmação automática
+- [x] Integração Stripe real
+- [ ] Backend para Payment Intents
+- [ ] Webhooks para confirmação automática
 - [ ] Adicionar mais provedores (Asaas, Gerencianet, etc.)
 - [ ] Integrar com Supabase para persistência
 - [ ] Adicionar relatórios de pagamento

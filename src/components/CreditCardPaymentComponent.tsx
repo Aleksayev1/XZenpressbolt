@@ -22,7 +22,7 @@ export const CreditCardPaymentComponent: React.FC<CreditCardPaymentComponentProp
   onPaymentSuccess,
   onPaymentError
 }) => {
-  const { paymentResult, loading, error, providerName } = useCreditCardPayment();
+  const { paymentResult, loading, error, isStripeReady, providerName } = useCreditCardPayment();
 
   useEffect(() => {
     if (paymentResult?.status === 'approved') {
@@ -107,8 +107,11 @@ export const CreditCardPaymentComponent: React.FC<CreditCardPaymentComponentProp
           <CreditCard className="w-6 h-6" />
           <span>Pagamento com Cartão</span>
         </h3>
-        <div className="text-sm text-blue-700">
-          Provedor: <span className="font-semibold">{providerName}</span>
+        <div className="text-sm text-blue-700 flex items-center space-x-2">
+          {isStripeReady && (
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          )}
+          <span>Provedor: <span className="font-semibold">{providerName}</span></span>
         </div>
       </div>
 
@@ -123,10 +126,22 @@ export const CreditCardPaymentComponent: React.FC<CreditCardPaymentComponentProp
       />
 
       <div className="mt-6 bg-blue-100 border border-blue-200 rounded-lg p-4">
-        <h5 className="font-semibold text-blue-800 mb-2">Cartões de Teste (Modo Demo):</h5>
+        <h5 className="font-semibold text-blue-800 mb-2">
+          {isStripeReady ? 'Cartões de Teste Stripe:' : 'Cartões de Teste (Modo Demo):'}
+        </h5>
         <div className="text-sm text-blue-700 space-y-1">
-          <div><strong>Sucesso:</strong> 4111 1111 1111 1111</div>
-          <div><strong>Recusado:</strong> 4000 0000 0000 0002</div>
+          {isStripeReady ? (
+            <>
+              <div><strong>Visa Sucesso:</strong> 4242 4242 4242 4242</div>
+              <div><strong>Visa Recusado:</strong> 4000 0000 0000 0002</div>
+              <div><strong>Mastercard:</strong> 5555 5555 5555 4444</div>
+            </>
+          ) : (
+            <>
+              <div><strong>Sucesso:</strong> 4111 1111 1111 1111</div>
+              <div><strong>Recusado:</strong> 4000 0000 0000 0002</div>
+            </>
+          )}
           <div><strong>Qualquer data futura e CVV 123</strong></div>
         </div>
       </div>
