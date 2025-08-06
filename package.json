@@ -55,11 +55,10 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "vite build && npm run generate-sw",
+    "build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "serve": "npx serve -s build -l 3000",
-    "generate-sw": "workbox generateSW workbox-config.js",
+    "serve": "npx serve -s dist -l 3000",
     "analyze": "npm run build && npx serve -s build",
     "lighthouse": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html"
   },

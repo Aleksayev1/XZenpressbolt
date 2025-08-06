@@ -68,7 +68,26 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 
 ---
 
-**Status**: 🚀 **LANÇADO OFICIALMENTE** - Plataforma completa funcionando!
+**Status**: 🚀 **LANÇADO OFICIALMENTE** - Plataforma em produção no Netlify!
+
+## 🌐 Deploy em Produção
+
+### Netlify Deploy
+A plataforma está configurada para deploy automático no Netlify:
+
+1. **Build Command:** `npm run build`
+2. **Publish Directory:** `dist`
+3. **Node Version:** 18
+4. **Redirects:** SPA configurado
+5. **Headers de Segurança:** CSP, XSS Protection, etc.
+
+### Configuração de Produção
+- ✅ PWA otimizado para produção
+- ✅ Service Worker configurado
+- ✅ Headers de segurança
+- ✅ Cache otimizado para assets
+- ✅ Redirects para SPA
+- ✅ Variáveis de ambiente configuradas
 
 ## 💳 Integração de Pagamentos
 
