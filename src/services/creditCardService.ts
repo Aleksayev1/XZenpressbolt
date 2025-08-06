@@ -1,5 +1,3 @@
-import { loadStripe, Stripe, StripeElements, StripeCardElement } from '@stripe/stripe-js';
-
 export interface CreditCardData {
   number: string;
   name: string;
@@ -35,119 +33,6 @@ export interface PaymentResult {
 export interface CreditCardProvider {
   name: string;
   processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult>;
-}
-
-// Implementação para Stripe
-export class StripeProvider implements CreditCardProvider {
-  name = 'Stripe';
-  private stripe: Promise<Stripe | null>;
-
-  constructor(publishableKey: string) {
-    this.stripe = loadStripe(publishableKey);
-  }
-
-  async processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult> {
-    try {
-      const stripe = await this.stripe;
-      if (!stripe) {
-        throw new Error('Stripe não foi carregado corretamente');
-      }
-      
-      // Criar Payment Intent no backend (simulado aqui)
-      const paymentIntent = await this.createPaymentIntent(paymentData);
-      
-      // Confirmar pagamento com dados do cartão
-      const { error, paymentIntent: confirmedPayment } = await stripe.confirmCardPayment(
-        paymentIntent.client_secret,
-        {
-          payment_method: {
-            card: {
-              number: cardData.number.replace(/\s/g, ''),
-              exp_month: parseInt(cardData.expiry.split('/')[0]),
-              exp_year: parseInt('20' + cardData.expiry.split('/')[1]),
-              cvc: cardData.cvv,
-            },
-            billing_details: {
-              name: cardData.name,
-            },
-          },
-        }
-      );
-
-      if (error) {
-        throw new Error(error.message || 'Erro no pagamento');
-      }
-
-      if (!confirmedPayment) {
-        throw new Error('Pagamento não foi confirmado');
-      }
-
-      return {
-        id: confirmedPayment.id,
-        status: confirmedPayment.status === 'succeeded' ? 'approved' : 'declined',
-        amount: paymentData.amount,
-        currency: paymentData.currency,
-        orderId: paymentData.orderId,
-        paymentMethod: 'credit_card',
-        card: {
-          brand: confirmedPayment.payment_method?.card?.brand || 'unknown',
-          lastFour: confirmedPayment.payment_method?.card?.last4 || '****',
-          name: cardData.name
-        },
-        processedAt: new Date().toISOString()
-      };
-
-    } catch (error) {
-      console.error('Stripe payment error:', error);
-      throw new Error(error instanceof Error ? error.message : 'Falha no processamento do pagamento');
-    }
-  }
-
-  private async createPaymentIntent(paymentData: PaymentData) {
-    // Em produção, isso seria uma chamada para seu backend
-    // Por enquanto, simulamos a resposta do backend
-    console.log('Criando Payment Intent para:', paymentData);
-    
-    // Simular chamada para backend
-    const response = await fetch('/api/create-payment-intent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        amount: Math.round(paymentData.amount * 100), // Stripe usa centavos
-        currency: paymentData.currency.toLowerCase(),
-        metadata: {
-          orderId: paymentData.orderId,
-          description: paymentData.description,
-        },
-      }),
-    }).catch(() => {
-      // Fallback para desenvolvimento - simular resposta
-      return {
-        ok: true,
-        json: async () => ({
-          client_secret: `pi_${Date.now()}_secret_mock`,
-          id: `pi_${Date.now()}`,
-        })
-      };
-    });
-
-    if (!response.ok) {
-      throw new Error('Erro ao criar Payment Intent');
-    }
-
-    return await response.json();
-  }
-
-  private getCardBrand(number: string): string {
-    const num = number.replace(/\s/g, '');
-    if (/^4/.test(num)) return 'visa';
-    if (/^5[1-5]/.test(num)) return 'mastercard';
-    if (/^3[47]/.test(num)) return 'amex';
-    if (/^6(?:011|5)/.test(num)) return 'discover';
-    return 'unknown';
-  }
 }
 
 // Implementação para PagSeguro
@@ -281,24 +166,8 @@ export class CreditCardService {
 export function createCreditCardService(): CreditCardService {
   const provider = import.meta.env.VITE_CREDIT_CARD_PROVIDER || 'mock';
   
-  // Para lançamento oficial, sempre usar mock até Stripe real ser configurado
-  if (provider === 'stripe') {
-    const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-    if (!stripeKey || stripeKey === 'your_stripe_key_here') {
-      console.log('🚀 Modo demonstração ativo - Stripe será configurado em breve');
-      return new CreditCardService(new MockCreditCardProvider());
-    }
-  }
-  
+  // Para lançamento oficial, usar mock até configurar providers reais
   switch (provider) {
-    case 'stripe':
-      const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-      if (!stripeKey) {
-        console.warn('Stripe key not found, using Mock provider');
-        return new CreditCardService(new MockCreditCardProvider());
-      }
-      return new CreditCardService(new StripeProvider(stripeKey));
-      
     case 'pagseguro':
       const pagSeguroToken = import.meta.env.VITE_PAGSEGURO_TOKEN;
       const pagSeguroEmail = import.meta.env.VITE_PAGSEGURO_EMAIL;
