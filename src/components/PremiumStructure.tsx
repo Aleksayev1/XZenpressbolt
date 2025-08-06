@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AIRecommendationsPanel } from './AIRecommendationsPanel';
 import { PixPaymentComponent } from './PixPaymentComponent';
+import { CreditCardPaymentComponent } from './CreditCardPaymentComponent';
 
 interface PremiumStructureProps {
   onPageChange: (page: string) => void;
@@ -448,28 +449,24 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
             {paymentMethod === 'credit' && (
               <div className="bg-blue-50 rounded-xl p-6 mb-6">
                 <h4 className="font-semibold text-blue-800 mb-4">{t('premium.payment.credit.title')}</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder={t('premium.payment.credit.number')}
-                    className="px-4 py-3 border border-gray-300 rounded-lg"
+                {pixPaymentData && (
+                  <CreditCardPaymentComponent
+                    amount={pixPaymentData.amount}
+                    description={pixPaymentData.description}
+                    orderId={pixPaymentData.orderId}
+                    customerEmail={user?.email}
+                    customerName={user?.name}
+                    onPaymentSuccess={(paymentData) => {
+                      console.log('💳 Cartão aprovado:', paymentData);
+                      alert('Pagamento com cartão aprovado! Bem-vindo ao Premium!');
+                      upgradeToPremium();
+                      setShowPayment(false);
+                    }}
+                    onPaymentError={(error) => {
+                      console.error('Erro no pagamento com cartão:', error);
+                    }}
                   />
-                  <input
-                    type="text"
-                    placeholder={t('premium.payment.credit.name')}
-                    className="px-4 py-3 border border-gray-300 rounded-lg"
-                  />
-                  <input
-                    type="text"
-                    placeholder="MM/AA"
-                    className="px-4 py-3 border border-gray-300 rounded-lg"
-                  />
-                  <input
-                    type="text"
-                    placeholder="CVV"
-                    className="px-4 py-3 border border-gray-300 rounded-lg"
-                  />
-                </div>
+                )}
               </div>
             )}
 
