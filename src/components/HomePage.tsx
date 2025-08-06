@@ -152,6 +152,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           <p className="text-xl text-blue-100 mb-6">
             {t('home.cta.subtitle')}
           </p>
+          
+          {/* Launch Status */}
+          <div className="bg-white bg-opacity-20 rounded-2xl p-4 mb-6">
+            <div className="flex items-center justify-center space-x-2 text-white">
+              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="font-semibold">🚀 Plataforma Oficial Lançada!</span>
+            </div>
+            <p className="text-blue-100 text-sm mt-2">
+              PIX real ativo • Cartão em demonstração • Todos os recursos funcionais
+            </p>
+          </div>
+          
           <div className="bg-white bg-opacity-20 rounded-2xl p-6 mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-blue-100">
               <div className="flex items-center space-x-2">

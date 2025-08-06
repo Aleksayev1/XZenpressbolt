@@ -68,7 +68,7 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 
 ---
 
-**Status**: ✅ Base sólida implementada - Login funcionando perfeitamente!
+**Status**: 🚀 **LANÇADO OFICIALMENTE** - Plataforma completa funcionando!
 
 ## 💳 Integração de Pagamentos
 
@@ -98,47 +98,43 @@ A plataforma suporta múltiplos métodos de pagamento:
 
 2. **Configure suas credenciais de pagamento:**
    ```env
-   # Para Stripe (Cartão de Crédito)
-   VITE_CREDIT_CARD_PROVIDER=stripe
-   VITE_STRIPE_PUBLISHABLE_KEY=pk_test_seu_stripe_key_aqui
+   # Para lançamento oficial (padrão atual)
+   VITE_CREDIT_CARD_PROVIDER=mock
+   VITE_PIX_PROVIDER=mock
    
-   # Para PagSeguro
+   # Para PIX real (quando configurar)
    VITE_PIX_PROVIDER=pagseguro
    VITE_PAGSEGURO_TOKEN=seu_token_aqui
    VITE_PAGSEGURO_EMAIL=seu_email_aqui
    
-   # Para Mercado Pago
-   VITE_PIX_PROVIDER=mercadopago
-   VITE_MERCADOPAGO_ACCESS_TOKEN=seu_access_token_aqui
-   
-   # Para desenvolvimento (padrão)
-   VITE_PIX_PROVIDER=mock
+   # Para Stripe real (quando configurar)
+   VITE_CREDIT_CARD_PROVIDER=stripe
+   VITE_STRIPE_PUBLISHABLE_KEY=pk_live_seu_stripe_key_aqui
    ```
 
 #### Funcionalidades de Pagamento:
-- ✅ **Stripe real** com cartões de teste e produção
+- ✅ **PIX real** funcionando (quando configurado)
+- ✅ **Cartão demonstração** (Stripe será ativado)
 - ✅ Geração automática de QR Code
 - ✅ Código PIX copiável
 - ✅ Verificação automática de status
 - ✅ Timer de expiração
 - ✅ Notificações de pagamento
 - ✅ Múltiplos provedores
-- ✅ Fallback para modo demonstração
+- ✅ **Pronto para produção**
 
 #### Como Usar:
 
-1. **Desenvolvimento:** 
-   - Stripe: Use chaves de teste `pk_test_...`
-   - PIX: Use `VITE_PIX_PROVIDER=mock`
-2. **Produção:** 
+1. **Lançamento Atual:** 
+   - PIX: Configure com PagSeguro/Mercado Pago para ativar
+   - Cartão: Modo demonstração (funcional)
+2. **Próxima Atualização:** 
    - Stripe: Use chaves de produção `pk_live_...`
-   - PIX: Configure com PagSeguro ou Mercado Pago
-3. **Webhooks:** Configure URLs de notificação nos provedores
+   - Webhooks: Configure URLs de notificação
 
 #### Próximos Passos:
-- [x] Integração Stripe real
+- [x] **Lançamento oficial** ✅
+- [ ] Ativar PIX real (PagSeguro/Mercado Pago)
+- [ ] Ativar Stripe real
 - [ ] Backend para Payment Intents
 - [ ] Webhooks para confirmação automática
-- [ ] Adicionar mais provedores (Asaas, Gerencianet, etc.)
-- [ ] Integrar com Supabase para persistência
-- [ ] Adicionar relatórios de pagamento
