@@ -732,3 +732,5 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     </div>
   );
 };
+
+export { CorporatePlansPage }
