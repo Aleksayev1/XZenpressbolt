@@ -50,7 +50,7 @@ export class StripeProvider implements CreditCardProvider {
       const { loadStripe } = await import('@stripe/stripe-js');
       this.stripe = await loadStripe(publishableKey);
       this.isInitialized = true;
-      console.log('✅ Stripe inicializado com sucesso');
+      console.log('🎯 Stripe OFICIAL inicializado com sucesso!');
     }
   }
 
