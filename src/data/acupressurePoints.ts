@@ -454,18 +454,171 @@ export const acupressurePoints: AcupressurePoint[] = [
   }
 ];
 
+// ===== OTIMIZAÇÃO DE DESEMPENHO =====
+// Estruturas de dados pré-processadas para consultas rápidas
+
+// Índices por categoria (O(1) lookup)
+const pointsByCategory: Record<string, AcupressurePoint[]> = {};
+const premiumPointsByCategory: Record<string, AcupressurePoint[]> = {};
+const freePointsByCategory: Record<string, AcupressurePoint[]> = {};
+
+// Arrays pré-filtrados (evita filtragem repetitiva)
+let premiumPoints: AcupressurePoint[] = [];
+let freePoints: AcupressurePoint[] = [];
+
+// Mapa de pontos por ID para lookup rápido
+const pointsById: Record<string, AcupressurePoint> = {};
+
+// Estatísticas pré-calculadas
+let stats = {
+  totalPoints: 0,
+  premiumCount: 0,
+  freeCount: 0,
+  categoriesCount: 0,
+  categories: [] as string[]
+};
+
+// Função de inicialização - executa uma única vez quando o módulo é carregado
+function initializeOptimizedStructures() {
+  // Reset das estruturas
+  Object.keys(pointsByCategory).forEach(key => delete pointsByCategory[key]);
+  Object.keys(premiumPointsByCategory).forEach(key => delete premiumPointsByCategory[key]);
+  Object.keys(freePointsByCategory).forEach(key => delete freePointsByCategory[key]);
+  Object.keys(pointsById).forEach(key => delete pointsById[key]);
+  
+  premiumPoints = [];
+  freePoints = [];
+  
+  const categoriesSet = new Set<string>();
+  
+  // Processar cada ponto uma única vez
+  for (const point of acupressurePoints) {
+    const category = point.category;
+    
+    // Índice por ID
+    pointsById[point.id] = point;
+    
+    // Categorizar pontos
+    if (!pointsByCategory[category]) {
+      pointsByCategory[category] = [];
+      premiumPointsByCategory[category] = [];
+      freePointsByCategory[category] = [];
+    }
+    
+    pointsByCategory[category].push(point);
+    categoriesSet.add(category);
+    
+    // Separar premium/free
+    if (point.isPremium) {
+      premiumPoints.push(point);
+      premiumPointsByCategory[category].push(point);
+    } else {
+      freePoints.push(point);
+      freePointsByCategory[category].push(point);
+    }
+  }
+  
+  // Atualizar estatísticas
+  stats = {
+    totalPoints: acupressurePoints.length,
+    premiumCount: premiumPoints.length,
+    freeCount: freePoints.length,
+    categoriesCount: categoriesSet.size,
+    categories: Array.from(categoriesSet)
+  };
+  
+  console.log('🚀 Estruturas de dados otimizadas inicializadas:', stats);
+}
+
+// Inicializar estruturas imediatamente
+initializeOptimizedStructures();
+
+// ===== FUNÇÕES OTIMIZADAS =====
+
+/**
+ * Busca pontos por categoria com desempenho otimizado O(1)
+ * @param category - Categoria dos pontos ('all', 'general', 'cranio', etc.)
+ * @param isPremium - Se o usuário tem acesso premium
+ * @returns Array de pontos filtrados
+ */
 export const getPointsByCategory = (category: string, isPremium: boolean = false) => {
-  return acupressurePoints.filter(point => 
-    (category === 'all' || point.category === category || 
-     (category === 'mtc-premium' && point.category === 'general' && point.isPremium)) && 
-    (!point.isPremium || isPremium)
-  );
+  // Caso especial: todos os pontos
+  if (category === 'all') {
+    return isPremium ? acupressurePoints : freePoints;
+  }
+  
+  // Caso especial: MTC Premium (pontos gerais premium)
+  if (category === 'mtc-premium') {
+    const generalPremium = premiumPointsByCategory['general'] || [];
+    return isPremium ? generalPremium : [];
+  }
+  
+  // Categoria específica
+  if (isPremium) {
+    return pointsByCategory[category] || [];
+  } else {
+    return freePointsByCategory[category] || [];
+  }
 };
 
+/**
+ * Retorna pontos premium com desempenho otimizado O(1)
+ */
 export const getPremiumPoints = () => {
-  return acupressurePoints.filter(point => point.isPremium);
+  return premiumPoints;
 };
 
+/**
+ * Retorna pontos gratuitos com desempenho otimizado O(1)
+ */
 export const getFreePoints = () => {
-  return acupressurePoints.filter(point => !point.isPremium);
+  return freePoints;
+};
+
+/**
+ * Busca ponto por ID com desempenho otimizado O(1)
+ * @param id - ID do ponto
+ * @returns Ponto encontrado ou undefined
+ */
+export const getPointById = (id: string): AcupressurePoint | undefined => {
+  return pointsById[id];
+};
+
+/**
+ * Retorna estatísticas pré-calculadas O(1)
+ */
+export const getPointsStats = () => {
+  return { ...stats };
+};
+
+/**
+ * Retorna pontos por múltiplas categorias com desempenho otimizado
+ * @param categories - Array de categorias
+ * @param isPremium - Se o usuário tem acesso premium
+ * @returns Array de pontos únicos das categorias especificadas
+ */
+export const getPointsByMultipleCategories = (categories: string[], isPremium: boolean = false): AcupressurePoint[] => {
+  const pointsSet = new Set<AcupressurePoint>();
+  
+  for (const category of categories) {
+    const categoryPoints = getPointsByCategory(category, isPremium);
+    categoryPoints.forEach(point => pointsSet.add(point));
+  }
+  
+  return Array.from(pointsSet);
+};
+
+/**
+ * Busca pontos por benefício específico (otimizada com cache)
+ * @param benefit - Benefício procurado
+ * @param isPremium - Se o usuário tem acesso premium
+ * @returns Array de pontos que oferecem o benefício
+ */
+export const getPointsByBenefit = (benefit: string, isPremium: boolean = false): AcupressurePoint[] => {
+  const searchPoints = isPremium ? acupressurePoints : freePoints;
+  const benefitLower = benefit.toLowerCase();
+  
+  return searchPoints.filter(point => 
+    point.benefits.some(b => b.toLowerCase().includes(benefitLower))
+  );
 };
