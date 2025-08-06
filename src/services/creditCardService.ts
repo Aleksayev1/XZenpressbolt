@@ -35,6 +35,102 @@ export interface CreditCardProvider {
   processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult>;
 }
 
+// Implementação para Stripe OFICIAL
+export class StripeProvider implements CreditCardProvider {
+  name = 'Stripe Oficial';
+  private stripe: any;
+
+  constructor(publishableKey: string) {
+    // Carregar Stripe.js dinamicamente
+    this.initializeStripe(publishableKey);
+  }
+
+  private async initializeStripe(publishableKey: string) {
+    if (typeof window !== 'undefined') {
+      const { loadStripe } = await import('@stripe/stripe-js');
+      this.stripe = await loadStripe(publishableKey);
+    }
+  }
+
+  async processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult> {
+    try {
+      console.log('🔄 Processando pagamento com Stripe oficial...');
+      
+      if (!this.stripe) {
+        throw new Error('Stripe não inicializado');
+      }
+
+      // Criar Payment Intent no backend (seria necessário)
+      // Por enquanto, simular para manter compatibilidade
+      const response = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: Math.round(paymentData.amount * 100), // Centavos
+          currency: 'brl',
+          orderId: paymentData.orderId,
+          customerEmail: paymentData.customerEmail
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao criar Payment Intent');
+      }
+
+      const { clientSecret } = await response.json();
+
+      // Confirmar pagamento com Stripe
+      const result = await this.stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: {
+            number: cardData.number.replace(/\s/g, ''),
+            exp_month: parseInt(cardData.expiry.split('/')[0]),
+            exp_year: parseInt('20' + cardData.expiry.split('/')[1]),
+            cvc: cardData.cvv,
+          },
+          billing_details: {
+            name: cardData.name,
+            email: paymentData.customerEmail,
+          },
+        },
+      });
+
+      if (result.error) {
+        return {
+          id: `stripe_error_${Date.now()}`,
+          status: 'declined',
+          amount: paymentData.amount,
+          currency: paymentData.currency,
+          orderId: paymentData.orderId,
+          paymentMethod: 'credit_card',
+          processedAt: new Date().toISOString(),
+          errorMessage: result.error.message
+        };
+      }
+
+      return {
+        id: result.paymentIntent.id,
+        status: 'approved',
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        orderId: paymentData.orderId,
+        paymentMethod: 'credit_card',
+        card: {
+          brand: result.paymentIntent.charges.data[0].payment_method_details.card.brand,
+          lastFour: result.paymentIntent.charges.data[0].payment_method_details.card.last4,
+          name: cardData.name
+        },
+        processedAt: new Date().toISOString()
+      };
+    } catch (error) {
+      console.error('Erro no pagamento Stripe:', error);
+      throw new Error('Falha no processamento do pagamento');
+    }
+  }
+}
+
 // Implementação para PagSeguro
 export class PagSeguroProvider implements CreditCardProvider {
   name = 'PagSeguro';
@@ -166,8 +262,15 @@ export class CreditCardService {
 export function createCreditCardService(): CreditCardService {
   const provider = import.meta.env.VITE_CREDIT_CARD_PROVIDER || 'mock';
   
-  // Para lançamento oficial, usar mock até configurar providers reais
   switch (provider) {
+    case 'stripe':
+      const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+      if (!stripeKey || !stripeKey.startsWith('pk_')) {
+        console.warn('Stripe key not found or invalid, using Mock provider');
+        return new CreditCardService(new MockCreditCardProvider());
+      }
+      return new CreditCardService(new StripeProvider(stripeKey));
+      
     case 'pagseguro':
       const pagSeguroToken = import.meta.env.VITE_PAGSEGURO_TOKEN;
       const pagSeguroEmail = import.meta.env.VITE_PAGSEGURO_EMAIL;
