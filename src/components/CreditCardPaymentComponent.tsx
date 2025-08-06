@@ -108,10 +108,12 @@ export const CreditCardPaymentComponent: React.FC<CreditCardPaymentComponentProp
           <span>Pagamento com Cartão</span>
         </h3>
         <div className="text-sm text-blue-700 flex items-center space-x-2">
-          {isStripeReady && (
+          {isStripeReady ? (
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+          ) : (
+            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
           )}
-          <span>Provedor: <span className="font-semibold">{providerName}</span></span>
+          <span>Sistema: <span className="font-semibold">{providerName}</span></span>
         </div>
       </div>
 

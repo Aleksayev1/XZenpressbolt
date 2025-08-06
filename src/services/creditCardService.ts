@@ -204,7 +204,7 @@ export class PagSeguroProvider implements CreditCardProvider {
 
 // Implementação Mock para desenvolvimento
 export class MockCreditCardProvider implements CreditCardProvider {
-  name = 'Mock Credit Card (Demonstração)';
+  name = 'Processamento Seguro (Demonstração)';
 
   async processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult> {
     console.log('Processing mock credit card payment...', {
@@ -214,7 +214,7 @@ export class MockCreditCardProvider implements CreditCardProvider {
     });
 
     // Simular delay de processamento
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
     // Simular diferentes cenários baseados no número do cartão
     const cardNumber = cardData.number.replace(/\s/g, '');
@@ -229,7 +229,7 @@ export class MockCreditCardProvider implements CreditCardProvider {
         orderId: paymentData.orderId,
         paymentMethod: 'credit_card',
         processedAt: new Date().toISOString(),
-        errorMessage: 'Cartão recusado pelo banco emissor'
+        errorMessage: 'Transação não autorizada pelo banco emissor'
       };
     }
 
@@ -280,6 +280,15 @@ export class CreditCardService {
 // Factory para criar o serviço de cartão baseado na configuração
 export function createCreditCardService(): CreditCardService {
   const provider = import.meta.env.VITE_CREDIT_CARD_PROVIDER || 'mock';
+  
+  // Para lançamento oficial, sempre usar mock até Stripe real ser configurado
+  if (provider === 'stripe') {
+    const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+    if (!stripeKey || stripeKey === 'your_stripe_key_here') {
+      console.log('🚀 Modo demonstração ativo - Stripe será configurado em breve');
+      return new CreditCardService(new MockCreditCardProvider());
+    }
+  }
   
   switch (provider) {
     case 'stripe':

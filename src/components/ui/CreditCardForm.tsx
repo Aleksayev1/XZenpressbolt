@@ -346,8 +346,8 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
       {/* Segurança */}
       <div className="mt-4 flex items-center justify-center space-x-4 text-xs text-gray-500">
         <div className="flex items-center space-x-1">
-          <Shield className="w-3 h-3 text-blue-500" />
-          <span>Stripe</span>
+          <Shield className="w-3 h-3 text-green-500" />
+          <span>Seguro</span>
         </div>
         <div className="flex items-center space-x-1">
           <Lock className="w-3 h-3" />
@@ -355,7 +355,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         </div>
         <div className="flex items-center space-x-1">
           <CheckCircle className="w-3 h-3" />
-          <span>PCI Compliant</span>
+          <span>Criptografado</span>
         </div>
         <div className="flex items-center space-x-1">
           <span>🛡️</span>
