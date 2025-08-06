@@ -713,11 +713,11 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:corporativo@xzenpress.com"
+              href="mailto:AleksayevAcupress@gmail.com"
               className="inline-flex items-center space-x-2 bg-white text-blue-600 px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors"
             >
               <Mail className="w-5 h-5" />
-              <span>corporativo@xzenpress.com</span>
+              <span>AleksayevAcupress@gmail.com</span>
             </a>
             <a
               href="tel:+5511999999999"
