@@ -142,19 +142,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                       <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full ml-1">PREMIUM</span>
                     </div>
                   )}
-                  {user.isAdmin && (
-                    <div className="flex items-center">
-                      <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full">ADMIN</span>
-                    </div>
-                  )}
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-700 hover:text-red-600 hover:bg-gray-50 rounded-md"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>{t('nav.logout')}</span>
-                </button>
               </div>
             ) : (
               <button
