@@ -11,7 +11,7 @@ export const BreathingExercise: React.FC = () => {
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
   const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
-  const [soundVolume, setSoundVolume] = useState(0.5);
+  const [soundVolume, setSoundVolume] = useState(0.3);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const manualColorIntervalRef = useRef<NodeJS.Timeout | null>(null);

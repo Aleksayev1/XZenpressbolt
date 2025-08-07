@@ -22,7 +22,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
   const [isChromotherapyEnabled, setIsChromotherapyEnabled] = useState(true);
-  const [soundVolume, setSoundVolume] = useState(0.5);
+  const [soundVolume, setSoundVolume] = useState(0.3);
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
