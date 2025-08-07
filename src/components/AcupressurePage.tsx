@@ -1,97 +1,119 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { MapPin, Lock, Star, Info, Clock, Zap, Target, Crown, Volume2, VolumeX, Palette, Play, Pause } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState, useEffect, useRef } from 'react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain, Music } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { AcupressurePoint } from '../types';
-import { acupressurePoints } from '../data/acupressurePoints';
+import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 
-interface AcupressurePageProps {
-  onPageChange?: (page: string) => void;
-}
-
-export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange = () => {} }) => {
+export const BreathingExercise: React.FC = () => {
+  const { t } = useLanguage();
   const { user } = useAuth();
-  const { t, currentLanguage } = useLanguage();
   const { recordSession } = useSessionHistory();
-  const [selectedPoint, setSelectedPoint] = useState<AcupressurePoint | null>(null);
+  const [isActive, setIsActive] = useState(false);
+  const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
+  const [timeLeft, setTimeLeft] = useState(4);
+  const [totalTime, setTotalTime] = useState(0);
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
-  const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [isTimerActive, setIsTimerActive] = useState(false);
-  const [timeRemaining, setTimeRemaining] = useState(0);
-  const [initialDuration, setInitialDuration] = useState(0);
   const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
-  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
-  const [isChromotherapyEnabled, setIsChromotherapyEnabled] = useState(true);
-  const [soundVolume, setSoundVolume] = useState(0.3);
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [soundVolume, setSoundVolume] = useState(0.3);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const manualColorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sessionStartTime = useRef<number | null>(null);
-  const expectedTimerTimeRef = useRef<number>(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
+  const expectedPhaseTimeRef = useRef<number>(0);
+  const expectedTotalTimeRef = useRef<number>(0);
+
+  const phases = {
+    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.inhale') },
+    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: t('breathing.hold') },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: t('breathing.exhale') },
+  };
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
-  const colorNames = ['Azul Calmante', 'Verde Equilibrante', 'Magenta Energizante'];
+  const colorNames = ['Azul', 'Verde', 'Roxo'];
   
   const freeSounds = [
     {
       id: 'ocean',
-      name: 'Sons do Mar',
-      description: 'Ondas relaxantes do oceano',
-      src: '/sounds/ocean.mp3'
+      name: t('breathing.sounds.ocean'),
+      icon: <Waves className="w-5 h-5" />,
+      src: '/sounds/ocean.mp3',
+      description: t('breathing.sounds.ocean.desc')
     },
     {
       id: 'rain',
-      name: 'Chuva Suave',
-      description: 'Som calmante de chuva',
-      src: '/sounds/rain.mp3'
+      name: t('breathing.sounds.rain'),
+      icon: <CloudRain className="w-5 h-5" />,
+      src: '/sounds/rain.mp3',
+      description: t('breathing.sounds.rain.desc')
     }
   ];
 
-  const categories = [
-    { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
-    { id: 'general', name: 'MTC (Medicina Tradicional Chinesa)', icon: '☯️' },
-    { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
-    { id: 'mtc-premium', name: 'MTC Premium', icon: '👑', premium: true },
-    { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
-    { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
-    { id: 'neurologia', name: 'Neurologia Avançada', icon: '🧬', premium: true },
-  ];
-
-  const getLocalizedName = (point: AcupressurePoint) => {
-    switch (currentLanguage.code) {
-      case 'en': return point.nameEn;
-      case 'es': return point.nameEs;
-      case 'fr': return point.nameFr;
-      default: return point.name;
+  useEffect(() => {
+    if (isActive) {
+      const startTime = Date.now();
+      expectedPhaseTimeRef.current = startTime + 1000;
+      expectedTotalTimeRef.current = startTime + 1000;
+      
+      const phaseTimerTick = () => {
+        const now = Date.now();
+        const drift = now - expectedPhaseTimeRef.current;
+        
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            const currentPhase = phases[phase];
+            const nextPhase = currentPhase.next;
+            setPhase(nextPhase);
+            setCurrentColor(phases[nextPhase].color);
+            return phases[nextPhase].duration;
+          }
+          return prev - 1;
+        });
+        
+        expectedPhaseTimeRef.current += 1000;
+        const nextDelay = Math.max(0, 1000 - drift);
+        intervalRef.current = setTimeout(phaseTimerTick, nextDelay);
+      };
+      
+      const totalTimerTick = () => {
+        const now = Date.now();
+        const drift = now - expectedTotalTimeRef.current;
+        
+        setTotalTime((prev) => prev + 1);
+        
+        expectedTotalTimeRef.current += 1000;
+        const nextDelay = Math.max(0, 1000 - drift);
+        totalTimeIntervalRef.current = setTimeout(totalTimerTick, nextDelay);
+      };
+      
+      // Start both timers
+      intervalRef.current = setTimeout(phaseTimerTick, 1000);
+      totalTimeIntervalRef.current = setTimeout(totalTimerTick, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearTimeout(intervalRef.current);
+        intervalRef.current = null;
+      }
+      if (totalTimeIntervalRef.current) {
+        clearTimeout(totalTimeIntervalRef.current);
+        totalTimeIntervalRef.current = null;
+      }
     }
-  };
 
-  const getLocalizedDescription = (point: AcupressurePoint) => {
-    switch (currentLanguage.code) {
-      case 'en': return point.descriptionEn;
-      case 'es': return point.descriptionEs;
-      case 'fr': return point.descriptionFr;
-      default: return point.description;
-    }
-  };
-
-  const getLocalizedBenefits = (point: AcupressurePoint) => {
-    switch (currentLanguage.code) {
-      case 'en': return point.benefitsEn;
-      case 'es': return point.benefitsEs;
-      case 'fr': return point.benefitsFr;
-      default: return point.benefits;
-    }
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+    return () => {
+      if (intervalRef.current) {
+        clearTimeout(intervalRef.current);
+      }
+      if (totalTimeIntervalRef.current) {
+        clearTimeout(totalTimeIntervalRef.current);
+      }
+      if (manualColorIntervalRef.current) {
+        clearInterval(manualColorIntervalRef.current);
+      }
+    };
+  }, [isActive, phase]);
 
   // Audio control effects
   useEffect(() => {
@@ -103,246 +125,137 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   useEffect(() => {
     if (audioRef.current && selectedSoundId) {
       if (isSoundPlaying) {
-        audioRef.current.play().catch(error => {
-          console.warn('Erro ao reproduzir áudio:', error);
-          playFallbackTone();
-        });
+        audioRef.current.play().catch(console.error);
       } else {
         audioRef.current.pause();
-        stopFallbackTone();
       }
     }
   }, [isSoundPlaying, selectedSoundId]);
 
-  // Cleanup intervals on unmount
-  useEffect(() => {
-    return () => {
-      if (colorIntervalRef.current) {
-        clearInterval(colorIntervalRef.current);
-        colorIntervalRef.current = null;
-      }
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-        timerIntervalRef.current = null;
-      }
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-      stopFallbackTone();
-    }
-  }, []);
-
-  const startIntegratedTherapy = (duration: number) => {
-    // Clear any existing timers first
-    if (timerIntervalRef.current) {
-      clearTimeout(timerIntervalRef.current);
-      timerIntervalRef.current = null;
-    }
-    if (colorIntervalRef.current) {
-      clearInterval(colorIntervalRef.current);
-      colorIntervalRef.current = null;
-    }
-    
-    setInitialDuration(duration);
-    setTimeRemaining(duration);
-    setIsTimerActive(true);
+  const startExercise = () => {
+    setIsActive(true);
     sessionStartTime.current = Date.now();
-    
-    // Start chromotherapy if enabled
-    if (isChromotherapyEnabled) {
-      setIsColorTherapyActive(true);
-      let colorIndex = 0;
-      setCurrentColor(colors[colorIndex]);
-      colorIntervalRef.current = setInterval(() => {
-        colorIndex = (colorIndex + 1) % colors.length;
-        setCurrentColor(colors[colorIndex]);
-      }, 4000);
-    }
-    
-    // Start sound if enabled and selected
-    if (isSoundEnabled && selectedSoundId) {
-      setIsSoundPlaying(true);
-    }
-    
-    // Start timer countdown with drift correction
-    const startTime = Date.now();
-    expectedTimerTimeRef.current = startTime + 1000;
-    
-    const tick = () => {
-      const now = Date.now();
-      const drift = now - expectedTimerTimeRef.current;
-      
-      setTimeRemaining((prev) => {
-        if (prev <= 1) {
-          stopIntegratedTherapy();
-          return 0;
-        }
-        return prev - 1;
-      });
-      
-      expectedTimerTimeRef.current += 1000;
-      const nextDelay = Math.max(0, 1000 - drift);
-      
-      timerIntervalRef.current = setTimeout(tick, nextDelay);
-    };
-    
-    // Start the first tick with precise timing
-    timerIntervalRef.current = setTimeout(tick, 1000);
   };
 
-  const stopIntegratedTherapy = () => {
-    setIsTimerActive(false);
-    setIsColorTherapyActive(false);
-    setIsSoundPlaying(false);
-    setCurrentColor('#3B82F6');
+  const stopExercise = () => {
+    setIsActive(false);
     
     // Registrar sessão se usuário estiver logado e sessão durou mais de 30 segundos
-    if (user && sessionStartTime.current && selectedPoint && (initialDuration - timeRemaining) > 30) {
-      recordAcupressureSession();
+    if (user && sessionStartTime.current && totalTime > 30) {
+      recordSessionData();
     }
-    
-    // Clear intervals
-    if (colorIntervalRef.current) {
-      clearInterval(colorIntervalRef.current);
-      colorIntervalRef.current = null;
+  };
+
+  const resetExercise = () => {
+    setIsActive(false);
+    if (intervalRef.current) {
+      clearTimeout(intervalRef.current);
+      intervalRef.current = null;
     }
-    if (timerIntervalRef.current) {
-      clearTimeout(timerIntervalRef.current);
-      timerIntervalRef.current = null;
+    if (totalTimeIntervalRef.current) {
+      clearTimeout(totalTimeIntervalRef.current);
+      totalTimeIntervalRef.current = null;
     }
-    
-    // Stop audio
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    }
-    
-    // Stop fallback tone
-    stopFallbackTone();
-    
+    setPhase('inhale');
+    setTimeLeft(4);
+    setTotalTime(0);
+    setCurrentColor('#3B82F6');
     sessionStartTime.current = null;
   };
 
-  const recordAcupressureSession = async () => {
-    if (!user || !sessionStartTime.current || !selectedPoint) return;
-
-    const actualDuration = initialDuration - timeRemaining;
+  const recordSessionData = async () => {
+    if (!user || !sessionStartTime.current) return;
 
     try {
       await recordSession({
-        sessionType: selectedPoint.category === 'cranio' ? 'chromotherapy' : 'acupressure',
-        durationSeconds: actualDuration,
-        effectivenessRating: 4.2, // Valor padrão, pode ser ajustado
-        pointsUsed: [selectedPoint.id],
+        sessionType: 'breathing',
+        durationSeconds: totalTime,
+        effectivenessRating: 4.5, // Valor padrão, pode ser ajustado
         sessionData: {
-          pointName: selectedPoint.name,
-          pointCategory: selectedPoint.category,
-          pressure: selectedPoint.pressure,
+          technique: '4-7-8',
           chromotherapyUsed: isChromotherapyEnabled,
           soundUsed: selectedSoundId,
-          integratedBreathing: true,
-          plannedDuration: initialDuration,
-          actualDuration: actualDuration
+          completedCycles: Math.floor(totalTime / 19) // Cada ciclo 4+7+8 = 19s
         },
         completedAt: new Date().toISOString()
       });
       
-      console.log('✅ Sessão de acupressão registrada com sucesso');
+      console.log('✅ Sessão de respiração registrada com sucesso');
     } catch (error) {
-      console.error('❌ Erro ao registrar sessão de acupressão:', error);
+      console.error('❌ Erro ao registrar sessão de respiração:', error);
     }
   };
-  // Fallback audio using Web Audio API
-  const playFallbackTone = () => {
-    try {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-      
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-      
-      const frequency = selectedSoundId === 'ocean' ? 220 : 440;
-      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-      oscillator.type = 'sine';
-      
-      gainNode.gain.setValueAtTime(soundVolume * 0.1, audioContext.currentTime);
-      
-      oscillator.start();
-      
-      (window as any).currentTone = { oscillator, audioContext };
-    } catch (error) {
-      console.warn('Web Audio API não suportado:', error);
-    }
-  };
-  
-  const stopFallbackTone = () => {
-    if ((window as any).currentTone) {
-      try {
-        (window as any).currentTone.oscillator.stop();
-        (window as any).currentTone.audioContext.close();
-        (window as any).currentTone = null;
-      } catch (error) {
-        console.warn('Erro ao parar tom:', error);
-      }
-    }
-  };
-
-  const startColorTherapy = () => {
-    setIsColorTherapyActive(true);
-    let colorIndex = 0;
-    const interval = setInterval(() => {
-      setCurrentColor(colors[colorIndex]);
-      colorIndex = (colorIndex + 1) % colors.length;
-    }, 3000);
-
-    setTimeout(() => {
-      clearInterval(interval);
-      setIsColorTherapyActive(false);
-      setCurrentColor('#3B82F6');
-    }, 60000);
-  };
-
   const handleSoundSelect = (soundId: string) => {
     if (selectedSoundId === soundId) {
+      // If same sound is selected, toggle play/pause
       setIsSoundPlaying(!isSoundPlaying);
     } else {
+      // If different sound is selected, switch to it and start playing
       setSelectedSoundId(soundId);
       setIsSoundPlaying(true);
     }
   };
 
-  const filteredPoints = acupressurePoints.filter(point => {
-    const categoryMatch = selectedCategory === 'all' || 
-                         point.category === selectedCategory ||
-                         (selectedCategory === 'mtc-premium' && point.category === 'general' && point.isPremium);
-    const accessMatch = !point.isPremium || (user && user.isPremium);
-    
-    // Debug log para verificar acesso
-    console.log(`🔍 Ponto ${point.name}:`, {
-      category: point.category,
-      selectedCategory,
-      categoryMatch,
-      isPremium: point.isPremium,
-      userPremium: user?.isPremium,
-      accessMatch,
-      willShow: categoryMatch && accessMatch
-    });
-    
-    return categoryMatch && accessMatch;
-  });
+  const toggleSoundPlayback = () => {
+    if (selectedSoundId) {
+      setIsSoundPlaying(!isSoundPlaying);
+    }
+  };
 
-  const availablePoints = acupressurePoints.filter(point => 
-    !point.isPremium || (user && user.isPremium)
-  );
+  const stopAllSounds = () => {
+    setIsSoundPlaying(false);
+    setSelectedSoundId(null);
+  };
+
+  const startColorTherapy = () => {
+    if (isColorTherapyActive) return;
+    
+    setIsColorTherapyActive(true);
+    let colorIndex = 0;
+    
+    // Change color every 20 seconds (60 seconds total / 3 colors)
+    manualColorIntervalRef.current = setInterval(() => {
+      colorIndex = (colorIndex + 1) % colors.length;
+      setCurrentColor(colors[colorIndex]);
+    }, 20000);
+    
+    // Stop after 1 minute
+    setTimeout(() => {
+      if (manualColorIntervalRef.current) {
+        clearInterval(manualColorIntervalRef.current);
+        manualColorIntervalRef.current = null;
+      }
+      setIsColorTherapyActive(false);
+    }, 60000);
+  };
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const circleRadius = 120;
+  const circumference = 2 * Math.PI * circleRadius;
+  const progress = ((phases[phase].duration - timeLeft) / phases[phase].duration) * circumference;
+  
+  // Calculate pulse scale based on phase and time
+  const getPulseScale = () => {
+    const phaseProgress = (phases[phase].duration - timeLeft) / phases[phase].duration;
+    if (phase === 'inhale') {
+      return 60 + (30 * phaseProgress); // Expand from 60 to 90
+    } else if (phase === 'hold') {
+      return 90; // Stay at maximum
+    } else {
+      return 90 - (30 * phaseProgress); // Contract from 90 to 60
+    }
+  };
 
   return (
     <div 
-      className="min-h-screen transition-all duration-1000 ease-in-out pt-16"
+      className="min-h-screen flex items-center justify-center transition-all duration-1000 ease-in-out pt-16"
       style={{ 
-        background: isColorTherapyActive || isTimerActive
-          ? `linear-gradient(135deg, ${currentColor}30, ${currentColor}10, white)`
-          : 'linear-gradient(135deg, #f0f9ff, #e0e7ff, white)'
+        background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)` 
       }}
     >
       {/* Audio Element */}
@@ -353,696 +266,387 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
           loop
           preload="auto"
           onError={(e) => {
-            console.warn('Arquivo de áudio não encontrado, usando tom sintético');
-            if (isSoundPlaying) {
-              playFallbackTone();
-            }
-          }}
-          onCanPlay={() => {
-            console.log('Áudio carregado com sucesso');
+            console.warn('Audio file not found:', e.currentTarget.src);
+            setSelectedSoundId(null);
+            setIsSoundPlaying(false);
           }}
         />
       )}
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <img 
-              src="/Logo Xzenpress oficial.png" 
-              alt="XZenPress Logo" 
-              className="h-16 w-auto opacity-80"
-            />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="flex justify-center mb-6">
+          <img 
+            src="/Logo Xzenpress oficial.png" 
+            alt="XZenPress Logo" 
+            className="h-16 w-auto opacity-80"
+          />
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">{t('breathing.title')}</h1>
+        
+        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
+          {/* Breathing Circle */}
+          <div className="relative mb-8">
+            <svg className="w-80 h-80 mx-auto transform -rotate-90" viewBox="0 0 280 280">
+              {/* Background circle */}
+              <circle
+                cx="140"
+                cy="140"
+                r={circleRadius}
+                stroke="#E5E7EB"
+                strokeWidth="8"
+                fill="none"
+              />
+              {/* Progress circle */}
+              <circle
+                cx="140"
+                cy="140"
+                r={circleRadius}
+                stroke={currentColor}
+                strokeWidth="8"
+                fill="none"
+                strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={circumference - progress}
+                className="transition-all duration-1000 ease-in-out"
+              />
+              {/* Inner breathing circle */}
+              <circle
+                cx="140"
+                cy="140"
+                r={getPulseScale()}
+                fill={currentColor}
+                fillOpacity="0.2"
+                className="transition-all duration-500 ease-in-out"
+              />
+            </svg>
+            
+            {/* Center content */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div 
+                className="text-6xl font-bold mb-2 transition-colors duration-500"
+                style={{ color: currentColor }}
+              >
+                {timeLeft}
+              </div>
+              <div 
+                className="text-2xl font-semibold uppercase tracking-wider transition-colors duration-500"
+                style={{ color: currentColor }}
+              >
+                {phases[phase].label}
+              </div>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            <span className="bg-gradient-to-r from-blue-600 via-green-600 to-purple-600 bg-clip-text text-transparent">
-              Acupressão & Cranioterapia
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Pontos terapêuticos da Medicina Tradicional Chinesa combinados com cromoterapia
-          </p>
+
+          {/* Instructions */}
+          <div className="mb-8">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-50 border-2 border-blue-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
+                <div className="text-2xl font-bold text-blue-600 mb-1">4s</div>
+                <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
+                <div className="text-xs text-blue-500 mt-1">{t('breathing.chromotherapy.blue.short')}</div>
+              </div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-50 border-2 border-green-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
+                <div className="text-2xl font-bold text-green-600 mb-1">7s</div>
+                <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
+                <div className="text-xs text-green-500 mt-1">{t('breathing.chromotherapy.green.short')}</div>
+              </div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-50 border-2 border-purple-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
+                <div className="text-2xl font-bold text-purple-600 mb-1">8s</div>
+                <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
+                <div className="text-xs text-purple-500 mt-1">{t('breathing.chromotherapy.magenta.short')}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+            {!isActive ? (
+              <button
+                onClick={startExercise}
+                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              >
+                <Play className="w-6 h-6" />
+                <span>{t('breathing.start')}</span>
+              </button>
+            ) : (
+              <button
+                onClick={stopExercise}
+                className="flex items-center space-x-2 bg-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-red-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              >
+                <Pause className="w-6 h-6" />
+                <span>{t('breathing.stop')}</span>
+              </button>
+            )}
+            
+            <button
+              onClick={resetExercise}
+              className="flex items-center space-x-2 bg-gray-500 text-white px-6 py-4 rounded-full text-lg font-semibold hover:bg-gray-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              <RotateCcw className="w-5 h-5" />
+              <span>{t('breathing.reset')}</span>
+            </button>
+            
+            <button
+              onClick={() => onPageChange?.('sounds')}
+              className="flex items-center space-x-2 bg-purple-500 text-white px-6 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              <Music className="w-5 h-5" />
+              <span>Biblioteca</span>
+            </button>
+          </div>
+
+          {/* Timer */}
+          <div className="text-center">
+            <div className="text-sm text-gray-500 mb-2">{t('breathing.totalTime')}</div>
+            <div className="text-2xl font-bold text-gray-700">{formatTime(totalTime)}</div>
+          </div>
+        </div>
+
+        {/* Sound Controls */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8">
+          <div className="flex items-center justify-center space-x-2 mb-6"><Volume2 className="w-6 h-6 text-gray-600" /><h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3></div>
           
-          {/* Category Filter */}
-          <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 max-w-5xl mx-auto">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">Categorias de Pontos</h3>
-            <div className="flex flex-wrap justify-center gap-2">
-              {categories.map((category) => (
+          {/* Free Sounds Section */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 {t('breathing.sounds.free.title')}</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {freeSounds.map((sound) => (
                 <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  disabled={category.premium && !user?.isPremium}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-full font-medium transition-all text-sm ${
-                    selectedCategory === category.id
-                      ? 'bg-blue-500 text-white shadow-lg'
-                      : category.premium && !user?.isPremium
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  key={sound.id}
+                  onClick={() => handleSoundSelect(sound.id)}
+                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                    selectedSoundId === sound.id
+                      ? 'border-blue-500 bg-blue-50 shadow-lg'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <span>{category.icon}</span>
-                  <span>{category.name}</span>
-                  {category.premium && !user?.isPremium && (
-                    <Lock className="w-4 h-4" />
-                  )}
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 rounded-full ${
+                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      {sound.icon}
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-gray-800">{sound.name}</div>
+                      <div className="text-sm text-gray-600">{sound.description}</div>
+                    </div>
+                    {selectedSoundId === sound.id && isSoundPlaying && (
+                      <div className="ml-auto">
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </button>
               ))}
             </div>
-          </div>
-          
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Visual Points Gallery */}
-          <div className="bg-white rounded-3xl shadow-2xl p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
-              Pontos Terapêuticos Visuais
-            </h2>
             
-            {/* Category Description */}
-            {selectedCategory !== 'all' && (
-              <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
-                <h3 className="font-semibold text-gray-800 mb-1 text-sm">
-                  {categories.find(c => c.id === selectedCategory)?.icon} {categories.find(c => c.id === selectedCategory)?.name}
-                </h3>
-                <p className="text-xs text-gray-600">
-                  {selectedCategory === 'general' && 'Medicina Tradicional Chinesa - Pontos baseados em meridianos energéticos para equilíbrio do Qi e harmonização do organismo.'}
-                  {selectedCategory === 'mtc-premium' && 'MTC Premium - Técnicas avançadas da Medicina Tradicional Chinesa com protocolos especializados e métodos de aplicação diferenciados para máxima eficácia terapêutica.'}
-                  {selectedCategory === 'cranio' && 'Craniopuntura - Técnicas específicas de estimulação craniana para otimização das funções cerebrais e sistema nervoso.'}
-                  {selectedCategory === 'septicemia' && 'Pontos MTC especializados para fortalecimento do sistema imunológico e combate a infecções sistêmicas graves.'}
-                  {selectedCategory === 'atm' && 'Pontos específicos dos meridianos para disfunção da articulação temporomandibular, bruxismo e tensões faciais.'}
-                  {selectedCategory === 'neurologia' && 'Pontos avançados para condições neurológicas: enxaquecas severas, insônia crônica e distúrbios neurológicos.'}
-                </p>
-              </div>
-            )}
-            
-            {/* Points Grid */}
-            <div className="space-y-3">
-              {filteredPoints.length > 0 ? (
-                filteredPoints.map((point) => (
-                  <div
-                    key={point.id}
-                    onClick={() => setSelectedPoint(point)}
-                    className={`cursor-pointer border-2 rounded-xl p-3 transition-all duration-200 hover:shadow-lg ${
-                      selectedPoint?.id === point.id
-                        ? 'border-blue-500 bg-blue-50 shadow-lg'
-                        : 'border-gray-200 hover:border-gray-300'
+            {/* Audio Controls */}
+            {selectedSoundId && (
+              <div className="bg-gray-50 rounded-xl p-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                  {/* Play/Pause Button */}
+                  <button
+                    onClick={toggleSoundPlayback}
+                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                      isSoundPlaying
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
                   >
-                    <div className="flex items-start space-x-3">
-                      {/* Point Image */}
-                      {point.image ? (
-                        <div className="flex-shrink-0">
-                          <img
-                            src={point.image}
-                            alt={point.imageAlt || `Localização do ponto ${getLocalizedName(point)}`}
-                            className="w-20 h-20 object-cover rounded-lg shadow-md border border-gray-200"
-                            onError={(e) => {
-                              console.log('Erro ao carregar imagem:', point.image);
-                              e.currentTarget.style.display = 'none';
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex-shrink-0 w-20 h-20 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center border border-gray-200">
-                          <MapPin className="w-6 h-6 text-blue-600" />
-                        </div>
-                      )}
-                      
-                      {/* Point Info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h3 className="font-semibold text-gray-800 truncate text-sm">
-                            {getLocalizedName(point)}
-                          </h3>
-                          {point.isPremium && (
-                            <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-0.5 rounded-full text-xs">
-                              <Star className="w-2 h-2" />
-                              <span>Premium</span>
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-xs text-gray-600 line-clamp-2 mb-1">
-                          {getLocalizedDescription(point)}
-                        </p>
-                        <div className="flex items-center space-x-3 text-xs text-gray-500">
-                          <div className="flex items-center space-x-1">
-                            <Clock className="w-2 h-2" />
-                            <span>{formatTime(point.duration || 120)}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Zap className="w-2 h-2" />
-                            <span className="capitalize">{point.pressure || 'Moderada'}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-8">
-                  <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <h3 className="text-base font-semibold text-gray-600 mb-2">
-                    Nenhum ponto disponível
-                  </h3>
-                  <p className="text-gray-500 text-sm">
-                    {selectedCategory === 'septicemia' || selectedCategory === 'atm' 
-                      ? 'Estes pontos estão disponíveis apenas para usuários Premium'
-                      : 'Selecione uma categoria para ver os pontos disponíveis'
-                    }
-                  </p>
-                </div>
-              )}
-            </div>
-            
-            {/* Legend */}
-            <div className="mt-4 flex justify-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span className="text-xs text-gray-600">Pontos Gratuitos</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <span className="text-xs text-gray-600">Pontos Premium</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Point Details */}
-          <div className="space-y-4">
-            {selectedPoint ? (
-              <div className="bg-white rounded-3xl shadow-2xl p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gray-800">
-                    {getLocalizedName(selectedPoint)}
-                  </h3>
-                  {selectedPoint.isPremium && (
-                    <div className="flex items-center space-x-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-1 rounded-full text-xs">
-                      <Star className="w-4 h-4" />
-                      <span>Premium</span>
-                    </div>
-                  )}
-                </div>
-                
-                <p className="text-gray-600 mb-4 leading-relaxed text-sm">
-                  {getLocalizedDescription(selectedPoint)}
-                </p>
-                
-                {/* Point Image */}
-                {selectedPoint.image && (
-                  <div className="mb-4">
-                    <img
-                      src={selectedPoint.image}
-                      alt={selectedPoint.imageAlt || `Localização do ponto ${getLocalizedName(selectedPoint)}`}
-                     className="w-full max-w-sm mx-auto rounded-xl shadow-lg transition-all duration-1000"
-                     style={{
-                       filter: isTimerActive && isChromotherapyEnabled 
-                         ? `hue-rotate(${currentColor === '#3B82F6' ? '0deg' : currentColor === '#10B981' ? '120deg' : '300deg'}) saturate(1.5) brightness(1.1)`
-                         : 'none'
-                     }}
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
+                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    <span>{isSoundPlaying ? t('breathing.sounds.pause') : t('breathing.sounds.play')}</span>
+                  </button>
+                  
+                  {/* Volume Control */}
+                  <div className="flex items-center space-x-3">
+                    <VolumeX className="w-5 h-5 text-gray-500" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={soundVolume}
+                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                     />
+                    <Volume2 className="w-5 h-5 text-gray-500" />
+                    <span className="text-sm text-gray-600 min-w-[3rem]">
+                      {Math.round(soundVolume * 100)}%
+                    </span>
                   </div>
-                )}
-                
-                {/* Timer e Controles - Posicionados próximos ao ponto visual */}
-                {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) && (
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-base font-semibold text-gray-800">Terapia Integrada</h4>
-                      {isTimerActive && (
-                        <div className="text-xl font-bold" style={{ color: currentColor }}>
-                          {formatTime(timeRemaining)}
-                        </div>
-                      )}
-                    </div>
-                    
-                    {/* Breathing Integration Guide */}
-                    <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-3 mb-3 border border-blue-200">
-                      <div className="flex items-center space-x-2 mb-4">
-                        <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span className="text-blue-600 text-sm">🫁</span>
-                        </div>
-                        <h4 className="text-sm font-semibold text-gray-800">🫁 Respiração Integrada 4-7-8</h4>
-                      </div>
-                      
-                      {/* Compact Breathing Steps */}
-                      <div className="bg-white rounded-lg p-2 mb-3">
-                        <div className="flex flex-wrap justify-center gap-3 text-xs">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">4</div>
-                            <span className="text-blue-800 font-medium text-xs">Inspire</span>
-                            <span className="text-blue-600 text-xs">Azul</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">7</div>
-                            <span className="text-green-800 font-medium text-xs">Segure</span>
-                            <span className="text-green-600 text-xs">Verde</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">8</div>
-                            <span className="text-purple-800 font-medium text-xs">Expire</span>
-                            <span className="text-purple-600 text-xs">Magenta</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* Compact Instructions */}
-                      <div className="bg-white rounded-lg p-2">
-                        <div className="text-xs text-gray-600 space-y-1">
-                          <div><strong>1.</strong> Posicione o dedo no ponto • <strong>2.</strong> Inicie o timer • <strong>3.</strong> Siga as cores:</div>
-                          <div className="flex flex-wrap gap-1 text-xs">
-                            <span><span className="text-blue-600">●</span> Azul = Inspire 4s + pressão</span>
-                            <span><span className="text-green-600">●</span> Verde = Segure 7s + manter</span>
-                            <span><span className="text-purple-600">●</span> Magenta = Expire 8s + circular</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {isTimerActive && (
-                        <div className="mt-2 bg-white rounded-lg p-2 border-l-4" style={{ borderColor: currentColor }}>
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: currentColor }}></div>
-                            <span className="font-semibold text-xs" style={{ color: currentColor }}>
-                              {currentColor === '#3B82F6' && 'INSPIRE (4s) - Pressão suave no ponto'}
-                              {currentColor === '#10B981' && 'SEGURE (7s) - Mantenha pressão constante'}
-                              {currentColor === '#8B5CF6' && 'EXPIRE (8s) - Movimentos circulares suaves'}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Therapy Controls */}
-                    <div className="bg-gray-50 rounded-xl p-3 mb-3">
-                      <div className="flex flex-wrap items-center justify-center gap-3 mb-2">
-                        {/* Chromotherapy Control */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Palette className="w-4 h-4 text-purple-600" />
-                            <span className="text-xs font-medium text-gray-700">Cores</span>
-                          </div>
-                          <button
-                            onClick={() => setIsChromotherapyEnabled(!isChromotherapyEnabled)}
-                            className={`w-8 h-4 rounded-full transition-colors ml-2 ${
-                              isChromotherapyEnabled ? 'bg-purple-500' : 'bg-gray-300'
-                            }`}
-                          >
-                            <div className={`w-3 h-3 bg-white rounded-full transition-transform ${
-                              isChromotherapyEnabled ? 'translate-x-4' : 'translate-x-0.5'
-                            }`} />
-                          </button>
-                        </div>
-                        
-                        {/* Sound Control */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <Volume2 className="w-4 h-4 text-blue-600" />
-                            <span className="text-xs font-medium text-gray-700">Sons</span>
-                          </div>
-                          <button
-                            onClick={() => setIsSoundEnabled(!isSoundEnabled)}
-                            className={`w-8 h-4 rounded-full transition-colors ml-2 ${
-                              isSoundEnabled ? 'bg-blue-500' : 'bg-gray-300'
-                            }`}
-                          >
-                            <div className={`w-3 h-3 bg-white rounded-full transition-transform ${
-                              isSoundEnabled ? 'translate-x-4' : 'translate-x-0.5'
-                            }`} />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      {/* Sound Selection */}
-                      {isSoundEnabled && (
-                        <div className="mb-2">
-                          <label className="block text-xs font-medium text-gray-700 mb-2">
-                            Selecionar Som:
-                          </label>
-                          <div className="flex flex-wrap gap-1">
-                            {freeSounds.map((sound) => (
-                              <button
-                                key={sound.id}
-                                onClick={() => handleSoundSelect(sound.id)}
-                                className={`p-2 rounded-lg border text-left transition-all flex-1 min-w-0 text-xs ${
-                                  selectedSoundId === sound.id
-                                    ? 'border-blue-500 bg-blue-50'
-                                    : 'border-gray-200 hover:border-gray-300'
-                                }`}
-                              >
-                                <div className="font-medium">{sound.name}</div>
-                                {selectedSoundId === sound.id && isSoundPlaying && (
-                                  <div className="text-blue-600">🔊</div>
-                                )}
-                              </button>
-                            ))}
-                          </div>
-                          
-                          {/* Volume Control */}
-                          {selectedSoundId && (
-                            <div className="flex items-center space-x-2 mt-1">
-                              <VolumeX className="w-3 h-3 text-gray-500" />
-                              <input
-                                type="range"
-                                min="0"
-                                max="1"
-                                step="0.1"
-                                value={soundVolume}
-                                onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                                className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                              />
-                              <Volume2 className="w-3 h-3 text-gray-500" />
-                              <span className="text-xs text-gray-600 min-w-[2rem]">
-                                {Math.round(soundVolume * 100)}%
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      
-                      {/* Active Therapy Indicator */}
-                      {(isChromotherapyEnabled || (isSoundEnabled && selectedSoundId)) && (
-                        <div className="text-center mt-1">
-                          <div className="inline-flex items-center space-x-2 bg-white rounded-full px-3 py-1 shadow-sm">
-                            {isChromotherapyEnabled && (
-                              <div className="flex items-center space-x-1">
-                                <div 
-                                  className="w-2 h-2 rounded-full shadow-md" 
-                                  style={{ 
-                                    backgroundColor: currentColor,
-                                    boxShadow: isTimerActive ? `0 0 8px ${currentColor}60` : 'none'
-                                  }}
-                                ></div>
-                                <span className="text-xs text-gray-600">Cores</span>
-                              </div>
-                            )}
-                            {isChromotherapyEnabled && isSoundEnabled && selectedSoundId && (
-                              <div className="w-px h-3 bg-gray-300"></div>
-                            )}
-                            {isSoundEnabled && selectedSoundId && (
-                              <div className="flex items-center space-x-1">
-                                <Volume2 className="w-2 h-2 text-blue-500" />
-                                <span className="text-xs text-gray-600">Som</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <button
-                      onClick={() => {
-                        if (isTimerActive) {
-                          stopIntegratedTherapy();
-                        } else {
-                          startIntegratedTherapy(selectedPoint.duration || 120);
-                        }
-                      }}
-                      className={`w-full py-3 rounded-xl font-semibold transition-all flex items-center justify-center space-x-2 text-sm ${
-                        isTimerActive
-                          ? 'bg-red-500 text-white hover:bg-red-600'
-                          : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg'
-                      }`}
-                    >
-                      {isTimerActive ? (
-                        <>
-                          <Pause className="w-5 h-5" />
-                          <span>Parar Terapia Integrada</span>
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-5 h-5" />
-                          <span>🫁 Iniciar Acupressão + Respiração 4-7-8</span>
-                        </>
-                      )}
-                    </button>
-                    
-                    {/* Therapy Description */}
-                    <div className="mt-2 text-center">
-                      <p className="text-xs text-gray-600">
-                        {isTimerActive 
-                          ? '🎯 Siga as cores para respirar corretamente durante a acupressão'
-                          : isChromotherapyEnabled && isSoundEnabled && selectedSoundId
-                          ? '🫁 Acupressão + Respiração 4-7-8 + Cromoterapia + Sons'
-                          : isChromotherapyEnabled && (!isSoundEnabled || !selectedSoundId)
-                          ? '🫁 Acupressão + Respiração 4-7-8 + Cromoterapia'
-                          : !isChromotherapyEnabled && isSoundEnabled && selectedSoundId
-                          ? '🫁 Acupressão + Respiração 4-7-8 + Sons'
-                          : '🫁 Acupressão + Respiração 4-7-8'
-                        }
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Point Details */}
-                <div className="bg-gradient-to-r from-blue-50 via-green-50 to-purple-50 rounded-xl p-3 mb-4">
-                  <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="w-3 h-3 text-blue-600" />
-                      <span className="text-gray-600">Duração:</span>
-                      <span className="font-semibold text-blue-800 text-xs">{formatTime(selectedPoint.duration || 120)}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Zap className="w-3 h-3 text-green-600" />
-                      <span className="text-gray-600">Pressão:</span>
-                      <span className="font-semibold text-green-800 capitalize text-xs">{selectedPoint.pressure || 'Moderada'}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Target className="w-3 h-3 text-purple-600" />
-                      <span className="text-gray-600">Categoria:</span>
-                      <span className="font-semibold text-purple-800 capitalize text-xs">{selectedPoint.category}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mb-4">
-                  <h4 className="text-base font-semibold text-gray-800 mb-2">Benefícios:</h4>
-                  <ul className="space-y-1">
-                    {getLocalizedBenefits(selectedPoint).map((benefit, index) => (
-                      <li key={index} className="flex items-center space-x-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0 mt-1"></div>
-                        <span className="text-gray-600 text-sm">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Instructions */}
-                {selectedPoint.instructions && (
-                  <div className="mb-4">
-                    <h4 className="text-base font-semibold text-gray-800 mb-2">Instruções:</h4>
-                    <p className="text-gray-600 bg-gray-50 p-3 rounded-lg text-sm">
-                      {selectedPoint.instructions}
-                    </p>
-                  </div>
-                )}
-
-                {/* Premium Lock Message */}
-                {selectedPoint.isPremium && !user?.isPremium && (
-                  <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-3">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Lock className="w-4 h-4 text-yellow-600" />
-                      <span className="font-semibold text-yellow-800 text-sm">Conteúdo Premium</span>
-                    </div>
-                    <p className="text-yellow-700 text-xs">
-                      Este ponto específico está disponível apenas para usuários Premium.
-                    </p>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="bg-white rounded-3xl shadow-2xl p-6 text-center">
-                <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                  Selecione um Ponto
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  Clique em qualquer ponto no diagrama para ver detalhes e benefícios
-                </p>
-                
-                {/* Quick Stats */}
-                <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-blue-600">
-                      {availablePoints.filter(p => !p.isPremium).length}
-                    </div>
-                    <div className="text-xs text-gray-500">Pontos Gratuitos</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xl font-bold text-yellow-600">
-                      {availablePoints.filter(p => p.isPremium).length}
-                    </div>
-                    <div className="text-xs text-gray-500">Pontos Premium</div>
-                  </div>
+                  
+                  {/* Stop Button */}
+                  <button
+                    onClick={stopAllSounds}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
+                  >
+                    {t('breathing.sounds.stop')}
+                  </button>
                 </div>
               </div>
             )}
-
-            {/* Instructions */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
-              <div className="flex items-center space-x-2 mb-4">
-                <Info className="w-6 h-6 text-blue-600" />
-                <h3 className="text-xl font-semibold text-gray-800">Guia de Aplicação Integrada</h3>
+          </div>
+          
+          {/* Premium Sounds Teaser */}
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 {t('breathing.sounds.premium.title')}</h4>
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
+              <p className="text-gray-700 mb-4">{t('breathing.sounds.premium.desc')}</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 {t('breathing.sounds.mantras')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">{t('breathing.sounds.more')}</span>
               </div>
-              <div className="space-y-3 text-gray-600">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-2">🫁 Respiração + Acupressão:</h4>
-                    <ul className="space-y-1 text-sm">
-                      <li>• <span className="text-blue-600">Azul</span>: Inspire 4s + pressão suave</li>
-                      <li>• <span className="text-green-600">Verde</span>: Segure 7s + pressão constante</li>
-                      <li>• <span className="text-purple-600">Magenta</span>: Expire 8s + movimentos circulares</li>
-                      <li>• Siga as cores do timer para sincronizar</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-2">🎯 Maximização dos Resultados:</h4>
-                    <ul className="space-y-1 text-sm">
-                      <li>• Use timer integrado para sincronização perfeita</li>
-                      <li>• Cromoterapia potencializa os efeitos</li>
-                      <li>• Aplique em ambiente tranquilo</li>
-                      <li>• Sons harmonizantes amplificam relaxamento</li>
-                    </ul>
-                  </div>
-                </div>
-                
-                <div className="mt-6 bg-white rounded-xl p-4 border border-blue-200">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-center">🧬 Ciência por trás da Integração</h4>
-                  <p className="text-sm text-gray-600 text-center">
-                    A combinação de <strong>acupressão + respiração 4-7-8 + cromoterapia</strong> ativa simultaneamente:
-                    o sistema nervoso parassimpático, pontos de acupuntura tradicionais e receptores visuais,
-                    criando um efeito sinérgico para máximo relaxamento e bem-estar.
-                  </p>
-                </div>
+              <a
+                href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors mr-3"
+              >
+                <span>{t('breathing.sounds.premium.spotify')}</span>
+              </a>
+              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all">
+                {t('breathing.sounds.premium.upgrade')}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Color Therapy Controls */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-md p-6 mb-8 max-w-2xl mx-auto border border-blue-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center flex items-center justify-center space-x-2">
+            <span className="text-purple-600">🎨</span>
+            <span>Cromoterapia</span>
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4 mb-4">
+            {colors.map((color, index) => (
+              <div key={index} className="text-center">
+                <div 
+                  className="w-12 h-12 rounded-full mx-auto mb-2 cursor-pointer transform hover:scale-110 transition-transform shadow-md border-2 border-white"
+                  style={{ backgroundColor: color }}
+                  onClick={() => setCurrentColor(color)}
+                />
+                <span className="text-xs text-gray-700 font-medium">{colorNames[index]}</span>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={startColorTherapy}
+            disabled={isColorTherapyActive}
+            className={`w-full px-6 py-3 rounded-xl font-semibold transition-all disabled:opacity-50 ${
+              isColorTherapyActive
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
+            }`}
+          >
+            {isColorTherapyActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
+          </button>
+          <p className="text-xs text-gray-600 text-center mt-3 bg-white/50 rounded-lg px-3 py-2">
+            💡 Ative a cromoterapia manual por 1 minuto independente da respiração
+          </p>
+        </div>
+
+        {/* Chromotherapy Education Section */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('breathing.chromotherapy.title')}</h2>
+          <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">{t('breathing.chromotherapy.description')}</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-blue-800">{t('breathing.chromotherapy.blue')}</h3>
+              </div>
+              <p className="text-blue-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.blue.desc')}
+              </p>
+              <div className="mt-4 text-xs text-blue-600 bg-blue-50 rounded-lg p-2">
+                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.inhale.detail')}
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-green-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-green-800">{t('breathing.chromotherapy.green')}</h3>
+              </div>
+              <p className="text-green-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.green.desc')}
+              </p>
+              <div className="mt-4 text-xs text-green-600 bg-green-50 rounded-lg p-2">
+                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.hold.detail')}
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-8 h-8 bg-purple-500 rounded-full"></div>
+                <h3 className="text-xl font-bold text-purple-800">{t('breathing.chromotherapy.magenta')}</h3>
+              </div>
+              <p className="text-purple-700 text-sm leading-relaxed">
+                {t('breathing.chromotherapy.magenta.desc')}
+              </p>
+              <div className="mt-4 text-xs text-purple-600 bg-purple-50 rounded-lg p-2">
+                <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.exhale.detail')}
+              </div>
+            </div>
+          </div>
+          
+          {/* Benefits Section */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-6">
+            <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">{t('breathing.benefits.title')}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.stress')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.sleep')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.focus')}</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <span className="text-gray-700 text-sm">{t('breathing.benefits.pressure')}</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Premium CTA */}
-        {!user?.isPremium && (
-          <div className="mt-8 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl p-6 text-center text-white">
-            <h2 className="text-2xl font-bold mb-3">🔒 Conteúdo Premium Bloqueado</h2>
-            <p className="text-lg mb-4 opacity-90">
-              Para acessar estes pontos especializados, você precisa ser um usuário Premium
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-              <div className="bg-white bg-opacity-20 rounded-lg p-3">
-                <div className="text-2xl mb-2">🛡️</div>
-                <div className="font-semibold text-sm">Septicemia</div>
-                <div className="text-sm opacity-80">🔒 3 pontos bloqueados</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-3">
-                <div className="text-2xl mb-2">🦷</div>
-                <div className="font-semibold text-sm">ATM</div>
-                <div className="text-sm opacity-80">🔒 3 pontos bloqueados</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-3">
-                <div className="text-2xl mb-2">🧠</div>
-                <div className="font-semibold text-sm">Cranioterapia</div>
-                <div className="text-sm opacity-80">🔒 3 zonas bloqueadas</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-3">
-                <div className="text-2xl mb-2">🧬</div>
-                <div className="font-semibold text-sm">Neurologia</div>
-                <div className="text-sm opacity-80">🔒 2 pontos bloqueados</div>
-              </div>
+        {/* Scientific Background */}
+        <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">🧬 {t('breathing.science.title')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-bold text-gray-800 mb-3">📚 {t('breathing.science.evidence')}</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• {t('breathing.science.parasympathetic')}</li>
+                <li>• {t('breathing.science.cortisol')}</li>
+                <li>• {t('breathing.science.heartRate')}</li>
+                <li>• {t('breathing.science.gaba')}</li>
+              </ul>
             </div>
-            <button 
-              onClick={() => window.location.href = '#premium'}
-              className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg inline-flex items-center space-x-2"
-            >
-              <Crown className="w-5 h-5" />
-              <span>🔓 Desbloquear Agora</span>
-            </button>
-            <p className="text-xs opacity-80 mt-3">
-              💳 Pagamento único • ✅ Acesso imediato • 🔒 Seguro
-            </p>
-          </div>
-        )}
-
-        {/* Statistics */}
-        <div className="mt-8 bg-white rounded-3xl shadow-2xl p-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
-            Estatísticas da Plataforma
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 mb-1">
-                {acupressurePoints.length}
-              </div>
-              <div className="text-xs text-gray-600">Pontos Disponíveis</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600 mb-1">
-                {acupressurePoints.filter(p => !p.isPremium).length}
-              </div>
-              <div className="text-xs text-gray-600">Pontos Gratuitos</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-yellow-600 mb-1">
-                {acupressurePoints.filter(p => p.isPremium).length}
-              </div>
-              <div className="text-xs text-gray-600">Pontos Premium</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 mb-1">
-                {new Set(acupressurePoints.map(p => p.category)).size}
-              </div>
-              <div className="text-xs text-gray-600">Categorias</div>
+            <div className="bg-white rounded-xl p-6">
+              <h3 className="font-bold text-gray-800 mb-3">🎨 {t('breathing.science.chromotherapy')}</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li>• {t('breathing.science.blue.effect')}</li>
+                <li>• {t('breathing.science.green.effect')}</li>
+                <li>• {t('breathing.science.magenta.effect')}</li>
+                <li>• {t('breathing.science.melatonin')}</li>
+              </ul>
             </div>
           </div>
         </div>
 
-        {/* Educational Content */}
-        <div className="mt-6 bg-gradient-to-r from-blue-50 to-green-50 rounded-3xl p-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4 text-center">
-            💡 Dicas de Bem-Estar
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white rounded-xl p-4">
-              <h3 className="font-semibold text-gray-800 mb-2 text-sm">🌅 Rotina Matinal</h3>
-              <p className="text-gray-600 text-xs">
-                Comece o dia aplicando o ponto Baihui (VG20) por 2 minutos para aumentar energia e clareza mental.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-4">
-              <h3 className="font-semibold text-gray-800 mb-2 text-sm">😴 Antes de Dormir</h3>
-              <p className="text-gray-600 text-xs">
-                Use o ponto Yintang (EX-HN3) combinado com respiração 4-7-8 para um sono mais reparador.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-4">
-              <h3 className="font-semibold text-gray-800 mb-2 text-sm">💼 No Trabalho</h3>
-              <p className="text-gray-600 text-xs">
-                O ponto Shenmen (HE7) é perfeito para reduzir estresse durante o expediente.
-              </p>
-            </div>
-            <div className="bg-white rounded-xl p-4">
-              <h3 className="font-semibold text-gray-800 mb-2 text-sm">🎯 Foco e Concentração</h3>
-              <p className="text-gray-600 text-xs">
-                Combine cromoterapia azul com pontos frontais para melhorar concentração nos estudos.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Safety Notice */}
-        <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
-          <div className="flex items-start space-x-3">
-            <div className="text-yellow-600 text-lg">⚠️</div>
-            <div>
-              <h3 className="font-semibold text-yellow-800 mb-1 text-sm">Aviso Importante</h3>
-              <p className="text-yellow-700 text-xs">
-                A acupressão é uma técnica complementar e não substitui tratamento médico. 
-                Em caso de condições graves como septicemia, procure sempre assistência médica profissional. 
-                Os pontos premium são baseados em técnicas tradicionais e devem ser usados como apoio ao tratamento convencional.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

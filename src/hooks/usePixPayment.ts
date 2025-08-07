@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { createPixService, PixPaymentData, PixResponse } from '../services/pixService';
 
 export const usePixPayment = () => {

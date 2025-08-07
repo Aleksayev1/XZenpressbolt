@@ -74,7 +74,10 @@ export const BreathingExercise: React.FC = () => {
         
         expectedPhaseTimeRef.current += 1000;
         const nextDelay = Math.max(0, 1000 - drift);
-        intervalRef.current = setTimeout(phaseTimerTick, nextDelay);
+        
+        if (isActive) {
+          intervalRef.current = setTimeout(phaseTimerTick, nextDelay);
+        }
       };
       
       const totalTimerTick = () => {
@@ -85,7 +88,10 @@ export const BreathingExercise: React.FC = () => {
         
         expectedTotalTimeRef.current += 1000;
         const nextDelay = Math.max(0, 1000 - drift);
-        totalTimeIntervalRef.current = setTimeout(totalTimerTick, nextDelay);
+        
+        if (isActive) {
+          totalTimeIntervalRef.current = setTimeout(totalTimerTick, nextDelay);
+        }
       };
       
       // Start both timers
@@ -110,7 +116,7 @@ export const BreathingExercise: React.FC = () => {
         clearTimeout(totalTimeIntervalRef.current);
       }
       if (manualColorIntervalRef.current) {
-        clearInterval(manualColorIntervalRef.current);
+        clearTimeout(manualColorIntervalRef.current);
       }
     };
   }, [isActive, phase]);
@@ -213,20 +219,40 @@ export const BreathingExercise: React.FC = () => {
     setIsColorTherapyActive(true);
     let colorIndex = 0;
     
-    // Change color every 20 seconds (60 seconds total / 3 colors)
-    manualColorIntervalRef.current = setInterval(() => {
+    // Precise color timer with drift correction
+    const colorStartTime = Date.now();
+    let expectedColorTime = colorStartTime + 20000;
+    
+    const colorTick = () => {
+      const now = Date.now();
+      const drift = now - expectedColorTime;
+      
       colorIndex = (colorIndex + 1) % colors.length;
       setCurrentColor(colors[colorIndex]);
-    }, 20000);
+      
+      expectedColorTime += 20000;
+      const nextDelay = Math.max(0, 20000 - drift);
+      
+      if (colorIndex < 2) { // Only 3 colors total (0, 1, 2)
+        manualColorIntervalRef.current = setTimeout(colorTick, nextDelay);
+      } else {
+        // Stop after 60 seconds (3 colors × 20s each)
+        setIsColorTherapyActive(false);
+        setCurrentColor('#3B82F6');
+      }
+    };
     
-    // Stop after 1 minute
+    manualColorIntervalRef.current = setTimeout(colorTick, 20000);
+    
+    // Fallback safety stop after 65 seconds
     setTimeout(() => {
       if (manualColorIntervalRef.current) {
-        clearInterval(manualColorIntervalRef.current);
+        clearTimeout(manualColorIntervalRef.current);
         manualColorIntervalRef.current = null;
       }
       setIsColorTherapyActive(false);
-    }, 60000);
+      setCurrentColor('#3B82F6');
+    }, 65000);
   };
 
   const formatTime = (seconds: number) => {
