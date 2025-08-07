@@ -22,6 +22,8 @@ export const BreathingExercise: React.FC = () => {
   const sessionStartTime = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
+  const expectedPhaseTimeRef = useRef<number>(0);
+  const expectedTotalTimeRef = useRef<number>(0);
 
   const phases = {
     inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.inhale') },
@@ -51,7 +53,14 @@ export const BreathingExercise: React.FC = () => {
 
   useEffect(() => {
     if (isActive) {
-      intervalRef.current = setInterval(() => {
+      const startTime = Date.now();
+      expectedPhaseTimeRef.current = startTime + 1000;
+      expectedTotalTimeRef.current = startTime + 1000;
+      
+      const phaseTimerTick = () => {
+        const now = Date.now();
+        const drift = now - expectedPhaseTimeRef.current;
+        
         setTimeLeft((prev) => {
           if (prev <= 1) {
             const currentPhase = phases[phase];
@@ -62,29 +71,43 @@ export const BreathingExercise: React.FC = () => {
           }
           return prev - 1;
         });
-      }, 1000);
+        
+        expectedPhaseTimeRef.current += 1000;
+        const nextDelay = Math.max(0, 1000 - drift);
+        intervalRef.current = setTimeout(phaseTimerTick, nextDelay);
+      };
       
-      // Separate interval for total time
-      totalTimeIntervalRef.current = setInterval(() => {
+      const totalTimerTick = () => {
+        const now = Date.now();
+        const drift = now - expectedTotalTimeRef.current;
+        
         setTotalTime((prev) => prev + 1);
-      }, 1000);
+        
+        expectedTotalTimeRef.current += 1000;
+        const nextDelay = Math.max(0, 1000 - drift);
+        totalTimeIntervalRef.current = setTimeout(totalTimerTick, nextDelay);
+      };
+      
+      // Start both timers
+      intervalRef.current = setTimeout(phaseTimerTick, 1000);
+      totalTimeIntervalRef.current = setTimeout(totalTimerTick, 1000);
     } else {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        clearTimeout(intervalRef.current);
         intervalRef.current = null;
       }
       if (totalTimeIntervalRef.current) {
-        clearInterval(totalTimeIntervalRef.current);
+        clearTimeout(totalTimeIntervalRef.current);
         totalTimeIntervalRef.current = null;
       }
     }
 
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        clearTimeout(intervalRef.current);
       }
       if (totalTimeIntervalRef.current) {
-        clearInterval(totalTimeIntervalRef.current);
+        clearTimeout(totalTimeIntervalRef.current);
       }
       if (manualColorIntervalRef.current) {
         clearInterval(manualColorIntervalRef.current);
@@ -126,11 +149,11 @@ export const BreathingExercise: React.FC = () => {
   const resetExercise = () => {
     setIsActive(false);
     if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+      clearTimeout(intervalRef.current);
       intervalRef.current = null;
     }
     if (totalTimeIntervalRef.current) {
-      clearInterval(totalTimeIntervalRef.current);
+      clearTimeout(totalTimeIntervalRef.current);
       totalTimeIntervalRef.current = null;
     }
     setPhase('inhale');

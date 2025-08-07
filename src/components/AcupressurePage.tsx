@@ -30,6 +30,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sessionStartTime = useRef<number | null>(null);
+  const expectedTimeRef = useRef<number>(0);
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
   const colorNames = ['Azul Calmante', 'Verde Equilibrante', 'Magenta Energizante'];
@@ -134,7 +135,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const startIntegratedTherapy = (duration: number) => {
     // Clear any existing intervals first
     if (timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
+      clearTimeout(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
     if (colorIntervalRef.current) {
@@ -164,12 +165,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
     }
     
     // Start timer countdown
-    let startTime = Date.now();
-    let expectedTime = startTime + 1000;
+    const startTime = Date.now();
+    expectedTimeRef.current = startTime + 1000;
     
-    timerIntervalRef.current = setInterval(() => {
+    const tick = () => {
       const now = Date.now();
-      const drift = now - expectedTime;
+      const drift = now - expectedTimeRef.current;
       
       setTimeRemaining((prev) => {
         if (prev <= 1) {
@@ -179,8 +180,14 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
         return prev - 1;
       });
       
-      expectedTime += 1000;
-    }, 1000);
+      expectedTimeRef.current += 1000;
+      const nextDelay = Math.max(0, 1000 - drift);
+      
+      timerIntervalRef.current = setTimeout(tick, nextDelay);
+    };
+    
+    // Start the first tick
+    timerIntervalRef.current = setTimeout(tick, 1000);
   };
 
   const stopIntegratedTherapy = () => {
@@ -200,7 +207,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
       colorIntervalRef.current = null;
     }
     if (timerIntervalRef.current) {
-      clearInterval(timerIntervalRef.current);
+      clearTimeout(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
     

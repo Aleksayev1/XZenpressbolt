@@ -7,6 +7,8 @@ export const usePixPayment = () => {
   const [error, setError] = useState<string>('');
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [checkingStatus, setCheckingStatus] = useState(false);
+  const expectedTimeRef = useRef<number>(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const pixService = createPixService();
 
@@ -52,10 +54,35 @@ export const usePixPayment = () => {
 
   useEffect(() => {
     if (timeLeft > 0) {
-      const timer = setInterval(() => {
-        setTimeLeft(prev => prev <= 1 ? 0 : prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
+      const startTime = Date.now();
+      expectedTimeRef.current = startTime + 1000;
+      
+      const tick = () => {
+        const now = Date.now();
+        const drift = now - expectedTimeRef.current;
+        
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            return 0;
+          }
+          return prev - 1;
+        });
+        
+        if (timeLeft > 1) {
+          expectedTimeRef.current += 1000;
+          const nextDelay = Math.max(0, 1000 - drift);
+          timerRef.current = setTimeout(tick, nextDelay);
+        }
+      };
+      
+      timerRef.current = setTimeout(tick, 1000);
+      
+      return () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      };
     }
   }, [timeLeft]);
 
