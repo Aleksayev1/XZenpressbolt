@@ -382,7 +382,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
             <div className="mt-4 flex justify-center space-x-4 text-sm">
               <div className="flex items-center space-x-1">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-gray-600">Melhoria: +{weeklyStats.improvementTrend}%</span>
+                <span className="text-gray-600">Melhoria: +{weeklyStats?.improvementTrend || 0}%</span>
               </div>
             </div>
           </div>
