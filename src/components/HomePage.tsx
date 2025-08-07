@@ -172,7 +172,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               <span className="font-semibold">🚀 Plataforma Oficial Lançada!</span>
             </div>
             <p className="text-blue-100 text-sm mt-2">
-              PIX real ativo • Cartão em demonstração • Todos os recursos funcionais
+              PIX real ativo • Cartão real ativo • Todos os recursos funcionais
             </p>
           </div>
           
