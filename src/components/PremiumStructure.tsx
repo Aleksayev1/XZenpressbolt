@@ -512,18 +512,6 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
               >
                 {t('premium.payment.confirm')}
               </button>
-                
-                {/* Demo upgrade button for testing */}
-                <button
-                  onClick={() => {
-                    upgradeToPremium();
-                    setShowPayment(false);
-                    alert('🎉 Upgrade para Premium ativado! (Modo Demo)');
-                  }}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all font-semibold"
-                >
-                  🚀 Demo Premium
-                </button>
             </div>
           </div>
         </div>
