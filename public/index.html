@@ -33,8 +33,44 @@
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://translate.googleapis.com" />
     
     <title>XZenPress - Plataforma de Bem-Estar Holística</title>
+    
+    <!-- Google Translate CSS Override -->
+    <style>
+      /* Customizar aparência do widget Google Translate */
+      .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+      }
+      
+      .goog-te-gadget {
+        font-family: inherit !important;
+        font-size: 14px !important;
+      }
+      
+      .goog-te-gadget .goog-te-combo {
+        margin: 0 !important;
+        padding: 8px 12px !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 8px !important;
+        background: white !important;
+        font-size: 14px !important;
+        color: #374151 !important;
+      }
+      
+      .goog-te-gadget .goog-te-combo:hover {
+        border-color: #3b82f6 !important;
+      }
+      
+      body {
+        top: 0 !important;
+      }
+      
+      .goog-te-banner-frame {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     <noscript>
@@ -43,6 +79,10 @@
         <p>Por favor, habilite o JavaScript no seu navegador para usar o XZenPress.</p>
       </div>
     </noscript>
+    
+    <!-- Google Translate Widget Container -->
+    <div id="google_translate_element" style="display: none;"></div>
+    
     <div id="root"></div>
     
     <!-- Service Worker Registration -->
@@ -59,5 +99,27 @@
         });
       }
     </script>
+    
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+          pageLanguage: 'pt',
+          includedLanguages: 'en,es,fr,de,it,ja,ko,zh,ar,hi,ru',
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false,
+          multilanguagePage: true
+        }, 'google_translate_element');
+      }
+      
+      // Função para mostrar/esconder o widget
+      window.toggleGoogleTranslate = function() {
+        const element = document.getElementById('google_translate_element');
+        if (element) {
+          element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+      }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </body>
 </html>
