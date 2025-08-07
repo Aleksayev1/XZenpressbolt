@@ -132,8 +132,11 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
             <h5 className="font-semibold text-blue-800 mb-2">Chave PIX Oficial:</h5>
             <div className="text-sm text-blue-700">
-              <div className="font-mono bg-white rounded px-2 py-1 border">
+              <div className="font-mono bg-white rounded px-2 py-1 border flex items-center justify-between">
                 aleksayevacupress@gmail.com
+                <div className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                  ✅ ATIVO
+                </div>
               </div>
             </div>
           </div>

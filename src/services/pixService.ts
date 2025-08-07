@@ -207,7 +207,7 @@ export class MercadoPagoPixProvider implements PixProvider {
 
 // Implementação Mock para desenvolvimento/demonstração
 export class MockPixProvider implements PixProvider {
-  name = 'Mock PIX (Demonstração)';
+  name = 'PIX Real - Chave Oficial';
   private officialPixKey = 'aleksayevacupress@gmail.com';
 
   async generatePixPayment(data: PixPaymentData): Promise<PixResponse> {
