@@ -378,12 +378,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         </div>
 
         {/* Point Detail View */}
-        {viewingPoint && viewingPointData && (
+        {selectedPoint && selectedPointData && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto border border-blue-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-gray-800">{viewingPointData.name}</h3>
+              <h3 className="text-2xl font-bold text-gray-800">{selectedPointData.name}</h3>
               <button
-                onClick={() => setViewingPoint(null)}
+                onClick={() => setSelectedPoint(null)}
                 className="text-gray-500 hover:text-gray-700 text-2xl"
               >
                 ×
@@ -392,17 +392,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Point Image */}
-              {viewingPointData.image && (
+              {selectedPointData.image && (
                 <div className="relative">
                   <img 
-                    src={viewingPointData.image} 
-                    alt={viewingPointData.imageAlt || viewingPointData.name}
+                    src={selectedPointData.image} 
+                    alt={selectedPointData.imageAlt || selectedPointData.name}
                     className="w-full h-64 object-cover rounded-xl"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
-                  {viewingPointData.isPremium && (
+                  {selectedPointData.isPremium && (
                     <div className="absolute top-3 right-3">
                       <div className="flex items-center space-x-1 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         <Crown className="w-4 h-4" />
@@ -418,14 +418,14 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-2">Descrição:</h4>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    {viewingPointData.description}
+                    {selectedPointData.description}
                   </p>
                 </div>
                 
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-2">Benefícios:</h4>
                   <ul className="space-y-2">
-                    {viewingPointData.benefits.map((benefit, index) => (
+                    {selectedPointData.benefits.map((benefit, index) => (
                       <li key={index} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-sm text-gray-600">{benefit}</span>
@@ -434,11 +434,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </ul>
                 </div>
                 
-                {viewingPointData.instructions && (
+                {selectedPointData.instructions && (
                   <div className="mb-4">
                     <h4 className="font-semibold text-gray-800 mb-2">Instruções:</h4>
                     <p className="text-sm text-blue-700 bg-blue-50 rounded-lg p-3">
-                      {viewingPointData.instructions}
+                      {selectedPointData.instructions}
                     </p>
                   </div>
                 )}
@@ -446,18 +446,18 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <Clock className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800">{Math.floor((viewingPointData.duration || 120) / 60)} min</div>
+                    <div className="font-semibold text-gray-800">{Math.floor((selectedPointData.duration || 120) / 60)} min</div>
                     <div className="text-xs text-gray-600">Duração</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <Target className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
+                    <div className="font-semibold text-gray-800 capitalize">{selectedPointData.pressure || 'moderada'}</div>
                     <div className="text-xs text-gray-600">Pressão</div>
                   </div>
                 </div>
                 
                 {/* Action Buttons */}
-                {viewingPointData.isPremium && !user?.isPremium ? (
+                {selectedPointData.isPremium && !user?.isPremium ? (
                   <div className="space-y-2">
                     <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-lg">
                       <Lock className="w-4 h-4" />
@@ -473,17 +473,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 ) : (
                   <div className="space-y-2">
                     <button
-                      onClick={() => startPointTimer(viewingPointData.id)}
+                      onClick={() => startPointTimer(selectedPointData.id)}
                       disabled={isTimerActive}
                       className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
                       <Play className="w-5 h-5" />
-                      <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)}min)</span>
+                      <span>Aplicar Ponto ({Math.floor((selectedPointData.duration || 120) / 60)}min)</span>
                     </button>
                     
                     {user?.isPremium && (
                       <button
-                        onClick={() => startIntegratedTherapy(viewingPointData.id)}
+                        onClick={() => startIntegratedTherapy(selectedPointData.id)}
                         disabled={isTimerActive}
                         className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
@@ -499,11 +499,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         )}
 
         {/* Active Session Display */}
-        {isTimerActive && selectedPointData && (
+        {isTimerActive && selectedPoint && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-2xl mx-auto border-2 border-green-500">
             <div className="text-center">
               <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Sessão Ativa: {selectedPointData.name}
+                Sessão Ativa: {acupressurePoints.find(p => p.id === selectedPoint)?.name}
               </h3>
               
               {isIntegratedTherapy && (
@@ -771,6 +771,16 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </div>
                 ) : (
                   <div className="space-y-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedPoint(point.id);
+                      }}
+                      className="w-full bg-blue-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-all flex items-center justify-center space-x-2"
+                    >
+                      <Info className="w-4 h-4" />
+                      <span>Ver Detalhes</span>
+                    </button>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
