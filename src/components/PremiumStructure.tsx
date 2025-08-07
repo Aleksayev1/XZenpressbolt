@@ -719,7 +719,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
               <p className="text-gray-600 text-sm mb-4">{t('premium.faq.a2')}</p>
             </div>
             <div>
-              <h3 className="font-semibent text-gray-800 mb-2">{t('premium.faq.q3')}</h3>
+              <h3 className="font-semibold text-gray-800 mb-2">{t('premium.faq.q3')}</h3>
               <p className="text-gray-600 text-sm mb-4">{t('premium.faq.a3')}</p>
             </div>
             <div>
