@@ -569,7 +569,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 ) : (
                   <div className="space-y-2">
                     <button
-                      onClick={() => startPointTimer(viewingPointData.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        startPointTimer(viewingPointData.id);
+                      }}
                       disabled={isTimerActive}
                       className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
@@ -579,7 +582,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     
                     {user?.isPremium && (
                       <button
-                        onClick={() => startIntegratedTherapy(viewingPointData.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startIntegratedTherapy(viewingPointData.id);
+                        }}
                         disabled={isTimerActive}
                         className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
@@ -865,7 +871,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       <span className="text-sm font-medium">Premium</span>
                     </div>
                     <button
-                      onClick={() => onPageChange('premium')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onPageChange('premium');
+                      }}
                       className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
                     >
                       Desbloquear
@@ -874,7 +883,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 ) : (
                   <div className="space-y-2">
                     <button
-                      onClick={() => startPointTimer(point.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        startPointTimer(point.id);
+                      }}
                       disabled={isTimerActive}
                       className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
@@ -884,7 +896,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     
                     {user?.isPremium && (
                       <button
-                        onClick={() => startIntegratedTherapy(point.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          startIntegratedTherapy(point.id);
+                        }}
                         disabled={isTimerActive}
                         className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
