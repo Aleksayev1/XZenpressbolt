@@ -4,7 +4,11 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 
-export const BreathingExercise: React.FC = () => {
+interface AcupressurePageProps {
+  onPageChange: (page: string) => void;
+}
+
+export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }) => {
   const { t } = useLanguage();
   const { user } = useAuth();
   const { recordSession } = useSessionHistory();
