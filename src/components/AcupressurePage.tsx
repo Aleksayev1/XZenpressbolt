@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer } from 'lucide-react';
+import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Volume2, VolumeX, Waves, CloudRain, Music, ExternalLink, Palette } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
@@ -23,6 +23,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const [breathingPhase, setBreathingPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [breathingTimeLeft, setBreathingTimeLeft] = useState(4);
   const [usedPoints, setUsedPoints] = useState<string[]>([]);
+  const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
+  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
+  const [soundVolume, setSoundVolume] = useState(0.3);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeRef = useRef<NodeJS.Timeout | null>(null);
@@ -32,6 +36,23 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const expectedTimeRef = useRef<number>(0);
   const expectedTotalTimeRef = useRef<number>(0);
   const expectedBreathingTimeRef = useRef<number>(0);
+
+  const freeSounds = [
+    {
+      id: 'ocean',
+      name: 'Sons do Mar',
+      icon: <Waves className="w-5 h-5" />,
+      src: '/sounds/ocean.mp3',
+      description: 'Ondas relaxantes'
+    },
+    {
+      id: 'rain',
+      name: 'Chuva Suave',
+      icon: <CloudRain className="w-5 h-5" />,
+      src: '/sounds/rain.mp3',
+      description: 'Chuva calmante'
+    }
+  ];
 
   const categories = [
     { id: 'all', name: 'Todos os Pontos', icon: '🎯' },
@@ -52,6 +73,23 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const filteredPoints = getPointsByCategory(selectedCategory, user?.isPremium || false);
 
   const selectedPointData = selectedPoint ? acupressurePoints.find(p => p.id === selectedPoint) : null;
+
+  // Audio control effects
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = soundVolume;
+    }
+  }, [soundVolume]);
+
+  useEffect(() => {
+    if (audioRef.current && selectedSoundId) {
+      if (isSoundPlaying) {
+        audioRef.current.play().catch(console.error);
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isSoundPlaying, selectedSoundId]);
 
   // Timer com correção de drift para acupressão
   useEffect(() => {
@@ -306,6 +344,59 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     }
   };
 
+  const handleSoundSelect = (soundId: string) => {
+    if (selectedSoundId === soundId) {
+      setIsSoundPlaying(!isSoundPlaying);
+    } else {
+      setSelectedSoundId(soundId);
+      setIsSoundPlaying(true);
+    }
+  };
+
+  const toggleSoundPlayback = () => {
+    if (selectedSoundId) {
+      setIsSoundPlaying(!isSoundPlaying);
+    }
+  };
+
+  const stopAllSounds = () => {
+    setIsSoundPlaying(false);
+    setSelectedSoundId(null);
+  };
+
+  const startManualColorTherapy = () => {
+    let colorIndex = 0;
+    const colorStartTime = Date.now();
+    let expectedColorTime = colorStartTime + 20000;
+    
+    const colorTick = () => {
+      const now = Date.now();
+      const drift = now - expectedColorTime;
+      
+      colorIndex = (colorIndex + 1) % colors.length;
+      setCurrentColor(colors[colorIndex]);
+      
+      expectedColorTime += 20000;
+      const nextDelay = Math.max(0, 20000 - drift);
+      
+      if (colorIndex < 2) {
+        colorTimerRef.current = setTimeout(colorTick, nextDelay);
+      } else {
+        setCurrentColor('#3B82F6');
+      }
+    };
+    
+    colorTimerRef.current = setTimeout(colorTick, 20000);
+    
+    setTimeout(() => {
+      if (colorTimerRef.current) {
+        clearTimeout(colorTimerRef.current);
+        colorTimerRef.current = null;
+      }
+      setCurrentColor('#3B82F6');
+    }, 65000);
+  };
+
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -321,6 +412,21 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           : 'linear-gradient(135deg, #f0f9ff, #e0f2fe, white)'
       }}
     >
+      {/* Audio Element */}
+      {selectedSoundId && (
+        <audio
+          ref={audioRef}
+          src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
+          loop
+          preload="auto"
+          onError={(e) => {
+            console.warn('Audio file not found:', e.currentTarget.src);
+            setSelectedSoundId(null);
+            setIsSoundPlaying(false);
+          }}
+        />
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -417,6 +523,164 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             </div>
           </div>
         )}
+
+        {/* Sound Controls */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+          <div className="flex items-center justify-center space-x-2 mb-6">
+            <Volume2 className="w-6 h-6 text-gray-600" />
+            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
+          </div>
+          
+          {/* Free Sounds Section */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {freeSounds.map((sound) => (
+                <button
+                  key={sound.id}
+                  onClick={() => handleSoundSelect(sound.id)}
+                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                    selectedSoundId === sound.id
+                      ? 'border-blue-500 bg-blue-50 shadow-lg'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 rounded-full ${
+                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      {sound.icon}
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-gray-800">{sound.name}</div>
+                      <div className="text-sm text-gray-600">{sound.description}</div>
+                    </div>
+                    {selectedSoundId === sound.id && isSoundPlaying && (
+                      <div className="ml-auto">
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+            
+            {/* Audio Controls */}
+            {selectedSoundId && (
+              <div className="bg-gray-50 rounded-xl p-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                  <button
+                    onClick={toggleSoundPlayback}
+                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                      isSoundPlaying
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                    }`}
+                  >
+                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
+                  </button>
+                  
+                  <div className="flex items-center space-x-3">
+                    <VolumeX className="w-5 h-5 text-gray-500" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={soundVolume}
+                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                    />
+                    <Volume2 className="w-5 h-5 text-gray-500" />
+                    <span className="text-sm text-gray-600 min-w-[3rem]">
+                      {Math.round(soundVolume * 100)}%
+                    </span>
+                  </div>
+                  
+                  <button
+                    onClick={stopAllSounds}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
+                  >
+                    Parar
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Premium Sounds Teaser */}
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Sons Premium</h4>
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
+              <p className="text-gray-700 mb-4">Biblioteca completa com mais de 50 sons + integração Spotify</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 Lareira</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 Clássica</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 Mantras</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">+50 sons</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a
+                  href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Abrir Spotify</span>
+                </a>
+                <button 
+                  onClick={() => onPageChange('premium')}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                >
+                  Upgrade Premium
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Color Therapy Controls */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-md p-6 mb-8 max-w-2xl mx-auto border border-blue-100">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center flex items-center justify-center space-x-2">
+            <Palette className="w-5 h-5 text-purple-600" />
+            <span>Cromoterapia para Acupressão</span>
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4 mb-4">
+            {colors.map((color, index) => (
+              <div key={index} className="text-center">
+                <div 
+                  className="w-12 h-12 rounded-full mx-auto mb-2 cursor-pointer transform hover:scale-110 transition-transform shadow-md border-2 border-white"
+                  style={{ backgroundColor: color }}
+                  onClick={() => setCurrentColor(color)}
+                />
+                <span className="text-xs text-gray-700 font-medium">
+                  {index === 0 ? 'Azul' : index === 1 ? 'Verde' : 'Roxo'}
+                </span>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={startManualColorTherapy}
+            disabled={isTimerActive}
+            className={`w-full px-6 py-3 rounded-xl font-semibold transition-all ${
+              isTimerActive
+                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
+            }`}
+          >
+            {isTimerActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
+          </button>
+          <p className="text-xs text-gray-600 text-center mt-3 bg-white/50 rounded-lg px-3 py-2">
+            💡 Ative a cromoterapia manual por 1 minuto independente da acupressão
+          </p>
+        </div>
 
         {/* Points Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
