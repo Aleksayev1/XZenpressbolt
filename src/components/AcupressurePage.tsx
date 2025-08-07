@@ -378,11 +378,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         </div>
 
         {/* Point Detail View */}
-        {viewingPoint && (
+        {viewingPoint && viewingPointData && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto border border-blue-200">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-2xl font-bold text-gray-800">
-                {acupressurePoints.find(p => p.id === viewingPoint)?.name || 'Ponto não encontrado'}
+                {viewingPointData.name}
               </h3>
               <button
                 onClick={() => setViewingPoint(null)}
@@ -394,17 +394,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Point Image */}
-              {acupressurePoints.find(p => p.id === viewingPoint)?.image && (
+              {viewingPointData.image && (
                 <div className="relative">
                   <img 
-                    src={acupressurePoints.find(p => p.id === viewingPoint)?.image} 
-                    alt={acupressurePoints.find(p => p.id === viewingPoint)?.imageAlt || acupressurePoints.find(p => p.id === viewingPoint)?.name}
+                    src={viewingPointData.image} 
+                    alt={viewingPointData.imageAlt || viewingPointData.name}
                     className="w-full h-64 object-cover rounded-xl"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
-                  {acupressurePoints.find(p => p.id === viewingPoint)?.isPremium && (
+                  {viewingPointData.isPremium && (
                     <div className="absolute top-3 right-3">
                       <div className="flex items-center space-x-1 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         <Crown className="w-4 h-4" />
@@ -420,14 +420,14 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-2">Descrição:</h4>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    {acupressurePoints.find(p => p.id === viewingPoint)?.description}
+                    {viewingPointData.description}
                   </p>
                 </div>
                 
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-2">Benefícios:</h4>
                   <ul className="space-y-2">
-                    {(acupressurePoints.find(p => p.id === viewingPoint)?.benefits || []).map((benefit, index) => (
+                    {viewingPointData.benefits.map((benefit, index) => (
                       <li key={index} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-sm text-gray-600">{benefit}</span>
@@ -436,11 +436,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </ul>
                 </div>
                 
-                {acupressurePoints.find(p => p.id === viewingPoint)?.instructions && (
+                {viewingPointData.instructions && (
                   <div className="mb-4">
                     <h4 className="font-semibold text-gray-800 mb-2">Instruções:</h4>
                     <p className="text-sm text-blue-700 bg-blue-50 rounded-lg p-3">
-                      {acupressurePoints.find(p => p.id === viewingPoint)?.instructions}
+                      {viewingPointData.instructions}
                     </p>
                   </div>
                 )}
@@ -448,18 +448,18 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <Clock className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800">{Math.floor((acupressurePoints.find(p => p.id === viewingPoint)?.duration || 120) / 60)} min</div>
+                    <div className="font-semibold text-gray-800">{Math.floor((viewingPointData.duration || 120) / 60)} min</div>
                     <div className="text-xs text-gray-600">Duração</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <Target className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800 capitalize">{acupressurePoints.find(p => p.id === viewingPoint)?.pressure || 'moderada'}</div>
+                    <div className="font-semibold text-gray-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
                     <div className="text-xs text-gray-600">Pressão</div>
                   </div>
                 </div>
                 
                 {/* Action Buttons */}
-                {acupressurePoints.find(p => p.id === viewingPoint)?.isPremium && !user?.isPremium ? (
+                {viewingPointData.isPremium && !user?.isPremium ? (
                   <div className="space-y-2">
                     <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-lg">
                       <Lock className="w-4 h-4" />
@@ -477,17 +477,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     <button
                       onClick={() => startPointTimer(viewingPoint)}
                       disabled={isTimerActive}
-                      className="w-full bg-green-500 text-white py-3 rounded-lg font-semibold hover:bg-green-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                      className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
                       <Play className="w-5 h-5" />
-                      <span>Aplicar Ponto ({Math.floor((acupressurePoints.find(p => p.id === viewingPoint)?.duration || 120) / 60)}min)</span>
+                      <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)}min)</span>
                     </button>
                     
                     {user?.isPremium && (
                       <button
                         onClick={() => startIntegratedTherapy(viewingPoint)}
                         disabled={isTimerActive}
-                        className="w-full bg-purple-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                        className="w-full bg-purple-500 text-white py-1.5 rounded-lg text-sm font-semibold hover:bg-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
                         <Target className="w-4 h-4" />
                         <span>Terapia Integrada (Respiração + Cores)</span>
@@ -502,48 +502,48 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
         {/* Active Session Display */}
         {isTimerActive && selectedPoint && (
-          <div className="bg-white rounded-lg shadow-lg p-3 mb-4 max-w-lg mx-auto border-2 border-green-500">
+          <div className="bg-white rounded-lg shadow-lg p-2 mb-3 max-w-md mx-auto border-2 border-green-500">
             <div className="text-center">
-              <h3 className="text-base font-bold text-gray-800 mb-2">
-                🎯 {acupressurePoints.find(p => p.id === selectedPoint)?.name || 'Ponto Ativo'}
+              <h3 className="text-sm font-bold text-gray-800 mb-1">
+                🎯 {selectedPointData?.name || 'Ponto Ativo'}
               </h3>
               
               {isIntegratedTherapy && (
-                <div className="mb-2">
+                <div className="mb-1">
                   <div className="text-sm font-semibold mb-1" style={{ color: currentColor }}>
                     {breathingPhase === 'inhale' ? 'Inspire' : 
                      breathingPhase === 'hold' ? 'Segure' : 'Expire'} ({breathingTimeLeft}s)
                   </div>
-                  <div className="text-xs text-gray-600">
+                  <div className="text-xs text-gray-500">
                     Terapia Integrada Ativa
                   </div>
                 </div>
               )}
               
-              <div className="grid grid-cols-2 gap-2 mb-2">
-                <div className="bg-green-50 rounded p-2">
-                  <div className="text-base font-bold text-green-600">{formatTime(timeLeft)}</div>
+              <div className="grid grid-cols-2 gap-1 mb-2">
+                <div className="bg-green-50 rounded p-1">
+                  <div className="text-sm font-bold text-green-600">{formatTime(timeLeft)}</div>
                   <div className="text-xs text-green-700">Restante</div>
                 </div>
-                <div className="bg-blue-50 rounded p-2">
-                  <div className="text-base font-bold text-blue-600">{formatTime(totalSessionTime)}</div>
+                <div className="bg-blue-50 rounded p-1">
+                  <div className="text-sm font-bold text-blue-600">{formatTime(totalSessionTime)}</div>
                   <div className="text-xs text-blue-700">Total</div>
                 </div>
               </div>
               
-              <div className="flex justify-center space-x-2">
+              <div className="flex justify-center space-x-1">
                 <button
                   onClick={stopTimer}
-                  className="flex items-center space-x-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors"
+                  className="flex items-center space-x-1 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors"
                 >
-                  <Pause className="w-3 h-3" />
+                  <Pause className="w-2.5 h-2.5" />
                   <span>Parar</span>
                 </button>
                 <button
                   onClick={resetTimer}
-                  className="flex items-center space-x-1 bg-gray-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-gray-600 transition-colors"
+                  className="flex items-center space-x-1 bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-semibold hover:bg-gray-600 transition-colors"
                 >
-                  <RotateCcw className="w-3 h-3" />
+                  <RotateCcw className="w-2.5 h-2.5" />
                   <span>Reiniciar</span>
                 </button>
               </div>
@@ -552,27 +552,27 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         )}
 
         {/* Sound Controls */}
-        <div className="bg-white rounded-lg shadow-lg p-3 mb-4">
-          <div className="flex items-center justify-center space-x-2 mb-3">
-            <Volume2 className="w-4 h-4 text-gray-600" />
-            <h3 className="text-base font-bold text-gray-800">Sons</h3>
+        <div className="bg-white rounded-lg shadow-lg p-2 mb-3">
+          <div className="flex items-center justify-center space-x-1 mb-2">
+            <Volume2 className="w-3 h-3 text-gray-600" />
+            <h3 className="text-sm font-bold text-gray-800">Sons</h3>
           </div>
           
           {/* Free Sounds Section */}
-          <div className="mb-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+          <div className="mb-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-2">
               {freeSounds.map((sound) => (
                 <button
                   key={sound.id}
                   onClick={() => handleSoundSelect(sound.id)}
-                  className={`p-2 rounded border transition-all duration-200 ${
+                  className={`p-1.5 rounded border transition-all duration-200 ${
                     selectedSoundId === sound.id
                       ? 'border-blue-500 bg-blue-50 shadow-lg'
                       : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <div className="flex items-center space-x-2">
-                    <div className={`p-1 rounded-full ${
+                  <div className="flex items-center space-x-1">
+                    <div className={`p-0.5 rounded-full ${
                       selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
                     }`}>
                       {sound.icon}
@@ -584,9 +584,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     {selectedSoundId === sound.id && isSoundPlaying && (
                       <div className="ml-auto">
                         <div className="flex space-x-1">
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
+                          <div className="w-0.5 h-3 bg-blue-500 rounded animate-pulse"></div>
+                          <div className="w-0.5 h-3 bg-blue-500 rounded animate-pulse delay-100"></div>
+                          <div className="w-0.5 h-3 bg-blue-500 rounded animate-pulse delay-200"></div>
                         </div>
                       </div>
                     )}
@@ -597,22 +597,22 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             
             {/* Audio Controls */}
             {selectedSoundId && (
-              <div className="bg-gray-50 rounded p-2">
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-3">
+              <div className="bg-gray-50 rounded p-1.5">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2">
                   <button
                     onClick={toggleSoundPlayback}
-                    className={`flex items-center space-x-1 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
+                    className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${
                       isSoundPlaying
                         ? 'bg-red-500 text-white hover:bg-red-600'
                         : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
                   >
-                    {isSoundPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+                    {isSoundPlaying ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5" />}
                     <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
                   </button>
                   
-                  <div className="flex items-center space-x-2">
-                    <VolumeX className="w-3 h-3 text-gray-500" />
+                  <div className="flex items-center space-x-1">
+                    <VolumeX className="w-2.5 h-2.5 text-gray-500" />
                     <input
                       type="range"
                       min="0"
@@ -620,17 +620,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       step="0.1"
                       value={soundVolume}
                       onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                      className="w-16 h-1 bg-gray-200 rounded appearance-none cursor-pointer"
+                      className="w-12 h-1 bg-gray-200 rounded appearance-none cursor-pointer"
                     />
-                    <Volume2 className="w-3 h-3 text-gray-500" />
-                    <span className="text-xs text-gray-600 min-w-[2.5rem]">
+                    <Volume2 className="w-2.5 h-2.5 text-gray-500" />
+                    <span className="text-xs text-gray-600 min-w-[2rem]">
                       {Math.round(soundVolume * 100)}%
                     </span>
                   </div>
                   
                   <button
                     onClick={stopAllSounds}
-                    className="px-2 py-1 bg-gray-500 text-white rounded text-xs font-medium hover:bg-gray-600 transition-colors"
+                    className="px-1.5 py-0.5 bg-gray-500 text-white rounded text-xs font-medium hover:bg-gray-600 transition-colors"
                   >
                     Parar
                   </button>
@@ -640,28 +640,28 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
           
           {/* Premium Sounds Teaser */}
-          <div className="border-t border-gray-200 pt-2">
-            <div className="bg-yellow-50 border border-yellow-200 rounded p-2 text-center">
-              <p className="text-gray-700 text-xs mb-2">🎼 50+ sons + Spotify</p>
-              <div className="flex flex-wrap justify-center gap-1 mb-2">
-                <span className="px-1.5 py-0.5 bg-white rounded text-xs text-gray-600">🌲</span>
-                <span className="px-1.5 py-0.5 bg-white rounded text-xs text-gray-600">🔥</span>
-                <span className="px-1.5 py-0.5 bg-white rounded text-xs text-gray-600">🎵</span>
-                <span className="px-1.5 py-0.5 bg-white rounded text-xs text-gray-600">🧘</span>
+          <div className="border-t border-gray-200 pt-1">
+            <div className="bg-yellow-50 border border-yellow-200 rounded p-1.5 text-center">
+              <p className="text-gray-700 text-xs mb-1">🎼 50+ sons + Spotify</p>
+              <div className="flex flex-wrap justify-center gap-0.5 mb-1">
+                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🌲</span>
+                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🔥</span>
+                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🎵</span>
+                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🧘</span>
               </div>
-              <div className="flex flex-col sm:flex-row gap-1 justify-center">
+              <div className="flex flex-col sm:flex-row gap-0.5 justify-center">
                 <a
                   href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1 bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors"
+                  className="inline-flex items-center space-x-1 bg-green-500 text-white px-2 py-0.5 rounded text-xs font-semibold hover:bg-green-600 transition-colors"
                 >
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <ExternalLink className="w-2 h-2" />
                   <span>Abrir Spotify</span>
                 </a>
                 <button 
                   onClick={() => onPageChange('premium')}
-                  className="bg-yellow-400 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-yellow-500 transition-all"
+                  className="bg-yellow-400 text-white px-2 py-0.5 rounded text-xs font-semibold hover:bg-yellow-500 transition-all"
                 >
                   Premium
                 </button>
@@ -676,10 +676,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             <div
               key={point.id}
               onClick={() => {
-                console.log('🔍 CLIQUE NO CARD:', point.id);
-                console.log('🔍 ANTES - viewingPoint:', viewingPoint);
+                console.log('🔍 CLIQUE NO CARD - ID:', point.id);
+                console.log('🔍 CLIQUE NO CARD - Nome:', point.name);
                 setViewingPoint(point.id);
-                console.log('🔍 DEPOIS - setViewingPoint chamado com:', point.id);
               }}
               className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 cursor-pointer ${
                 viewingPoint === point.id
@@ -762,7 +761,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        console.log('🎯 CLIQUE APLICAR PONTO:', point.id);
                         startPointTimer(point.id);
                       }}
                       disabled={isTimerActive}
@@ -776,7 +774,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          console.log('⚡ CLIQUE TERAPIA INTEGRADA:', point.id);
                           startIntegratedTherapy(point.id);
                         }}
                         disabled={isTimerActive}
