@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, Heart, Brain, Palette, Music, Star, ArrowRight } from 'lucide-react';
+import { Play, Heart, Brain, Palette, Music, Star, ArrowRight, BarChart3, User } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface HomePageProps {
