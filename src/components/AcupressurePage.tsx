@@ -769,47 +769,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         </div>
 
-        {/* Color Therapy Controls */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-md p-6 mb-8 max-w-2xl mx-auto border border-blue-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center flex items-center justify-center space-x-2">
-            <Palette className="w-5 h-5 text-purple-600" />
-            <span>Cromoterapia para Acupressão</span>
-          </h3>
-          <div className="flex flex-wrap justify-center gap-4 mb-4">
-            {colors.map((color, index) => (
-              <div key={index} className="text-center">
-                <div 
-                  className="w-12 h-12 rounded-full mx-auto mb-2 cursor-pointer transform hover:scale-110 transition-transform shadow-md border-2 border-white"
-                  style={{ backgroundColor: color }}
-                  onClick={() => setCurrentColor(color)}
-                />
-                <span className="text-xs text-gray-700 font-medium">
-                  {index === 0 ? 'Azul' : index === 1 ? 'Verde' : 'Roxo'}
-                </span>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={startManualColorTherapy}
-            disabled={isTimerActive}
-            className={`w-full px-6 py-3 rounded-xl font-semibold transition-all ${
-              isTimerActive
-                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
-            }`}
-          >
-            {isTimerActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
-          </button>
-          <p className="text-xs text-gray-600 text-center mt-3 bg-white/50 rounded-lg px-3 py-2">
-            💡 Ative a cromoterapia manual por 1 minuto independente da acupressão
-          </p>
-        </div>
-
         {/* Points Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {filteredPoints.map((point) => (
             <div
               key={point.id}
+              onClick={() => setViewingPoint(point.id)}
               className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 ${
                 selectedPoint === point.id
                   ? 'border-green-500 shadow-xl'
