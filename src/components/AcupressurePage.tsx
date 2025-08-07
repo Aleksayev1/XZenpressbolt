@@ -519,51 +519,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
                   </div>
                 )}
                 
-                {/* Point Details */}
-                {/* Compact Point Details */}
-                <div className="bg-gradient-to-r from-blue-50 via-green-50 to-purple-50 rounded-xl p-3 mb-4">
-                  <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <Clock className="w-3 h-3 text-blue-600" />
-                      <span className="text-gray-600">Duração:</span>
-                      <span className="font-semibold text-blue-800 text-xs">{formatTime(selectedPoint.duration || 120)}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Zap className="w-3 h-3 text-green-600" />
-                      <span className="text-gray-600">Pressão:</span>
-                      <span className="font-semibold text-green-800 capitalize text-xs">{selectedPoint.pressure || 'Moderada'}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Target className="w-3 h-3 text-purple-600" />
-                      <span className="text-gray-600">Categoria:</span>
-                      <span className="font-semibold text-purple-800 capitalize text-xs">{selectedPoint.category}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="mb-4">
-                  <h4 className="text-base font-semibold text-gray-800 mb-2">Benefícios:</h4>
-                  <ul className="space-y-1">
-                    {getLocalizedBenefits(selectedPoint).map((benefit, index) => (
-                      <li key={index} className="flex items-center space-x-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0 mt-1"></div>
-                        <span className="text-gray-600 text-sm">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Instructions */}
-                {selectedPoint.instructions && (
-                  <div className="mb-4">
-                    <h4 className="text-base font-semibold text-gray-800 mb-2">Instruções:</h4>
-                    <p className="text-gray-600 bg-gray-50 p-3 rounded-lg text-sm">
-                      {selectedPoint.instructions}
-                    </p>
-                  </div>
-                )}
-
-                {/* Timer - Only show for accessible points */}
+                {/* Timer e Controles - Posicionados próximos ao ponto visual */}
                 {selectedPoint && (!selectedPoint.isPremium || user?.isPremium) && (
                   <div className="mb-4">
                     <div className="flex items-center justify-between mb-4">
@@ -790,6 +746,49 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
                         }
                       </p>
                     </div>
+                  </div>
+                )}
+
+                {/* Point Details */}
+                <div className="bg-gradient-to-r from-blue-50 via-green-50 to-purple-50 rounded-xl p-3 mb-4">
+                  <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <Clock className="w-3 h-3 text-blue-600" />
+                      <span className="text-gray-600">Duração:</span>
+                      <span className="font-semibold text-blue-800 text-xs">{formatTime(selectedPoint.duration || 120)}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Zap className="w-3 h-3 text-green-600" />
+                      <span className="text-gray-600">Pressão:</span>
+                      <span className="font-semibold text-green-800 capitalize text-xs">{selectedPoint.pressure || 'Moderada'}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Target className="w-3 h-3 text-purple-600" />
+                      <span className="text-gray-600">Categoria:</span>
+                      <span className="font-semibold text-purple-800 capitalize text-xs">{selectedPoint.category}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="text-base font-semibold text-gray-800 mb-2">Benefícios:</h4>
+                  <ul className="space-y-1">
+                    {getLocalizedBenefits(selectedPoint).map((benefit, index) => (
+                      <li key={index} className="flex items-center space-x-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0 mt-1"></div>
+                        <span className="text-gray-600 text-sm">{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Instructions */}
+                {selectedPoint.instructions && (
+                  <div className="mb-4">
+                    <h4 className="text-base font-semibold text-gray-800 mb-2">Instruções:</h4>
+                    <p className="text-gray-600 bg-gray-50 p-3 rounded-lg text-sm">
+                      {selectedPoint.instructions}
+                    </p>
                   </div>
                 )}
 
