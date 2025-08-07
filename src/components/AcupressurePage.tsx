@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { AcupressurePoint } from '../types';
 import { acupressurePoints } from '../data/acupressurePoints';
+import { useSessionHistory } from '../hooks/useSessionHistory';
 
 interface AcupressurePageProps {
   onPageChange?: (page: string) => void;
@@ -12,6 +13,7 @@ interface AcupressurePageProps {
 export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange = () => {} }) => {
   const { user } = useAuth();
   const { t, currentLanguage } = useLanguage();
+  const { recordSession } = useSessionHistory();
   const [selectedPoint, setSelectedPoint] = useState<AcupressurePoint | null>(null);
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
   const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
@@ -27,6 +29,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sessionStartTime = useRef<number | null>(null);
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
   const colorNames = ['Azul Calmante', 'Verde Equilibrante', 'Magenta Energizante'];
@@ -142,6 +145,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
     setInitialDuration(duration);
     setTimeRemaining(duration);
     setIsTimerActive(true);
+    sessionStartTime.current = Date.now();
     
     // Start chromotherapy if enabled
     if (isChromotherapyEnabled) {
@@ -185,6 +189,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
     setIsSoundPlaying(false);
     setCurrentColor('#3B82F6');
     
+    // Registrar sessão se usuário estiver logado e sessão durou mais de 30 segundos
+    if (user && sessionStartTime.current && selectedPoint && (initialDuration - timeRemaining) > 30) {
+      recordAcupressureSession();
+    }
+    
     // Clear intervals
     if (colorIntervalRef.current) {
       clearInterval(colorIntervalRef.current);
@@ -203,8 +212,39 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
     
     // Stop fallback tone
     stopFallbackTone();
+    
+    sessionStartTime.current = null;
   };
 
+  const recordAcupressureSession = async () => {
+    if (!user || !sessionStartTime.current || !selectedPoint) return;
+
+    const actualDuration = initialDuration - timeRemaining;
+
+    try {
+      await recordSession({
+        sessionType: selectedPoint.category === 'cranio' ? 'chromotherapy' : 'acupressure',
+        durationSeconds: actualDuration,
+        effectivenessRating: 4.2, // Valor padrão, pode ser ajustado
+        pointsUsed: [selectedPoint.id],
+        sessionData: {
+          pointName: selectedPoint.name,
+          pointCategory: selectedPoint.category,
+          pressure: selectedPoint.pressure,
+          chromotherapyUsed: isChromotherapyEnabled,
+          soundUsed: selectedSoundId,
+          integratedBreathing: true,
+          plannedDuration: initialDuration,
+          actualDuration: actualDuration
+        },
+        completedAt: new Date().toISOString()
+      });
+      
+      console.log('✅ Sessão de acupressão registrada com sucesso');
+    } catch (error) {
+      console.error('❌ Erro ao registrar sessão de acupressão:', error);
+    }
+  };
   // Fallback audio using Web Audio API
   const playFallbackTone = () => {
     try {

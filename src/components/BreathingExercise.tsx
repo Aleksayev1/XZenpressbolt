@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain, Music } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useSessionHistory } from '../hooks/useSessionHistory';
 
 export const BreathingExercise: React.FC = () => {
   const { t } = useLanguage();
+  const { user } = useAuth();
+  const { recordSession } = useSessionHistory();
   const [isActive, setIsActive] = useState(false);
   const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [timeLeft, setTimeLeft] = useState(4);
@@ -15,6 +19,7 @@ export const BreathingExercise: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const manualColorIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const sessionStartTime = useRef<number | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
 
@@ -106,10 +111,16 @@ export const BreathingExercise: React.FC = () => {
 
   const startExercise = () => {
     setIsActive(true);
+    sessionStartTime.current = Date.now();
   };
 
   const stopExercise = () => {
     setIsActive(false);
+    
+    // Registrar sessão se usuário estiver logado e sessão durou mais de 30 segundos
+    if (user && sessionStartTime.current && totalTime > 30) {
+      recordSessionData();
+    }
   };
 
   const resetExercise = () => {
@@ -126,8 +137,31 @@ export const BreathingExercise: React.FC = () => {
     setTimeLeft(4);
     setTotalTime(0);
     setCurrentColor('#3B82F6');
+    sessionStartTime.current = null;
   };
 
+  const recordSessionData = async () => {
+    if (!user || !sessionStartTime.current) return;
+
+    try {
+      await recordSession({
+        sessionType: 'breathing',
+        durationSeconds: totalTime,
+        effectivenessRating: 4.5, // Valor padrão, pode ser ajustado
+        sessionData: {
+          technique: '4-7-8',
+          chromotherapyUsed: isChromotherapyEnabled,
+          soundUsed: selectedSoundId,
+          completedCycles: Math.floor(totalTime / 19) // Cada ciclo 4+7+8 = 19s
+        },
+        completedAt: new Date().toISOString()
+      });
+      
+      console.log('✅ Sessão de respiração registrada com sucesso');
+    } catch (error) {
+      console.error('❌ Erro ao registrar sessão de respiração:', error);
+    }
+  };
   const handleSoundSelect = (soundId: string) => {
     if (selectedSoundId === soundId) {
       // If same sound is selected, toggle play/pause

@@ -2,61 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { BarChart3, Users, TrendingUp, Clock, Target, Brain, Heart, Zap, Calendar, Award, Download, Filter } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useSessionHistory } from '../hooks/useSessionHistory';
+import { acupressurePoints } from '../data/acupressurePoints';
 
 interface DashboardPageProps {
   onPageChange: (page: string) => void;
 }
 
-interface SessionData {
-  date: string;
-  type: 'breathing' | 'acupressure' | 'chromotherapy';
-  duration: number;
-  pointsUsed?: string[];
-  effectiveness: number;
-}
 
-interface WeeklyStats {
-  totalSessions: number;
-  totalTime: number;
-  averageEffectiveness: number;
-  streakDays: number;
-  favoritePoint: string;
-  improvementTrend: number;
-}
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { sessions, stats, loading, error } = useSessionHistory('week');
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('week');
-  const [sessionHistory, setSessionHistory] = useState<SessionData[]>([]);
-  const [weeklyStats, setWeeklyStats] = useState<WeeklyStats | null>(null);
 
-  useEffect(() => {
-    // Simular dados de sessões para demonstração
-    const mockSessions: SessionData[] = [
-      { date: '2025-01-05', type: 'breathing', duration: 300, effectiveness: 4.5 },
-      { date: '2025-01-05', type: 'acupressure', duration: 180, pointsUsed: ['yintang-ex-hn3'], effectiveness: 4.2 },
-      { date: '2025-01-04', type: 'breathing', duration: 240, effectiveness: 4.8 },
-      { date: '2025-01-04', type: 'chromotherapy', duration: 120, effectiveness: 4.0 },
-      { date: '2025-01-03', type: 'acupressure', duration: 200, pointsUsed: ['baihui-basic-vg20'], effectiveness: 4.6 },
-      { date: '2025-01-02', type: 'breathing', duration: 360, effectiveness: 4.9 },
-      { date: '2025-01-01', type: 'acupressure', duration: 150, pointsUsed: ['yongquan-r1-kd1'], effectiveness: 4.3 },
-    ];
-
-    setSessionHistory(mockSessions);
-
-    // Calcular estatísticas
-    const stats: WeeklyStats = {
-      totalSessions: mockSessions.length,
-      totalTime: mockSessions.reduce((acc, session) => acc + session.duration, 0),
-      averageEffectiveness: mockSessions.reduce((acc, session) => acc + session.effectiveness, 0) / mockSessions.length,
-      streakDays: 5,
-      favoritePoint: 'Yintang (EX-HN3)',
-      improvementTrend: 15.3
-    };
-
-    setWeeklyStats(stats);
-  }, [selectedPeriod]);
 
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -67,24 +27,33 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
     return `${minutes}m`;
   };
 
-  const getTypeIcon = (type: string) => {
+  const getTypeIcon = (sessionType: string) => {
+    const type = sessionType;
     switch (type) {
       case 'breathing': return <Brain className="w-4 h-4 text-blue-500" />;
       case 'acupressure': return <Target className="w-4 h-4 text-green-500" />;
+      case 'integrated': return <Zap className="w-4 h-4 text-purple-500" />;
       case 'chromotherapy': return <Zap className="w-4 h-4 text-purple-500" />;
       default: return <Heart className="w-4 h-4 text-gray-500" />;
     }
   };
 
-  const getTypeName = (type: string) => {
+  const getTypeName = (sessionType: string) => {
+    const type = sessionType;
     switch (type) {
       case 'breathing': return 'Respiração 4-7-8';
       case 'acupressure': return 'Acupressão';
+      case 'integrated': return 'Terapia Integrada';
       case 'chromotherapy': return 'Cromoterapia';
       default: return type;
     }
   };
 
+  const getFavoritePointName = (pointId: string): string => {
+    if (pointId === 'Nenhum') return 'Nenhum';
+    const point = acupressurePoints.find(p => p.id === pointId);
+    return point ? point.name : pointId;
+  };
   if (!user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16 flex items-center justify-center">
@@ -131,17 +100,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
         </div>
 
         {/* Stats Cards */}
-        {weeklyStats && (
+        {stats && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-blue-100">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <Calendar className="w-6 h-6 text-blue-600" />
                 </div>
-                <span className="text-2xl font-bold text-blue-600">{weeklyStats.totalSessions}</span>
+                <span className="text-2xl font-bold text-blue-600">{stats.totalSessions}</span>
               </div>
               <h3 className="font-semibold text-gray-800">Sessões Realizadas</h3>
-              <p className="text-sm text-gray-600">Esta semana</p>
+              <p className="text-sm text-gray-600">
+                {selectedPeriod === 'week' ? 'Esta semana' : 
+                 selectedPeriod === 'month' ? 'Este mês' : 'Este ano'}
+              </p>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-green-100">
@@ -149,7 +121,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
                 <div className="p-2 bg-green-100 rounded-lg">
                   <Clock className="w-6 h-6 text-green-600" />
                 </div>
-                <span className="text-2xl font-bold text-green-600">{formatDuration(weeklyStats.totalTime)}</span>
+                <span className="text-2xl font-bold text-green-600">{formatDuration(stats.totalTime)}</span>
               </div>
               <h3 className="font-semibold text-gray-800">Tempo Total</h3>
               <p className="text-sm text-gray-600">Dedicado ao bem-estar</p>
@@ -160,7 +132,9 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
                 <div className="p-2 bg-purple-100 rounded-lg">
                   <TrendingUp className="w-6 h-6 text-purple-600" />
                 </div>
-                <span className="text-2xl font-bold text-purple-600">{weeklyStats.averageEffectiveness.toFixed(1)}/5</span>
+                <span className="text-2xl font-bold text-purple-600">
+                  {stats.averageEffectiveness > 0 ? stats.averageEffectiveness.toFixed(1) : '0.0'}/5
+                </span>
               </div>
               <h3 className="font-semibold text-gray-800">Efetividade</h3>
               <p className="text-sm text-gray-600">Avaliação média</p>
@@ -171,7 +145,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
                 <div className="p-2 bg-orange-100 rounded-lg">
                   <Award className="w-6 h-6 text-orange-600" />
                 </div>
-                <span className="text-2xl font-bold text-orange-600">{weeklyStats.streakDays}</span>
+                <span className="text-2xl font-bold text-orange-600">{stats.streakDays}</span>
               </div>
               <h3 className="font-semibold text-gray-800">Sequência</h3>
               <p className="text-sm text-gray-600">Dias consecutivos</p>
@@ -179,53 +153,90 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
           </div>
         )}
 
+        {loading && (
+          <div className="text-center py-8">
+            <div className="inline-flex items-center space-x-2">
+              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-gray-600">Carregando dados...</span>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+            <p className="text-red-700">Erro ao carregar dados: {error}</p>
+          </div>
+        )}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Recent Sessions */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl shadow-lg p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-800">Sessões Recentes</h2>
-                <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700">
-                  <Filter className="w-4 h-4" />
-                  <span>Filtrar</span>
-                </button>
+                <div className="text-sm text-gray-600">
+                  {sessions.length} sessões registradas
+                </div>
               </div>
               
-              <div className="space-y-4">
-                {sessionHistory.map((session, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+              {sessions.length > 0 ? (
+                <div className="space-y-4">
+                  {sessions.slice(0, 10).map((session, index) => (
+                    <div key={session.id || index} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                     <div className="flex items-center space-x-4">
                       <div className="p-2 bg-white rounded-lg shadow-sm">
-                        {getTypeIcon(session.type)}
+                        {getTypeIcon(session.sessionType)}
                       </div>
                       <div>
-                        <div className="font-semibold text-gray-800">{getTypeName(session.type)}</div>
+                        <div className="font-semibold text-gray-800">{getTypeName(session.sessionType)}</div>
                         <div className="text-sm text-gray-600">
-                          {new Date(session.date).toLocaleDateString('pt-BR')} • {formatDuration(session.duration)}
+                          {new Date(session.completedAt || session.createdAt || '').toLocaleDateString('pt-BR')} • 
+                          {formatDuration(session.durationSeconds)}
                         </div>
                         {session.pointsUsed && (
                           <div className="text-xs text-blue-600 mt-1">
-                            Pontos: {session.pointsUsed.join(', ')}
+                            Pontos: {session.pointsUsed.map(pointId => {
+                              const point = acupressurePoints.find(p => p.id === pointId);
+                              return point ? point.name.split(' ')[0] : pointId;
+                            }).join(', ')}
                           </div>
                         )}
                       </div>
                     </div>
                     <div className="text-right">
+                      {session.effectivenessRating && (
                       <div className="flex items-center space-x-1">
                         {[...Array(5)].map((_, i) => (
                           <div
                             key={i}
                             className={`w-2 h-2 rounded-full ${
-                              i < Math.floor(session.effectiveness) ? 'bg-yellow-400' : 'bg-gray-200'
+                              i < Math.floor(session.effectivenessRating) ? 'bg-yellow-400' : 'bg-gray-200'
                             }`}
                           />
                         ))}
                       </div>
-                      <div className="text-sm text-gray-600 mt-1">{session.effectiveness}/5</div>
+                      )}
+                      {session.effectivenessRating && (
+                        <div className="text-sm text-gray-600 mt-1">{session.effectivenessRating}/5</div>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Brain className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <h3 className="font-semibold text-gray-600 mb-2">Nenhuma sessão registrada</h3>
+                  <p className="text-gray-500 text-sm">
+                    Complete uma sessão de respiração ou acupressão para ver seu histórico aqui
+                  </p>
+                  <button
+                    onClick={() => onPageChange('breathing')}
+                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Começar Primeira Sessão
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -233,119 +244,211 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
           <div className="space-y-6">
             {/* Weekly Progress */}
             <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-lg font-bold text-gray-800 mb-4">Progresso Semanal</h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600">Meta Semanal</span>
-                    <span className="font-semibold">7/10 sessões</span>
+              <h3 className="text-lg font-bold text-gray-800 mb-4">
+                Progresso {selectedPeriod === 'week' ? 'Semanal' : selectedPeriod === 'month' ? 'Mensal' : 'Anual'}
+              </h3>
+              {stats ? (
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Sessões Realizadas</span>
+                      <span className="font-semibold">{stats.totalSessions}/10 meta</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-green-500 h-2 rounded-full transition-all" 
+                        style={{ width: `${Math.min(100, (stats.totalSessions / 10) * 100)}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-green-500 h-2 rounded-full" style={{ width: '70%' }}></div>
+                  
+                  <div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-600">Tempo de Prática</span>
+                      <span className="font-semibold">{Math.floor(stats.totalTime / 60)}/30 min</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-500 h-2 rounded-full transition-all" 
+                        style={{ width: `${Math.min(100, (stats.totalTime / 1800) * 100)}%` }}
+                      ></div>
+                    </div>
                   </div>
+                  
+                  {stats.averageEffectiveness > 0 && (
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-600">Efetividade Média</span>
+                        <span className="font-semibold">{stats.averageEffectiveness.toFixed(1)}/5.0</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="bg-purple-500 h-2 rounded-full transition-all" 
+                          style={{ width: `${(stats.averageEffectiveness / 5) * 100}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600">Tempo de Prática</span>
-                    <span className="font-semibold">25/30 min</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: '83%' }}></div>
-                  </div>
+              ) : (
+                <div className="text-center py-4">
+                  <p className="text-gray-500">Nenhum dado disponível</p>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Recommendations */}
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-200">
+            {stats && (
+              <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-6 border border-purple-200">
               <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
                 <Brain className="w-5 h-5 text-purple-600 mr-2" />
-                Recomendações IA
+                Insights Personalizados
               </h3>
               <div className="space-y-3">
-                <div className="bg-white rounded-lg p-3">
-                  <div className="font-semibold text-sm text-gray-800">🎯 Ponto Sugerido</div>
-                  <div className="text-xs text-gray-600">Shenmen (HE7) - baseado no seu padrão de estresse</div>
-                </div>
-                <div className="bg-white rounded-lg p-3">
-                  <div className="font-semibold text-sm text-gray-800">⏰ Melhor Horário</div>
-                  <div className="text-xs text-gray-600">19h-21h para máxima efetividade</div>
-                </div>
-                <div className="bg-white rounded-lg p-3">
-                  <div className="font-semibold text-sm text-gray-800">🔄 Próxima Sessão</div>
-                  <div className="text-xs text-gray-600">Respiração 4-7-8 com cromoterapia azul</div>
-                </div>
+                {stats.totalSessions === 0 && (
+                  <div className="bg-white rounded-lg p-3">
+                    <div className="font-semibold text-sm text-gray-800">🌟 Primeira Sessão</div>
+                    <div className="text-xs text-gray-600">Comece com respiração 4-7-8 por 5 minutos</div>
+                  </div>
+                )}
+                
+                {stats.totalSessions > 0 && stats.totalSessions < 5 && (
+                  <div className="bg-white rounded-lg p-3">
+                    <div className="font-semibold text-sm text-gray-800">🎯 Continue Praticando</div>
+                    <div className="text-xs text-gray-600">Tente fazer pelo menos 1 sessão por dia</div>
+                  </div>
+                )}
+                
+                {stats.favoritePoint !== 'Nenhum' && (
+                  <div className="bg-white rounded-lg p-3">
+                    <div className="font-semibold text-sm text-gray-800">⭐ Ponto Favorito</div>
+                    <div className="text-xs text-gray-600">{getFavoritePointName(stats.favoritePoint)}</div>
+                  </div>
+                )}
+                
+                {stats.improvementTrend > 0 && (
+                  <div className="bg-white rounded-lg p-3">
+                    <div className="font-semibold text-sm text-gray-800">📈 Melhoria Detectada</div>
+                    <div className="text-xs text-gray-600">+{stats.improvementTrend.toFixed(1)}% vs período anterior</div>
+                  </div>
+                )}
+                
+                {stats.streakDays >= 3 && (
+                  <div className="bg-white rounded-lg p-3">
+                    <div className="font-semibold text-sm text-gray-800">🔥 Sequência Impressionante</div>
+                    <div className="text-xs text-gray-600">{stats.streakDays} dias consecutivos!</div>
+                  </div>
+                )}
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Achievement */}
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
+            {stats && stats.totalSessions > 0 && (
+              <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 border border-yellow-200">
               <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
                 <Award className="w-5 h-5 text-yellow-600 mr-2" />
                 Conquistas
               </h3>
               <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                    <span className="text-yellow-600">🔥</span>
+                {stats.totalSessions >= 1 && (
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                      <span className="text-green-600">🌱</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-800">Primeira Sessão</div>
+                      <div className="text-xs text-gray-600">Iniciou sua jornada!</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-sm text-gray-800">Sequência de 5 dias</div>
-                    <div className="text-xs text-gray-600">Continue assim!</div>
+                )}
+                
+                {stats.streakDays >= 3 && (
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <span className="text-yellow-600">🔥</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-800">Sequência de {stats.streakDays} dias</div>
+                      <div className="text-xs text-gray-600">Continue assim!</div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600">🧘</span>
+                )}
+                
+                {stats.totalSessions >= 5 && (
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600">🧘</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-800">Praticante Dedicado</div>
+                      <div className="text-xs text-gray-600">{stats.totalSessions} sessões completas</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-sm text-gray-800">Mestre da Respiração</div>
-                    <div className="text-xs text-gray-600">10+ sessões completas</div>
+                )}
+                
+                {stats.totalSessions >= 10 && (
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                      <span className="text-purple-600">🏆</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-gray-800">Mestre do Bem-estar</div>
+                      <div className="text-xs text-gray-600">10+ sessões realizadas</div>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-green-600">🎯</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm text-gray-800">Explorador de Pontos</div>
-                    <div className="text-xs text-gray-600">5+ pontos diferentes</div>
-                  </div>
-                </div>
+                )}
               </div>
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Weekly Chart */}
-        <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
+        {stats && stats.dailyActivity.length > 0 && (
+          <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-xl font-bold text-gray-800 mb-6">Atividade Semanal</h2>
-          <div className="grid grid-cols-7 gap-2 mb-4">
-            {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].map((day, index) => (
-              <div key={index} className="text-center">
-                <div className="text-xs text-gray-600 mb-2">{day}</div>
-                <div className={`h-20 rounded-lg flex items-end justify-center ${
-                  index < 5 ? 'bg-gradient-to-t from-blue-500 to-blue-300' : 'bg-gray-100'
-                }`}>
-                  {index < 5 && (
-                    <div className="text-white text-xs font-semibold mb-2">
-                      {Math.floor(Math.random() * 3) + 1}
+            <div className="grid grid-cols-7 gap-2 mb-4">
+              {stats.dailyActivity.slice(-7).map((day, index) => {
+                const date = new Date(day.date);
+                const dayName = date.toLocaleDateString('pt-BR', { weekday: 'short' });
+                return (
+                  <div key={index} className="text-center">
+                    <div className="text-xs text-gray-600 mb-2">{dayName}</div>
+                    <div className={`h-20 rounded-lg flex items-end justify-center ${
+                      day.sessions > 0 ? 'bg-gradient-to-t from-blue-500 to-blue-300' : 'bg-gray-100'
+                    }`}>
+                      {day.sessions > 0 && (
+                        <div className="text-white text-xs font-semibold mb-2">
+                          {day.sessions}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+                  </div>
+                );
+              })}
+            </div>
           <div className="text-center text-sm text-gray-600">
-            Sessões por dia • Meta: 1-2 sessões diárias
+              Sessões por dia • Meta: 1-2 sessões diárias
           </div>
-        </div>
+          </div>
+        )}
 
         {/* Wellness Score */}
-        <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
+        {stats && stats.totalSessions > 0 && (
+          <div className="mt-8 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-200">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Índice de Bem-estar XZenPress</h2>
+            
+            {/* Calculate wellness score based on real data */}
+            {(() => {
+              const consistencyScore = Math.min(100, (stats.streakDays / 7) * 100);
+              const effectivenessScore = stats.averageEffectiveness > 0 ? (stats.averageEffectiveness / 5) * 100 : 0;
+              const activityScore = Math.min(100, (stats.totalSessions / 10) * 100);
+              const overallScore = Math.round((consistencyScore + effectivenessScore + activityScore) / 3);
+              
+              return (
+                <>
             <div className="relative w-32 h-32 mx-auto mb-6">
               <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
                 <circle
@@ -365,28 +468,39 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
                   fill="none"
                   strokeLinecap="round"
                   strokeDasharray={314}
-                  strokeDashoffset={314 - (314 * 0.85)}
+                    strokeDashoffset={314 - (314 * (overallScore / 100))}
                   className="transition-all duration-1000"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600">85</div>
-                  <div className="text-xs text-gray-600">Excelente</div>
+                    <div className="text-3xl font-bold text-green-600">{overallScore}</div>
+                    <div className="text-xs text-gray-600">
+                      {overallScore >= 80 ? 'Excelente' :
+                       overallScore >= 60 ? 'Bom' :
+                       overallScore >= 40 ? 'Regular' : 'Iniciante'}
+                    </div>
                 </div>
               </div>
             </div>
             <p className="text-gray-600 max-w-md mx-auto">
-              Seu índice de bem-estar está excelente! Continue com a prática regular para manter este nível.
+                {overallScore >= 80 ? 'Seu índice de bem-estar está excelente! Continue com a prática regular.' :
+                 overallScore >= 60 ? 'Bom progresso! Tente aumentar a consistência das sessões.' :
+                 overallScore >= 40 ? 'Você está no caminho certo. Continue praticando regularmente.' :
+                 'Comece devagar e seja consistente. Cada sessão conta para seu bem-estar!'}
             </p>
             <div className="mt-4 flex justify-center space-x-4 text-sm">
               <div className="flex items-center space-x-1">
                 <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                <span className="text-gray-600">Melhoria: +{weeklyStats?.improvementTrend || 0}%</span>
+                  <span className="text-gray-600">Baseado em {stats.totalSessions} sessões reais</span>
               </div>
             </div>
+                </>
+              );
+            })()}
           </div>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
