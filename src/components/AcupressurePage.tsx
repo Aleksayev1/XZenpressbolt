@@ -49,8 +49,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const categories = [
     { id: 'all', name: 'Todos os Pontos', icon: '🌟' },
     { id: 'general', name: 'MTC (Medicina Tradicional Chinesa)', icon: '☯️' },
-    { id: 'mtc-premium', name: 'MTC Premium', icon: '👑', premium: true },
     { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
+    { id: 'mtc-premium', name: 'MTC Premium', icon: '👑', premium: true },
     { id: 'septicemia', name: 'Septicemia', icon: '🛡️', premium: true },
     { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
     { id: 'neurologia', name: 'Neurologia Avançada', icon: '🧬', premium: true },
