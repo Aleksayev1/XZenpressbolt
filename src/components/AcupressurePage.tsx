@@ -30,7 +30,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   const colorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sessionStartTime = useRef<number | null>(null);
-  const expectedTimeRef = useRef<number>(0);
+  const expectedTimerTimeRef = useRef<number>(0);
 
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
   const colorNames = ['Azul Calmante', 'Verde Equilibrante', 'Magenta Energizante'];
@@ -133,7 +133,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
   }, []);
 
   const startIntegratedTherapy = (duration: number) => {
-    // Clear any existing intervals first
+    // Clear any existing timers first
     if (timerIntervalRef.current) {
       clearTimeout(timerIntervalRef.current);
       timerIntervalRef.current = null;
@@ -164,13 +164,13 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
       setIsSoundPlaying(true);
     }
     
-    // Start timer countdown
+    // Start timer countdown with drift correction
     const startTime = Date.now();
-    expectedTimeRef.current = startTime + 1000;
+    expectedTimerTimeRef.current = startTime + 1000;
     
     const tick = () => {
       const now = Date.now();
-      const drift = now - expectedTimeRef.current;
+      const drift = now - expectedTimerTimeRef.current;
       
       setTimeRemaining((prev) => {
         if (prev <= 1) {
@@ -180,13 +180,13 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
         return prev - 1;
       });
       
-      expectedTimeRef.current += 1000;
+      expectedTimerTimeRef.current += 1000;
       const nextDelay = Math.max(0, 1000 - drift);
       
       timerIntervalRef.current = setTimeout(tick, nextDelay);
     };
     
-    // Start the first tick
+    // Start the first tick with precise timing
     timerIntervalRef.current = setTimeout(tick, 1000);
   };
 
