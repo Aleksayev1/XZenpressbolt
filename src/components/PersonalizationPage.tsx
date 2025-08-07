@@ -22,8 +22,7 @@ interface UserPreferences {
 
 export const PersonalizationPage: React.FC<PersonalizationPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
-  const [preferences, setPreferences] = useState<UserPreferences>({
-    stressLevel: 'medium',
+
   // Verificar se usuário é Premium
   if (!user?.isPremium) {
     return (
@@ -121,6 +120,8 @@ export const PersonalizationPage: React.FC<PersonalizationPageProps> = ({ onPage
     );
   }
 
+  const [preferences, setPreferences] = useState<UserPreferences>({
+    stressLevel: 'medium',
     sleepQuality: 'fair',
     mainConcerns: [],
     preferredTime: 'evening',
