@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain, Music } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const BreathingExercise: React.FC = () => {
