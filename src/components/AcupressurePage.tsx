@@ -378,12 +378,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         </div>
 
         {/* Point Detail View */}
-        {selectedPoint && selectedPointData && (
+        {viewingPoint && viewingPointData && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto border border-blue-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-gray-800">{selectedPointData.name}</h3>
+              <h3 className="text-2xl font-bold text-gray-800">{viewingPointData.name}</h3>
               <button
-                onClick={() => setSelectedPoint(null)}
+                onClick={() => setViewingPoint(null)}
                 className="text-gray-500 hover:text-gray-700 text-2xl"
               >
                 ×
@@ -392,17 +392,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Point Image */}
-              {selectedPointData.image && (
+              {viewingPointData.image && (
                 <div className="relative">
                   <img 
-                    src={selectedPointData.image} 
-                    alt={selectedPointData.imageAlt || selectedPointData.name}
+                    src={viewingPointData.image} 
+                    alt={viewingPointData.imageAlt || viewingPointData.name}
                     className="w-full h-64 object-cover rounded-xl"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
-                  {selectedPointData.isPremium && (
+                  {viewingPointData.isPremium && (
                     <div className="absolute top-3 right-3">
                       <div className="flex items-center space-x-1 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         <Crown className="w-4 h-4" />
@@ -418,14 +418,14 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-2">Descrição:</h4>
                   <p className="text-gray-600 text-sm leading-relaxed">
-                    {selectedPointData.description}
+                    {viewingPointData.description}
                   </p>
                 </div>
                 
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-2">Benefícios:</h4>
                   <ul className="space-y-2">
-                    {selectedPointData.benefits.map((benefit, index) => (
+                    {viewingPointData.benefits.map((benefit, index) => (
                       <li key={index} className="flex items-start space-x-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-sm text-gray-600">{benefit}</span>
@@ -434,11 +434,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </ul>
                 </div>
                 
-                {selectedPointData.instructions && (
+                {viewingPointData.instructions && (
                   <div className="mb-4">
                     <h4 className="font-semibold text-gray-800 mb-2">Instruções:</h4>
                     <p className="text-sm text-blue-700 bg-blue-50 rounded-lg p-3">
-                      {selectedPointData.instructions}
+                      {viewingPointData.instructions}
                     </p>
                   </div>
                 )}
@@ -446,18 +446,18 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <Clock className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800">{Math.floor((selectedPointData.duration || 120) / 60)} min</div>
+                    <div className="font-semibold text-gray-800">{Math.floor((viewingPointData.duration || 120) / 60)} min</div>
                     <div className="text-xs text-gray-600">Duração</div>
                   </div>
                   <div className="bg-gray-50 rounded-lg p-3 text-center">
                     <Target className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800 capitalize">{selectedPointData.pressure || 'moderada'}</div>
+                    <div className="font-semibold text-gray-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
                     <div className="text-xs text-gray-600">Pressão</div>
                   </div>
                 </div>
                 
                 {/* Action Buttons */}
-                {selectedPointData.isPremium && !user?.isPremium ? (
+                {viewingPointData.isPremium && !user?.isPremium ? (
                   <div className="space-y-2">
                     <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-lg">
                       <Lock className="w-4 h-4" />
@@ -473,17 +473,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 ) : (
                   <div className="space-y-2">
                     <button
-                      onClick={() => startPointTimer(selectedPointData.id)}
+                      onClick={() => startPointTimer(viewingPointData.id)}
                       disabled={isTimerActive}
                       className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
                       <Play className="w-5 h-5" />
-                      <span>Aplicar Ponto ({Math.floor((selectedPointData.duration || 120) / 60)}min)</span>
+                      <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)}min)</span>
                     </button>
                     
                     {user?.isPremium && (
                       <button
-                        onClick={() => startIntegratedTherapy(selectedPointData.id)}
+                        onClick={() => startIntegratedTherapy(viewingPointData.id)}
                         disabled={isTimerActive}
                         className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
@@ -674,12 +674,13 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         </div>
 
         {/* Points Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
           {filteredPoints.map((point) => (
             <div
               key={point.id}
+              onClick={() => setViewingPoint(point.id)}
               className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 cursor-pointer ${
-                selectedPoint === point.id
+                viewingPoint === point.id
                   ? 'border-green-500 shadow-xl'
                   : 'border-gray-200 hover:border-gray-300'
               } ${
@@ -687,7 +688,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   ? 'opacity-60'
                   : 'hover:shadow-xl'
               }`}
-              onClick={() => setViewingPoint(point.id)}
             >
               {/* Point Image */}
               {point.image && (
@@ -695,102 +695,78 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   <img 
                     src={point.image} 
                     alt={point.imageAlt || point.name}
-                    className="w-full h-48 object-cover rounded-t-2xl"
+                    className="w-full h-32 object-cover rounded-t-xl"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
                   {point.isPremium && (
                     <div className="absolute top-3 right-3">
-                      <div className="flex items-center space-x-1 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                      <div className="bg-yellow-500 text-white p-1 rounded-full">
                         <Crown className="w-3 h-3" />
-                        <span>Premium</span>
                       </div>
                     </div>
                   )}
                 </div>
               )}
 
-              <div className="p-6">
+              <div className="p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-800">{point.name}</h3>
+                  <h3 className="text-sm font-bold text-gray-800 leading-tight">{point.name}</h3>
                   <div className="flex items-center space-x-2">
                     {point.isPremium && !user?.isPremium && (
-                      <Lock className="w-4 h-4 text-yellow-500" />
+                      <Lock className="w-3 h-3 text-yellow-500" />
                     )}
-                    <div className="text-sm text-gray-500 capitalize">
+                    <div className="text-xs text-gray-500 capitalize">
                       {point.category}
                     </div>
                   </div>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                <p className="text-gray-600 text-xs mb-3 line-clamp-2">
                   {point.description}
                 </p>
 
-                {/* Benefits */}
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-800 mb-2 text-sm">Benefícios:</h4>
-                  <ul className="space-y-1">
-                    {point.benefits.slice(0, 3).map((benefit, index) => (
-                      <li key={index} className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
-                        <span className="text-xs text-gray-600">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
                 {/* Duration and Pressure */}
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                   <div className="flex items-center space-x-1">
                     <Clock className="w-3 h-3" />
                     <span>{Math.floor((point.duration || 120) / 60)}min</span>
                   </div>
-                  <div className="capitalize">
-                    Pressão: {point.pressure || 'moderada'}
+                  <div className="capitalize text-xs">
+                    {point.pressure || 'moderada'}
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                {/* Compact Action Buttons */}
                 {point.isPremium && !user?.isPremium ? (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-lg">
-                      <Lock className="w-4 h-4" />
-                      <span className="text-sm font-medium">Premium</span>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-center space-x-1 text-yellow-600 bg-yellow-50 py-2 rounded-lg">
+                      <Lock className="w-3 h-3" />
+                      <span className="text-xs font-medium">Premium</span>
                     </div>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onPageChange('premium');
                       }}
-                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-2 rounded-lg text-xs font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
                     >
                       Desbloquear
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedPoint(point.id);
-                      }}
-                      className="w-full bg-blue-500 text-white py-2 rounded-lg text-sm font-semibold hover:bg-blue-600 transition-all flex items-center justify-center space-x-2"
-                    >
-                      <Info className="w-4 h-4" />
-                      <span>Ver Detalhes</span>
-                    </button>
+                  <div className="space-y-1">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         startPointTimer(point.id);
                       }}
                       disabled={isTimerActive}
-                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-2 rounded-lg text-xs font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-1"
                     >
-                      <Play className="w-4 h-4" />
-                      <span>Aplicar Ponto</span>
+                      <Play className="w-3 h-3" />
+                      <span>Aplicar</span>
                     </button>
                     
                     {user?.isPremium && (
@@ -800,10 +776,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                           startIntegratedTherapy(point.id);
                         }}
                         disabled={isTimerActive}
-                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-1.5 rounded-lg text-xs font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-1"
                       >
-                        <Target className="w-3 h-3" />
-                        <span>Terapia Integrada</span>
+                        <Target className="w-2.5 h-2.5" />
+                        <span>Integrada</span>
                       </button>
                     )}
                   </div>
