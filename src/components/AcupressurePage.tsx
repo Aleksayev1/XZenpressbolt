@@ -26,6 +26,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
   const [isSoundPlaying, setIsSoundPlaying] = useState(false);
   const [soundVolume, setSoundVolume] = useState(0.3);
+  const [viewingPoint, setViewingPoint] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -73,6 +74,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const filteredPoints = getPointsByCategory(selectedCategory, user?.isPremium || false);
 
   const selectedPointData = selectedPoint ? acupressurePoints.find(p => p.id === selectedPoint) : null;
+  const viewingPointData = viewingPoint ? acupressurePoints.find(p => p.id === viewingPoint) : null;
 
   // Audio control effects
   useEffect(() => {
@@ -471,6 +473,127 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         </div>
 
+        {/* Point Detail View */}
+        {viewingPoint && viewingPointData && (
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto border border-blue-200">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-bold text-gray-800">{viewingPointData.name}</h3>
+              <button
+                onClick={() => setViewingPoint(null)}
+                className="text-gray-500 hover:text-gray-700 text-2xl"
+              >
+                ×
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Point Image */}
+              {viewingPointData.image && (
+                <div className="relative">
+                  <img 
+                    src={viewingPointData.image} 
+                    alt={viewingPointData.imageAlt || viewingPointData.name}
+                    className="w-full h-64 object-cover rounded-xl"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  {viewingPointData.isPremium && (
+                    <div className="absolute top-3 right-3">
+                      <div className="flex items-center space-x-1 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                        <Crown className="w-4 h-4" />
+                        <span>Premium</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Point Details */}
+              <div>
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-800 mb-2">Descrição:</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {viewingPointData.description}
+                  </p>
+                </div>
+                
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-800 mb-2">Benefícios:</h4>
+                  <ul className="space-y-2">
+                    {viewingPointData.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start space-x-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-sm text-gray-600">{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {viewingPointData.instructions && (
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-gray-800 mb-2">Instruções:</h4>
+                    <p className="text-sm text-blue-700 bg-blue-50 rounded-lg p-3">
+                      {viewingPointData.instructions}
+                    </p>
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <Clock className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                    <div className="font-semibold text-gray-800">{Math.floor((viewingPointData.duration || 120) / 60)} min</div>
+                    <div className="text-xs text-gray-600">Duração</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3 text-center">
+                    <Target className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                    <div className="font-semibold text-gray-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
+                    <div className="text-xs text-gray-600">Pressão</div>
+                  </div>
+                </div>
+                
+                {/* Action Buttons */}
+                {viewingPointData.isPremium && !user?.isPremium ? (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-lg">
+                      <Lock className="w-4 h-4" />
+                      <span className="text-sm font-medium">Ponto Premium</span>
+                    </div>
+                    <button
+                      onClick={() => onPageChange('premium')}
+                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                    >
+                      Desbloquear Premium
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <button
+                      onClick={() => startPointTimer(viewingPointData.id)}
+                      disabled={isTimerActive}
+                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                    >
+                      <Play className="w-5 h-5" />
+                      <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)}min)</span>
+                    </button>
+                    
+                    {user?.isPremium && (
+                      <button
+                        onClick={() => startIntegratedTherapy(viewingPointData.id)}
+                        disabled={isTimerActive}
+                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+                      >
+                        <Target className="w-4 h-4" />
+                        <span>Terapia Integrada (Respiração + Cores)</span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Active Session Display */}
         {isTimerActive && selectedPointData && (
           <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-2xl mx-auto border-2 border-green-500">
@@ -735,6 +858,15 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                   {point.description}
                 </p>
+                
+                {/* View Details Button */}
+                <button
+                  onClick={() => setViewingPoint(point.id)}
+                  className="w-full mb-3 bg-blue-100 text-blue-700 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center space-x-2"
+                >
+                  <Info className="w-4 h-4" />
+                  <span>Ver Detalhes</span>
+                </button>
 
                 {/* Benefits */}
                 <div className="mb-4">
