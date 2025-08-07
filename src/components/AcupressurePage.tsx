@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Volume2, VolumeX, Waves, CloudRain, Music, ExternalLink, Palette } from 'lucide-react';
+import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Volume2, VolumeX, Waves, CloudRain, Music, ExternalLink } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
@@ -34,9 +34,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const breathingTimerRef = useRef<NodeJS.Timeout | null>(null);
   const colorTimerRef = useRef<NodeJS.Timeout | null>(null);
   const sessionStartTime = useRef<number | null>(null);
-  const expectedTimeRef = useRef<number>(0);
-  const expectedTotalTimeRef = useRef<number>(0);
-  const expectedBreathingTimeRef = useRef<number>(0);
 
   const freeSounds = [
     {
@@ -72,7 +69,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const colors = ['#3B82F6', '#10B981', '#8B5CF6'];
 
   const filteredPoints = getPointsByCategory(selectedCategory, user?.isPremium || false);
-
   const selectedPointData = selectedPoint ? acupressurePoints.find(p => p.id === selectedPoint) : null;
   const viewingPointData = viewingPoint ? acupressurePoints.find(p => p.id === viewingPoint) : null;
 
@@ -93,79 +89,40 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     }
   }, [isSoundPlaying, selectedSoundId]);
 
-  // Timer com correção de drift para acupressão
+  // Timer effects
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
-      const startTime = Date.now();
-      expectedTimeRef.current = startTime + 1000;
-      
-      const tick = () => {
-        const now = Date.now();
-        const drift = now - expectedTimeRef.current;
-        
-        setTimeLeft(prev => {
-          if (prev <= 1) {
-            return 0;
-          }
-          return prev - 1;
-        });
-        
-        if (timeLeft > 1) {
-          expectedTimeRef.current += 1000;
-          const nextDelay = Math.max(0, 1000 - drift);
-          timerRef.current = setTimeout(tick, nextDelay);
-        }
-      };
-      
-      timerRef.current = setTimeout(tick, 1000);
+      timerRef.current = setTimeout(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
       
       return () => {
         if (timerRef.current) {
           clearTimeout(timerRef.current);
-          timerRef.current = null;
         }
       };
+    } else if (timeLeft === 0 && isTimerActive) {
+      stopTimer();
     }
   }, [isTimerActive, timeLeft]);
 
-  // Timer total da sessão com correção de drift
   useEffect(() => {
     if (isTimerActive) {
-      const startTime = Date.now();
-      expectedTotalTimeRef.current = startTime + 1000;
-      
-      const totalTick = () => {
-        const now = Date.now();
-        const drift = now - expectedTotalTimeRef.current;
-        
+      totalTimeRef.current = setTimeout(() => {
         setTotalSessionTime(prev => prev + 1);
-        
-        expectedTotalTimeRef.current += 1000;
-        const nextDelay = Math.max(0, 1000 - drift);
-        totalTimeRef.current = setTimeout(totalTick, nextDelay);
-      };
-      
-      totalTimeRef.current = setTimeout(totalTick, 1000);
+      }, 1000);
       
       return () => {
         if (totalTimeRef.current) {
           clearTimeout(totalTimeRef.current);
-          totalTimeRef.current = null;
         }
       };
     }
-  }, [isTimerActive]);
+  }, [isTimerActive, totalSessionTime]);
 
-  // Timer de respiração integrada com correção de drift
   useEffect(() => {
     if (isIntegratedTherapy && isTimerActive) {
-      const startTime = Date.now();
-      expectedBreathingTimeRef.current = startTime + 1000;
-      
-      const breathingTick = () => {
-        const now = Date.now();
-        const drift = now - expectedBreathingTimeRef.current;
-        
+      breathingTimerRef.current = setTimeout(() => {
         setBreathingTimeLeft(prev => {
           if (prev <= 1) {
             const currentPhase = breathingPhases[breathingPhase];
@@ -176,18 +133,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           }
           return prev - 1;
         });
-        
-        expectedBreathingTimeRef.current += 1000;
-        const nextDelay = Math.max(0, 1000 - drift);
-        breathingTimerRef.current = setTimeout(breathingTick, nextDelay);
-      };
-      
-      breathingTimerRef.current = setTimeout(breathingTick, 1000);
+      }, 1000);
       
       return () => {
         if (breathingTimerRef.current) {
           clearTimeout(breathingTimerRef.current);
-          breathingTimerRef.current = null;
         }
       };
     }
@@ -208,7 +158,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setTotalSessionTime(0);
     sessionStartTime.current = Date.now();
     
-    // Adicionar ponto à lista de pontos usados
     if (!usedPoints.includes(pointId)) {
       setUsedPoints(prev => [...prev, pointId]);
     }
@@ -237,27 +186,18 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
       setUsedPoints(prev => [...prev, pointId]);
     }
 
-    // Iniciar cromoterapia automática
     startColorTherapy();
   };
 
   const startColorTherapy = () => {
     let colorIndex = 0;
-    const colorStartTime = Date.now();
-    let expectedColorTime = colorStartTime + 20000;
     
     const colorTick = () => {
-      const now = Date.now();
-      const drift = now - expectedColorTime;
-      
       colorIndex = (colorIndex + 1) % colors.length;
       setCurrentColor(colors[colorIndex]);
       
-      expectedColorTime += 20000;
-      const nextDelay = Math.max(0, 20000 - drift);
-      
       if (isIntegratedTherapy && isTimerActive) {
-        colorTimerRef.current = setTimeout(colorTick, nextDelay);
+        colorTimerRef.current = setTimeout(colorTick, 20000);
       }
     };
     
@@ -268,7 +208,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setIsTimerActive(false);
     setIsIntegratedTherapy(false);
     
-    // Limpar todos os timers
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -286,7 +225,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
       colorTimerRef.current = null;
     }
     
-    // Registrar sessão se usuário logado e sessão > 30s
     if (user && sessionStartTime.current && totalSessionTime > 30) {
       recordSessionData();
     }
@@ -303,7 +241,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setCurrentColor('#3B82F6');
     sessionStartTime.current = null;
     
-    // Limpar todos os timers
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -364,39 +301,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const stopAllSounds = () => {
     setIsSoundPlaying(false);
     setSelectedSoundId(null);
-  };
-
-  const startManualColorTherapy = () => {
-    let colorIndex = 0;
-    const colorStartTime = Date.now();
-    let expectedColorTime = colorStartTime + 20000;
-    
-    const colorTick = () => {
-      const now = Date.now();
-      const drift = now - expectedColorTime;
-      
-      colorIndex = (colorIndex + 1) % colors.length;
-      setCurrentColor(colors[colorIndex]);
-      
-      expectedColorTime += 20000;
-      const nextDelay = Math.max(0, 20000 - drift);
-      
-      if (colorIndex < 2) {
-        colorTimerRef.current = setTimeout(colorTick, nextDelay);
-      } else {
-        setCurrentColor('#3B82F6');
-      }
-    };
-    
-    colorTimerRef.current = setTimeout(colorTick, 20000);
-    
-    setTimeout(() => {
-      if (colorTimerRef.current) {
-        clearTimeout(colorTimerRef.current);
-        colorTimerRef.current = null;
-      }
-      setCurrentColor('#3B82F6');
-    }, 65000);
   };
 
   const formatTime = (seconds: number) => {
@@ -569,10 +473,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 ) : (
                   <div className="space-y-2">
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        startPointTimer(viewingPointData.id);
-                      }}
+                      onClick={() => startPointTimer(viewingPointData.id)}
                       disabled={isTimerActive}
                       className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                     >
@@ -582,10 +483,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     
                     {user?.isPremium && (
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          startIntegratedTherapy(viewingPointData.id);
-                        }}
+                        onClick={() => startIntegratedTherapy(viewingPointData.id)}
                         disabled={isTimerActive}
                         className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 rounded-lg text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                       >
@@ -780,8 +678,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           {filteredPoints.map((point) => (
             <div
               key={point.id}
-              onClick={() => setViewingPoint(point.id)}
-              className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 ${
+              className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 cursor-pointer ${
                 selectedPoint === point.id
                   ? 'border-green-500 shadow-xl'
                   : 'border-gray-200 hover:border-gray-300'
@@ -790,6 +687,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   ? 'opacity-60'
                   : 'hover:shadow-xl'
               }`}
+              onClick={() => setViewingPoint(point.id)}
             >
               {/* Point Image */}
               {point.image && (
@@ -829,15 +727,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                   {point.description}
                 </p>
-                
-                {/* View Details Button */}
-                <button
-                  onClick={() => setViewingPoint(point.id)}
-                  className="w-full mb-3 bg-blue-100 text-blue-700 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors flex items-center justify-center space-x-2"
-                >
-                  <Info className="w-4 h-4" />
-                  <span>Ver Detalhes</span>
-                </button>
 
                 {/* Benefits */}
                 <div className="mb-4">
