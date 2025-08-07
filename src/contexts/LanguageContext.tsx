@@ -34,8 +34,12 @@ const translations = {
   pt: {
     // Navigation
     'nav.home': 'Início',
+    'nav.dashboard': 'Dashboard',
     'nav.acupressure': 'Acupressão',
     'nav.breathing': 'Respiração',
+    'nav.sounds': 'Sons',
+    'nav.progress': 'Progresso',
+    'nav.personalization': 'Personalização',
     'nav.premium': 'Premium',
     'nav.corporate': 'Corporativo',
     'nav.login': 'Entrar',

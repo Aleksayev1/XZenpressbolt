@@ -328,6 +328,14 @@ export const BreathingExercise: React.FC = () => {
               <RotateCcw className="w-5 h-5" />
               <span>{t('breathing.reset')}</span>
             </button>
+            
+            <button
+              onClick={() => onPageChange?.('sounds')}
+              className="flex items-center space-x-2 bg-purple-500 text-white px-6 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              <Music className="w-5 h-5" />
+              <span>Biblioteca</span>
+            </button>
           </div>
 
           {/* Timer */}

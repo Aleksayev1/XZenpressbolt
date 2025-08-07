@@ -50,6 +50,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       ),
       isPremium: true
     },
+    {
+      icon: <BarChart3 className="w-8 h-8 text-indigo-500" />,
+      title: 'Dashboard Inteligente',
+      description: 'Analytics avançados e acompanhamento de progresso personalizado',
+      isPremium: false
+    },
+    {
+      icon: <User className="w-8 h-8 text-cyan-500" />,
+      title: 'Personalização IA',
+      description: 'Recomendações personalizadas baseadas no seu perfil único',
+      isPremium: false
+    }
   ];
 
   return (

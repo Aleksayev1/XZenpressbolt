@@ -17,8 +17,12 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
 
   const navItems = [
     { id: 'home' },
+    { id: 'dashboard' },
     { id: 'acupressure' },
     { id: 'breathing' },
+    { id: 'sounds' },
+    { id: 'progress' },
+    { id: 'personalization' },
     { id: 'premium' },
     { id: 'corporate' },
   ];

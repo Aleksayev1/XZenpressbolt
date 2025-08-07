@@ -8,6 +8,10 @@ import { PremiumPage } from './components/PremiumPage';
 import { WhatsAppConsultationPage } from './components/WhatsAppConsultationPage';
 import { PremiumStructure } from './components/PremiumStructure';
 import { CorporatePlansPage } from './components/CorporatePlansPage';
+import { DashboardPage } from './components/DashboardPage';
+import { SoundsLibraryPage } from './components/SoundsLibraryPage';
+import { ProgressTrackingPage } from './components/ProgressTrackingPage';
+import { PersonalizationPage } from './components/PersonalizationPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 
@@ -30,6 +34,14 @@ function App() {
         return <WhatsAppConsultationPage onPageChange={setCurrentPage} />;
       case 'corporate':
         return <CorporatePlansPage onPageChange={setCurrentPage} />;
+      case 'dashboard':
+        return <DashboardPage onPageChange={setCurrentPage} />;
+      case 'sounds':
+        return <SoundsLibraryPage onPageChange={setCurrentPage} />;
+      case 'progress':
+        return <ProgressTrackingPage onPageChange={setCurrentPage} />;
+      case 'personalization':
+        return <PersonalizationPage onPageChange={setCurrentPage} />;
       default:
         return <HomePage onPageChange={setCurrentPage} />;
     }

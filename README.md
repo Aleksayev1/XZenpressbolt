@@ -7,6 +7,9 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 - **Respiração 4-7-8** - Técnica de respiração com timer e cromoterapia
 - **Cromoterapia** - Cores terapêuticas (azul, verde, magenta)
 - **Sons Harmonizantes** - Biblioteca de sons relaxantes + Spotify Premium
+- **Dashboard Inteligente** - Analytics avançados e acompanhamento de progresso
+- **Personalização IA** - Recomendações baseadas no perfil do usuário
+- **Biblioteca de Sons** - Mais de 50 sons + integração Spotify
 - **Área Premium** - Consultas WhatsApp e pontos específicos
 
 ## 🚀 Funcionalidades Implementadas
@@ -26,8 +29,12 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 ### ✅ Páginas Principais
 - **Home** - Landing page com hero section
 - **Login** - Sistema completo de autenticação
+- **Dashboard** - Analytics e acompanhamento de progresso
 - **Respiração** - Exercício 4-7-8 (preparado)
 - **Acupressão** - Mapa de pontos terapêuticos (preparado)
+- **Sons** - Biblioteca completa com Spotify
+- **Progresso** - Tracking detalhado de evolução
+- **Personalização** - Configurações baseadas em IA
 - **Premium** - Área premium com pagamentos (preparado)
 
 ## 🛠️ Tecnologias
