@@ -24,6 +24,103 @@ export const PersonalizationPage: React.FC<PersonalizationPageProps> = ({ onPage
   const { user } = useAuth();
   const [preferences, setPreferences] = useState<UserPreferences>({
     stressLevel: 'medium',
+  // Verificar se usuário é Premium
+  if (!user?.isPremium) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full">
+                <User className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Personalização Premium
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Configure sua experiência personalizada com recomendações baseadas em IA e preferências avançadas
+            </p>
+            
+            {/* Premium Features Preview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Brain className="w-6 h-6 text-purple-600" />
+                  <h3 className="font-semibold text-purple-800">IA Personalizada</h3>
+                </div>
+                <ul className="text-sm text-purple-700 space-y-1 text-left">
+                  <li>• Recomendações baseadas no seu perfil</li>
+                  <li>• Análise de padrões comportamentais</li>
+                  <li>• Sugestões de horários otimizados</li>
+                  <li>• Pontos mais eficazes para você</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Palette className="w-6 h-6 text-blue-600" />
+                  <h3 className="font-semibold text-blue-800">Cromoterapia Avançada</h3>
+                </div>
+                <ul className="text-sm text-blue-700 space-y-1 text-left">
+                  <li>• Sequências de cores personalizadas</li>
+                  <li>• Perfis terapêuticos adaptativos</li>
+                  <li>• Sincronização com biofeedback</li>
+                  <li>• Cores baseadas no seu estado</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Volume2 className="w-6 h-6 text-green-600" />
+                  <h3 className="font-semibold text-green-800">Sons Personalizados</h3>
+                </div>
+                <ul className="text-sm text-green-700 space-y-1 text-left">
+                  <li>• Biblioteca completa de 50+ sons</li>
+                  <li>• Integração com Spotify Premium</li>
+                  <li>• Frequências binaurais terapêuticas</li>
+                  <li>• Playlists adaptativas</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Bell className="w-6 h-6 text-orange-600" />
+                  <h3 className="font-semibold text-orange-800">Lembretes Inteligentes</h3>
+                </div>
+                <ul className="text-sm text-orange-700 space-y-1 text-left">
+                  <li>• Notificações personalizadas</li>
+                  <li>• Horários otimizados para você</li>
+                  <li>• Lembretes baseados em humor</li>
+                  <li>• Integração com calendário</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-purple-100 to-blue-100 rounded-xl p-6 mb-8 border border-purple-300">
+              <h3 className="font-semibold text-purple-800 mb-2">🧠 Personalização Baseada em IA</h3>
+              <p className="text-purple-700 text-sm">
+                Nossa IA analisa seus padrões de uso, preferências e efetividade para criar 
+                uma experiência única e otimizada especificamente para o seu perfil de bem-estar.
+              </p>
+            </div>
+            
+            <button
+              onClick={() => onPageChange('premium')}
+              className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              🔓 Desbloquear Personalização Premium
+            </button>
+            
+            <p className="text-sm text-gray-500 mt-4">
+              Experiência única • IA personalizada • Recursos avançados
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
     sleepQuality: 'fair',
     mainConcerns: [],
     preferredTime: 'evening',

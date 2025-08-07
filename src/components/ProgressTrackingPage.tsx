@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, Calendar, Target, Award, BarChart3, PieChart, Activity, Zap, Brain, Heart } from 'lucide-react';
+import { TrendingUp, Calendar, Target, Award, BarChart3, PieChart, Activity, Zap, Brain, Heart, Star } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 import { acupressurePoints } from '../data/acupressurePoints';
@@ -23,10 +23,106 @@ interface Goal {
 
 export const ProgressTrackingPage: React.FC<ProgressTrackingPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
-  const { sessions, stats, loading, error } = useSessionHistory(selectedPeriod);
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'quarter'>('week');
+  const { sessions, stats, loading, error } = useSessionHistory(selectedPeriod);
   const [goals, setGoals] = useState<Goal[]>([]);
 
+  // Verificar se usuário é Premium
+  if (!user?.isPremium) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full">
+                <TrendingUp className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Acompanhamento Premium
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Monitore seu progresso com analytics detalhados, metas personalizadas e insights baseados em IA
+            </p>
+            
+            {/* Premium Features Preview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <BarChart3 className="w-6 h-6 text-green-600" />
+                  <h3 className="font-semibold text-green-800">Métricas Avançadas</h3>
+                </div>
+                <ul className="text-sm text-green-700 space-y-1 text-left">
+                  <li>• Histórico completo de sessões</li>
+                  <li>• Gráficos de evolução temporal</li>
+                  <li>• Análise de efetividade por ponto</li>
+                  <li>• Comparativo de períodos</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Target className="w-6 h-6 text-blue-600" />
+                  <h3 className="font-semibold text-blue-800">Metas Inteligentes</h3>
+                </div>
+                <ul className="text-sm text-blue-700 space-y-1 text-left">
+                  <li>• Metas adaptativas baseadas no perfil</li>
+                  <li>• Acompanhamento de consistência</li>
+                  <li>• Alertas de progresso</li>
+                  <li>• Recomendações de melhoria</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Award className="w-6 h-6 text-purple-600" />
+                  <h3 className="font-semibold text-purple-800">Sistema de Conquistas</h3>
+                </div>
+                <ul className="text-sm text-purple-700 space-y-1 text-left">
+                  <li>• Badges de progresso</li>
+                  <li>• Sequências de dias consecutivos</li>
+                  <li>• Marcos de bem-estar</li>
+                  <li>• Certificados de conquistas</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Brain className="w-6 h-6 text-indigo-600" />
+                  <h3 className="font-semibold text-indigo-800">Insights de IA</h3>
+                </div>
+                <ul className="text-sm text-indigo-700 space-y-1 text-left">
+                  <li>• Análise preditiva de bem-estar</li>
+                  <li>• Recomendações personalizadas</li>
+                  <li>• Detecção de padrões</li>
+                  <li>• Otimização automática</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-xl p-6 mb-8 border border-green-300">
+              <h3 className="font-semibold text-green-800 mb-2">📊 Acompanhamento Científico</h3>
+              <p className="text-green-700 text-sm">
+                Transforme sua prática em dados científicos. Monitore tendências, 
+                identifique o que funciona melhor e otimize seus resultados de bem-estar.
+              </p>
+            </div>
+            
+            <button
+              onClick={() => onPageChange('premium')}
+              className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-green-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              📈 Ativar Acompanhamento Premium
+            </button>
+            
+            <p className="text-sm text-gray-500 mt-4">
+              Analytics profissionais • Dados seguros • Insights únicos
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
   useEffect(() => {
     // Atualizar metas baseadas nas estatísticas reais
     if (stats) {
@@ -375,7 +471,6 @@ export const ProgressTrackingPage: React.FC<ProgressTrackingPageProps> = ({ onPa
                 </div>
               )}
             </div>
-          </div>
 
 
             {/* Achievements */}
@@ -487,22 +582,20 @@ export const ProgressTrackingPage: React.FC<ProgressTrackingPageProps> = ({ onPa
 
         {stats && stats.totalSessions > 0 && (
           <div className="mt-8 bg-white rounded-2xl shadow-lg p-8">
-        {stats && stats.totalSessions > 0 && (
-          <div className="mt-8 bg-white rounded-2xl shadow-lg p-8">
             <div>
-            <div>
-          {/* Wellness Score baseado em dados reais */}
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-gray-800 mb-4 text-center">Índice de Bem-estar</h3>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">
-                {Math.min(100, Math.round((stats.averageEffectiveness / 5) * 100))}
-              </div>
-              <div className="text-sm text-gray-600">
-                Baseado em {stats.totalSessions} sessões reais
+              {/* Wellness Score baseado em dados reais */}
+              <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-4 text-center">Índice de Bem-estar</h3>
+                <div className="text-center">
+                  <div className="text-4xl font-bold text-green-600 mb-2">
+                    {Math.min(100, Math.round((stats.averageEffectiveness / 5) * 100))}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    Baseado em {stats.totalSessions} sessões reais
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         )}
       </div>

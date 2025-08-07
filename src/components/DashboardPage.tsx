@@ -17,6 +17,102 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onPageChange }) =>
   const { sessions, stats, loading, error } = useSessionHistory('week');
   const [selectedPeriod, setSelectedPeriod] = useState<'week' | 'month' | 'year'>('week');
 
+  // Verificar se usuário é Premium
+  if (!user?.isPremium) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full">
+                <BarChart3 className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Dashboard Premium
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              O Dashboard com analytics avançados e insights personalizados é um recurso exclusivo para usuários Premium
+            </p>
+            
+            {/* Premium Features Preview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <TrendingUp className="w-6 h-6 text-blue-600" />
+                  <h3 className="font-semibold text-blue-800">Analytics Avançados</h3>
+                </div>
+                <ul className="text-sm text-blue-700 space-y-1 text-left">
+                  <li>• Histórico completo de sessões</li>
+                  <li>• Gráficos de progresso temporal</li>
+                  <li>• Métricas de efetividade</li>
+                  <li>• Tendências de melhoria</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Award className="w-6 h-6 text-green-600" />
+                  <h3 className="font-semibold text-green-800">Conquistas & Metas</h3>
+                </div>
+                <ul className="text-sm text-green-700 space-y-1 text-left">
+                  <li>• Sistema de conquistas gamificado</li>
+                  <li>• Metas personalizadas</li>
+                  <li>• Sequências de dias consecutivos</li>
+                  <li>• Índice de bem-estar personalizado</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Brain className="w-6 h-6 text-purple-600" />
+                  <h3 className="font-semibold text-purple-800">Insights Inteligentes</h3>
+                </div>
+                <ul className="text-sm text-purple-700 space-y-1 text-left">
+                  <li>• Recomendações baseadas em IA</li>
+                  <li>• Análise de padrões comportamentais</li>
+                  <li>• Sugestões de horários otimizados</li>
+                  <li>• Pontos mais eficazes para você</li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
+                <div className="flex items-center space-x-3 mb-3">
+                  <Download className="w-6 h-6 text-orange-600" />
+                  <h3 className="font-semibold text-orange-800">Relatórios Exportáveis</h3>
+                </div>
+                <ul className="text-sm text-orange-700 space-y-1 text-left">
+                  <li>• Exportação de dados em PDF</li>
+                  <li>• Relatórios para profissionais</li>
+                  <li>• Gráficos detalhados</li>
+                  <li>• Histórico completo</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-6 mb-8 border border-yellow-300">
+              <h3 className="font-semibold text-yellow-800 mb-2">🎯 Por que Premium?</h3>
+              <p className="text-yellow-700 text-sm">
+                O Dashboard Premium oferece insights profundos sobre sua jornada de bem-estar, 
+                permitindo otimizar suas práticas e acompanhar resultados de forma científica.
+              </p>
+            </div>
+            
+            <button
+              onClick={() => onPageChange('premium')}
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              🔓 Desbloquear Dashboard Premium
+            </button>
+            
+            <p className="text-sm text-gray-500 mt-4">
+              Acesso imediato • Sem compromisso • Cancele quando quiser
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const formatDuration = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);

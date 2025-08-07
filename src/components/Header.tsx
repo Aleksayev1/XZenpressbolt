@@ -17,16 +17,23 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
 
   const navItems = [
     { id: 'home' },
-    { id: 'dashboard' },
     { id: 'acupressure' },
     { id: 'breathing' },
-    { id: 'sounds' },
-    { id: 'progress' },
-    { id: 'personalization' },
     { id: 'premium' },
     { id: 'corporate' },
   ];
 
+  // Adicionar itens premium apenas para usuários premium
+  const premiumNavItems = [
+    { id: 'dashboard' },
+    { id: 'sounds' },
+    { id: 'progress' },
+    { id: 'personalization' },
+  ];
+
+  const allNavItems = user?.isPremium 
+    ? [...navItems.slice(0, 3), ...premiumNavItems, ...navItems.slice(3)]
+    : navItems;
   const handleLogout = () => {
     logout();
     onPageChange('home');
@@ -51,17 +58,20 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
+            {allNavItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onPageChange(item.id)}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
                   currentPage === item.id
                     ? 'text-blue-600 bg-blue-50'
                     : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                 }`}
               >
-                {t(`nav.${item.id}`)}
+                <span>{t(`nav.${item.id}`)}</span>
+                {premiumNavItems.some(p => p.id === item.id) && (
+                  <Crown className="w-3 h-3 text-yellow-500" />
+                )}
               </button>
             ))}
           </nav>
@@ -160,20 +170,23 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 rounded-lg mt-2">
-              {navItems.map((item) => (
+              {allNavItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => {
                     onPageChange(item.id);
                     setIsMenuOpen(false);
                   }}
-                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
+                  className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-md text-base font-medium ${
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
                   }`}
                 >
-                  {t(`nav.${item.id}`)}
+                  <span>{t(`nav.${item.id}`)}</span>
+                  {premiumNavItems.some(p => p.id === item.id) && (
+                    <Crown className="w-4 h-4 text-yellow-500" />
+                  )}
                 </button>
               ))}
               
