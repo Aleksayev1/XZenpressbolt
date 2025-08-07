@@ -500,50 +500,48 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
         {/* Active Session Display */}
         {isTimerActive && selectedPoint && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-2xl mx-auto border-2 border-green-500">
+          <div className="bg-white rounded-xl shadow-lg p-4 mb-6 max-w-xl mx-auto border-2 border-green-500">
             <div className="text-center">
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                Sessão Ativa: {acupressurePoints.find(p => p.id === selectedPoint)?.name}
+              <h3 className="text-lg font-bold text-gray-800 mb-3">
+                🎯 {selectedPointData.name}
               </h3>
               
               {isIntegratedTherapy && (
-                <div className="mb-4">
-                  <div className="text-lg font-semibold mb-2" style={{ color: currentColor }}>
-                    Terapia Integrada: {breathingPhases[breathingPhase].duration - breathingTimeLeft + 1}s
+                <div className="mb-3">
+                  <div className="text-sm font-semibold mb-1" style={{ color: currentColor }}>
+                    {breathingPhase === 'inhale' ? 'Inspire' : 
+                     breathingPhase === 'hold' ? 'Segure' : 'Expire'} ({breathingTimeLeft}s)
                   </div>
-                  <div className="text-sm text-gray-600">
-                    Fase: <span className="font-medium" style={{ color: currentColor }}>
-                      {breathingPhase === 'inhale' ? 'Inspire' : 
-                       breathingPhase === 'hold' ? 'Segure' : 'Expire'}
-                    </span>
+                  <div className="text-xs text-gray-600">
+                    Terapia Integrada Ativa
                   </div>
                 </div>
               )}
               
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="bg-green-50 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-green-600">{formatTime(timeLeft)}</div>
-                  <div className="text-sm text-green-700">Tempo Restante</div>
+              <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="bg-green-50 rounded-lg p-2">
+                  <div className="text-lg font-bold text-green-600">{formatTime(timeLeft)}</div>
+                  <div className="text-xs text-green-700">Restante</div>
                 </div>
-                <div className="bg-blue-50 rounded-lg p-3">
-                  <div className="text-2xl font-bold text-blue-600">{formatTime(totalSessionTime)}</div>
-                  <div className="text-sm text-blue-700">Tempo Total</div>
+                <div className="bg-blue-50 rounded-lg p-2">
+                  <div className="text-lg font-bold text-blue-600">{formatTime(totalSessionTime)}</div>
+                  <div className="text-xs text-blue-700">Total</div>
                 </div>
               </div>
               
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center space-x-3">
                 <button
                   onClick={stopTimer}
-                  className="flex items-center space-x-2 bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-600 transition-colors"
+                  className="flex items-center space-x-1 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition-colors"
                 >
-                  <Pause className="w-5 h-5" />
+                  <Pause className="w-4 h-4" />
                   <span>Parar</span>
                 </button>
                 <button
                   onClick={resetTimer}
-                  className="flex items-center space-x-2 bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-600 transition-colors"
+                  className="flex items-center space-x-1 bg-gray-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-600 transition-colors"
                 >
-                  <RotateCcw className="w-5 h-5" />
+                  <RotateCcw className="w-4 h-4" />
                   <span>Reiniciar</span>
                 </button>
               </div>
@@ -552,35 +550,34 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         )}
 
         {/* Sound Controls */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Volume2 className="w-6 h-6 text-gray-600" />
-            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
+        <div className="bg-white rounded-xl shadow-lg p-4 mb-6">
+          <div className="flex items-center justify-center space-x-2 mb-4">
+            <Volume2 className="w-5 h-5 text-gray-600" />
+            <h3 className="text-lg font-bold text-gray-800">Sons Harmonizantes</h3>
           </div>
           
           {/* Free Sounds Section */}
-          <div className="mb-8">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
               {freeSounds.map((sound) => (
                 <button
                   key={sound.id}
                   onClick={() => handleSoundSelect(sound.id)}
-                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                  className={`p-3 rounded-lg border-2 transition-all duration-200 ${
                     selectedSoundId === sound.id
                       ? 'border-blue-500 bg-blue-50 shadow-lg'
                       : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2">
                     <div className={`p-2 rounded-full ${
                       selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
                     }`}>
                       {sound.icon}
                     </div>
                     <div className="text-left">
-                      <div className="font-semibold text-gray-800">{sound.name}</div>
-                      <div className="text-sm text-gray-600">{sound.description}</div>
+                      <div className="font-semibold text-gray-800 text-sm">{sound.name}</div>
+                      <div className="text-xs text-gray-600">{sound.description}</div>
                     </div>
                     {selectedSoundId === sound.id && isSoundPlaying && (
                       <div className="ml-auto">
@@ -598,22 +595,22 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             
             {/* Audio Controls */}
             {selectedSoundId && (
-              <div className="bg-gray-50 rounded-xl p-6">
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+              <div className="bg-gray-50 rounded-lg p-3">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-4">
                   <button
                     onClick={toggleSoundPlayback}
-                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                    className={`flex items-center space-x-1 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
                       isSoundPlaying
                         ? 'bg-red-500 text-white hover:bg-red-600'
                         : 'bg-blue-500 text-white hover:bg-blue-600'
                     }`}
                   >
-                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    {isSoundPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                     <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
                   </button>
                   
-                  <div className="flex items-center space-x-3">
-                    <VolumeX className="w-5 h-5 text-gray-500" />
+                  <div className="flex items-center space-x-2">
+                    <VolumeX className="w-4 h-4 text-gray-500" />
                     <input
                       type="range"
                       min="0"
@@ -621,17 +618,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       step="0.1"
                       value={soundVolume}
                       onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                      className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                     />
-                    <Volume2 className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm text-gray-600 min-w-[3rem]">
+                    <Volume2 className="w-4 h-4 text-gray-500" />
+                    <span className="text-xs text-gray-600 min-w-[2.5rem]">
                       {Math.round(soundVolume * 100)}%
                     </span>
                   </div>
                   
                   <button
                     onClick={stopAllSounds}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
+                    className="px-3 py-1.5 bg-gray-500 text-white rounded-full text-xs font-medium hover:bg-gray-600 transition-colors"
                   >
                     Parar
                   </button>
@@ -641,30 +638,28 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
           
           {/* Premium Sounds Teaser */}
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Sons Premium</h4>
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
-              <p className="text-gray-700 mb-4">Biblioteca completa com mais de 50 sons + integração Spotify</p>
-              <div className="flex flex-wrap justify-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 Lareira</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 Clássica</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 Mantras</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">+50 sons</span>
+          <div className="border-t border-gray-200 pt-3">
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-3 text-center">
+              <p className="text-gray-700 text-sm mb-3">🎼 Biblioteca completa: 50+ sons + Spotify</p>
+              <div className="flex flex-wrap justify-center gap-1 mb-3">
+                <span className="px-2 py-1 bg-white rounded-full text-xs text-gray-600">🌲 Floresta</span>
+                <span className="px-2 py-1 bg-white rounded-full text-xs text-gray-600">🔥 Lareira</span>
+                <span className="px-2 py-1 bg-white rounded-full text-xs text-gray-600">🎵 Clássica</span>
+                <span className="px-2 py-1 bg-white rounded-full text-xs text-gray-600">🧘 Mantras</span>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
                 <a
                   href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors"
+                  className="inline-flex items-center space-x-1 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-600 transition-colors"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-3 h-3" />
                   <span>Abrir Spotify</span>
                 </a>
                 <button 
                   onClick={() => onPageChange('premium')}
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
                 >
                   Upgrade Premium
                 </button>
