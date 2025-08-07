@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPixService, PixPaymentData, PixResponse } from '../services/pixService';
 
 export const usePixPayment = () => {
@@ -47,9 +46,36 @@ export const usePixPayment = () => {
   };
 
   useEffect(() => {
-    if (pixData?.status === 'pending') {
-      const interval = setInterval(checkStatus, 5000);
-      return () => clearInterval(interval);
+    if (timeLeft > 0) {
+      const startTime = Date.now();
+      expectedTimeRef.current = startTime + 1000;
+      
+      const tick = () => {
+        const now = Date.now();
+        const drift = now - expectedTimeRef.current;
+        
+        setTimeLeft(prev => {
+          if (prev <= 1) {
+            return 0;
+          }
+          return prev - 1;
+        });
+        
+        if (timeLeft > 1) {
+          expectedTimeRef.current += 1000;
+          const nextDelay = Math.max(0, 1000 - drift);
+          timerRef.current = setTimeout(tick, nextDelay);
+        }
+      };
+      
+      timerRef.current = setTimeout(tick, 1000);
+      
+      return () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+          timerRef.current = null;
+        }
+      };
     }
   }, [pixData]);
 
@@ -94,6 +120,7 @@ export const usePixPayment = () => {
     timeLeft,
     checkingStatus,
     generatePayment,
+    checkStatus,
     providerName: pixService.getProviderName()
   };
 };
