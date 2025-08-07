@@ -362,39 +362,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange =
             </div>
           </div>
           
-          {/* Color Therapy Controls */}
-          <div className="bg-white rounded-2xl shadow-lg p-4 mb-6 max-w-4xl mx-auto">
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">Cromoterapia</h3>
-            <p className="text-sm text-gray-600 mb-3 text-center">
-              A cromoterapia é automaticamente integrada ao timer dos pontos quando ativada
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 mb-3">
-              {colors.map((color, index) => (
-                <div key={index} className="text-center">
-                  <div 
-                    className="w-10 h-10 rounded-full mx-auto mb-1 cursor-pointer transform hover:scale-110 transition-transform"
-                    style={{ backgroundColor: color }}
-                    onClick={() => setCurrentColor(color)}
-                  />
-                  <span className="text-xs text-gray-600">{colorNames[index]}</span>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={startColorTherapy}
-              disabled={isColorTherapyActive}
-              className={`px-4 py-2 rounded-full font-semibold transition-all disabled:opacity-50 text-sm ${
-                isColorTherapyActive
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 transform hover:scale-105'
-              }`}
-            >
-              {isColorTherapyActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
-            </button>
-            <p className="text-xs text-gray-500 text-center mt-1">
-              Use este botão apenas para cromoterapia independente
-            </p>
-          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
