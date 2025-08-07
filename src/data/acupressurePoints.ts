@@ -50,27 +50,6 @@ export const acupressurePoints: AcupressurePoint[] = [
     pressure: 'leve a moderada'
   },
   {
-    id: 'mtc-premium-yongquan-kd1',
-    name: 'Yongquan Premium (KD1) - Fonte Borbulhante',
-    nameEn: 'Premium Yongquan (KD1) - Bubbling Spring',
-    nameEs: 'Yongquan Premium (KD1) - Fuente Burbujeante',
-    nameFr: 'Yongquan Premium (KD1) - Source Bouillonnante',
-    description: 'Ponto premium dos rins, localizado na sola do pé. Técnica avançada para ancoragem energética e fortalecimento do yin. Protocolo específico para fadiga crônica.',
-    descriptionEn: 'Premium kidney point, located on sole of foot. Advanced technique for energetic grounding and yin strengthening. Specific protocol for chronic fatigue.',
-    descriptionEs: 'Punto premium de los riñones, ubicado en la planta del pie. Técnica avanzada para anclaje energético y fortalecimiento del yin. Protocolo específico para fatiga crónica.',
-    descriptionFr: 'Point premium des reins, situé sur plante du pied. Technique avancée pour ancrage énergétique et renforcement du yin. Protocole spécifique pour fatigue chronique.',
-    position: { x: 50, y: 95 },
-    benefits: ['Ancoragem energética profunda', 'Fortalecimento do yin e energia renal', 'Combate fadiga crônica', 'Melhoria da vitalidade geral'],
-    benefitsEn: ['Deep energetic grounding', 'Yin and kidney energy strengthening', 'Fights chronic fatigue', 'Overall vitality improvement'],
-    benefitsEs: ['Anclaje energético profundo', 'Fortalecimiento del yin y energía renal', 'Combate fatiga crónica', 'Mejora de la vitalidad general'],
-    benefitsFr: ['Ancrage énergétique profond', 'Renforcement yin et énergie rénale', 'Combat fatigue chronique', 'Amélioration vitalité générale'],
-    isPremium: false,
-    category: 'general',
-    instructions: 'Massageie a sola do pé em movimentos circulares por 2 minutos, depois pressione firmemente o centro por 1 minuto. Use óleo essencial se disponível.',
-    duration: 180,
-    pressure: 'moderada a firme'
-  },
-  {
     id: 'baihui-basic-vg20',
     name: 'Baihui Básico (VG20)',
     nameEn: 'Basic Hundred Meetings',
