@@ -544,40 +544,6 @@ export const BreathingExercise: React.FC = () => {
           </div>
         </div>
 
-        {/* Color Therapy Controls */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-md p-6 mb-8 max-w-2xl mx-auto border border-blue-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center flex items-center justify-center space-x-2">
-            <span className="text-purple-600">🎨</span>
-            <span>Cromoterapia</span>
-          </h3>
-          <div className="flex flex-wrap justify-center gap-4 mb-4">
-            {colors.map((color, index) => (
-              <div key={index} className="text-center">
-                <div 
-                  className="w-12 h-12 rounded-full mx-auto mb-2 cursor-pointer transform hover:scale-110 transition-transform shadow-md border-2 border-white"
-                  style={{ backgroundColor: color }}
-                  onClick={() => setCurrentColor(color)}
-                />
-                <span className="text-xs text-gray-700 font-medium">{colorNames[index]}</span>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={startColorTherapy}
-            disabled={isColorTherapyActive}
-            className={`w-full px-6 py-3 rounded-xl font-semibold transition-all disabled:opacity-50 ${
-              isColorTherapyActive
-                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
-            }`}
-          >
-            {isColorTherapyActive ? 'Cromoterapia Ativa...' : 'Cromoterapia Manual (1min)'}
-          </button>
-          <p className="text-xs text-gray-600 text-center mt-3 bg-white/50 rounded-lg px-3 py-2">
-            💡 Ative a cromoterapia manual por 1 minuto independente da respiração
-          </p>
-        </div>
-
         {/* Chromotherapy Education Section */}
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('breathing.chromotherapy.title')}</h2>
