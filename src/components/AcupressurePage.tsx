@@ -55,7 +55,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const categories = [
     { id: 'all', name: 'Todos os Pontos', icon: '🎯' },
     { id: 'general', name: 'MTC Geral', icon: '🫴' },
-    { id: 'cranio', name: 'Craniopuntura', icon: '🧠', premium: true },
+    { id: 'cranio', name: 'Craniopuntura', icon: '🧠' },
     { id: 'septicemia', name: 'Septicemia', icon: '🩸', premium: true },
     { id: 'atm', name: 'ATM', icon: '🦷', premium: true },
   ];
