@@ -937,12 +937,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         )}
 
-        {/* Instructions */}
-        <div className="mt-12 bg-white rounded-3xl shadow-2xl p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Como Usar os Pontos de Acupressão
-          </h2>
-        </div>
       </div>
     </div>
   );
