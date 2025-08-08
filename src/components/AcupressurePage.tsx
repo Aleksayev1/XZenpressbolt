@@ -377,173 +377,289 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         </div>
 
-        {/* Point Detail View */}
+        {/* Modal de Detalhes do Ponto */}
         {viewingPoint && viewingPointData && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto border border-blue-200">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-2xl font-bold text-gray-800">
-                {viewingPointData.name}
-              </h3>
-              <button
-                onClick={() => setViewingPoint(null)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Point Image */}
-              {viewingPointData.image && (
-                <div className="relative">
-                  <img 
-                    src={viewingPointData.image} 
-                    alt={viewingPointData.imageAlt || viewingPointData.name}
-                    className="w-full h-64 object-cover rounded-xl"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  {viewingPointData.isPremium && (
-                    <div className="absolute top-3 right-3">
-                      <div className="flex items-center space-x-1 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                        <Crown className="w-4 h-4" />
-                        <span>Premium</span>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+              {/* Header do Modal */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                <h2 className="text-3xl font-bold text-gray-900">{viewingPointData.name}</h2>
+                <button
+                  onClick={() => setViewingPoint(null)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <span className="text-3xl text-gray-500">×</span>
+                </button>
+              </div>
+
+              <div className="p-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Lado Esquerdo - Imagem e Informações */}
+                  <div>
+                    {/* Imagem do Ponto */}
+                    {viewingPointData.image && (
+                      <div className="relative mb-6">
+                        <img 
+                          src={viewingPointData.image} 
+                          alt={viewingPointData.imageAlt || viewingPointData.name}
+                          className="w-full h-80 object-cover rounded-2xl shadow-lg"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                        {viewingPointData.isPremium && (
+                          <div className="absolute top-4 right-4">
+                            <div className="flex items-center space-x-2 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
+                              <Crown className="w-5 h-5" />
+                              <span>Premium</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Descrição */}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-gray-800 mb-3">Descrição</h3>
+                      <p className="text-gray-600 leading-relaxed">
+                        {viewingPointData.description}
+                      </p>
+                    </div>
+
+                    {/* Benefícios */}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-gray-800 mb-3">Benefícios</h3>
+                      <div className="grid grid-cols-1 gap-3">
+                        {viewingPointData.benefits.map((benefit, index) => (
+                          <div key={index} className="flex items-start space-x-3 bg-green-50 rounded-lg p-3">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                              <span className="text-white text-sm">✓</span>
+                            </div>
+                            <span className="text-gray-700">{benefit}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  )}
-                </div>
-              )}
-              
-              {/* Point Details */}
-              <div>
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-800 mb-2">Descrição:</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    {viewingPointData.description}
-                  </p>
-                </div>
-                
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-800 mb-2">Benefícios:</h4>
-                  <ul className="space-y-2">
-                    {viewingPointData.benefits.map((benefit, index) => (
-                      <li key={index} className="flex items-start space-x-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-sm text-gray-600">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                {viewingPointData.instructions && (
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-800 mb-2">Instruções:</h4>
-                    <p className="text-sm text-blue-700 bg-blue-50 rounded-lg p-3">
-                      {viewingPointData.instructions}
-                    </p>
                   </div>
-                )}
-                
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <Clock className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800">{Math.floor((viewingPointData.duration || 120) / 60)} min</div>
-                    <div className="text-xs text-gray-600">Duração</div>
-                  </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <Target className="w-5 h-5 text-gray-600 mx-auto mb-1" />
-                    <div className="font-semibold text-gray-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
-                    <div className="text-xs text-gray-600">Pressão</div>
-                  </div>
-                </div>
-                
-                {/* Action Buttons */}
-                {viewingPointData.isPremium && !user?.isPremium ? (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-lg">
-                      <Lock className="w-4 h-4" />
-                      <span className="text-sm font-medium">Ponto Premium</span>
+
+                  {/* Lado Direito - Controles e Terapias */}
+                  <div>
+                    {/* Informações Técnicas */}
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div className="bg-blue-50 rounded-xl p-4 text-center border border-blue-200">
+                        <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                        <div className="text-2xl font-bold text-blue-800">{Math.floor((viewingPointData.duration || 120) / 60)}</div>
+                        <div className="text-sm text-blue-600">minutos</div>
+                      </div>
+                      <div className="bg-purple-50 rounded-xl p-4 text-center border border-purple-200">
+                        <Target className="w-8 h-8 text-purple-600 mx-auto mb-2" />
+                        <div className="text-lg font-bold text-purple-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
+                        <div className="text-sm text-purple-600">pressão</div>
+                      </div>
                     </div>
-                    <button
-                      onClick={() => onPageChange('premium')}
-                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
-                    >
-                      Desbloquear Premium
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => startPointTimer(viewingPoint)}
-                      disabled={isTimerActive}
-                      className="w-full bg-green-500 text-white py-2 rounded-lg font-semibold hover:bg-green-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                    >
-                      <Play className="w-5 h-5" />
-                      <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)}min)</span>
-                    </button>
-                    
-                    {user?.isPremium && (
-                      <button
-                        onClick={() => startIntegratedTherapy(viewingPoint)}
-                        disabled={isTimerActive}
-                        className="w-full bg-purple-500 text-white py-1.5 rounded-lg text-sm font-semibold hover:bg-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
-                      >
-                        <Target className="w-4 h-4" />
-                        <span>Terapia Integrada (Respiração + Cores)</span>
-                      </button>
+
+                    {/* Instruções */}
+                    {viewingPointData.instructions && (
+                      <div className="mb-6">
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">Como Aplicar</h3>
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                          <p className="text-blue-800 leading-relaxed">
+                            {viewingPointData.instructions}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Cromoterapia */}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-gray-800 mb-3">🎨 Cromoterapia</h3>
+                      <div className="grid grid-cols-3 gap-3">
+                        <div 
+                          className="bg-blue-500 rounded-xl p-4 text-center text-white cursor-pointer hover:bg-blue-600 transition-colors"
+                          onClick={() => setCurrentColor('#3B82F6')}
+                        >
+                          <div className="text-lg font-bold">Azul</div>
+                          <div className="text-xs opacity-90">Calmante</div>
+                        </div>
+                        <div 
+                          className="bg-green-500 rounded-xl p-4 text-center text-white cursor-pointer hover:bg-green-600 transition-colors"
+                          onClick={() => setCurrentColor('#10B981')}
+                        >
+                          <div className="text-lg font-bold">Verde</div>
+                          <div className="text-xs opacity-90">Equilibrante</div>
+                        </div>
+                        <div 
+                          className="bg-purple-500 rounded-xl p-4 text-center text-white cursor-pointer hover:bg-purple-600 transition-colors"
+                          onClick={() => setCurrentColor('#8B5CF6')}
+                        >
+                          <div className="text-lg font-bold">Roxo</div>
+                          <div className="text-xs opacity-90">Energizante</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sons Harmonizantes */}
+                    <div className="mb-6">
+                      <h3 className="text-xl font-bold text-gray-800 mb-3">🎵 Sons Harmonizantes</h3>
+                      <div className="space-y-3">
+                        {freeSounds.map((sound) => (
+                          <button
+                            key={sound.id}
+                            onClick={() => handleSoundSelect(sound.id)}
+                            className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
+                              selectedSoundId === sound.id
+                                ? 'border-blue-500 bg-blue-50 shadow-lg'
+                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                            }`}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div className={`p-2 rounded-full ${
+                                selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
+                              }`}>
+                                {sound.icon}
+                              </div>
+                              <div className="text-left flex-1">
+                                <div className="font-semibold text-gray-800">{sound.name}</div>
+                                <div className="text-sm text-gray-600">{sound.description}</div>
+                              </div>
+                              {selectedSoundId === sound.id && isSoundPlaying && (
+                                <div className="flex space-x-1">
+                                  <div className="w-1 h-6 bg-blue-500 rounded animate-pulse"></div>
+                                  <div className="w-1 h-6 bg-blue-500 rounded animate-pulse delay-100"></div>
+                                  <div className="w-1 h-6 bg-blue-500 rounded animate-pulse delay-200"></div>
+                                </div>
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                        
+                        {/* Controles de Áudio */}
+                        {selectedSoundId && (
+                          <div className="bg-gray-50 rounded-xl p-4">
+                            <div className="flex items-center justify-center space-x-4">
+                              <button
+                                onClick={toggleSoundPlayback}
+                                className={`flex items-center space-x-2 px-4 py-2 rounded-full font-semibold transition-all ${
+                                  isSoundPlaying
+                                    ? 'bg-red-500 text-white hover:bg-red-600'
+                                    : 'bg-blue-500 text-white hover:bg-blue-600'
+                                }`}
+                              >
+                                {isSoundPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                                <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
+                              </button>
+                              
+                              <div className="flex items-center space-x-2">
+                                <VolumeX className="w-4 h-4 text-gray-500" />
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="1"
+                                  step="0.1"
+                                  value={soundVolume}
+                                  onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                                  className="w-20 h-2 bg-gray-200 rounded appearance-none cursor-pointer"
+                                />
+                                <Volume2 className="w-4 h-4 text-gray-500" />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Botões de Ação */}
+                    {viewingPointData.isPremium && !user?.isPremium ? (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-4 rounded-xl border border-yellow-200">
+                          <Lock className="w-5 h-5" />
+                          <span className="font-medium">Ponto Premium - Faça upgrade para acessar</span>
+                        </div>
+                        <button
+                          onClick={() => onPageChange('premium')}
+                          className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
+                        >
+                          🔓 Desbloquear Premium
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <button
+                          onClick={() => {
+                            startPointTimer(viewingPoint);
+                            setViewingPoint(null);
+                          }}
+                          disabled={isTimerActive}
+                          className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
+                        >
+                          <Play className="w-6 h-6" />
+                          <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)} minutos)</span>
+                        </button>
+                        
+                        {user?.isPremium && (
+                          <button
+                            onClick={() => {
+                              startIntegratedTherapy(viewingPoint);
+                              setViewingPoint(null);
+                            }}
+                            disabled={isTimerActive}
+                            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
+                          >
+                            <Target className="w-5 h-5" />
+                            <span>Terapia Integrada (Respiração + Cores + Sons)</span>
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {/* Active Session Display */}
-        {isTimerActive && selectedPoint && (
-          <div className="bg-white rounded-lg shadow-lg p-2 mb-3 max-w-md mx-auto border-2 border-green-500">
+        {isTimerActive && selectedPoint && selectedPointData && (
+          <div className="bg-white rounded-lg shadow-lg p-3 mb-4 max-w-sm mx-auto border-2 border-green-500">
             <div className="text-center">
-              <h3 className="text-sm font-bold text-gray-800 mb-1">
-                🎯 {selectedPointData?.name || 'Ponto Ativo'}
+              <h3 className="text-sm font-bold text-gray-800 mb-2">
+                🎯 {selectedPointData.name}
               </h3>
               
               {isIntegratedTherapy && (
-                <div className="mb-1">
+                <div className="mb-2">
                   <div className="text-sm font-semibold mb-1" style={{ color: currentColor }}>
                     {breathingPhase === 'inhale' ? 'Inspire' : 
                      breathingPhase === 'hold' ? 'Segure' : 'Expire'} ({breathingTimeLeft}s)
                   </div>
-                  <div className="text-xs text-gray-500">
-                    Terapia Integrada Ativa
-                  </div>
+                  <div className="text-xs text-gray-500">Terapia Integrada Ativa</div>
                 </div>
               )}
               
-              <div className="grid grid-cols-2 gap-1 mb-2">
-                <div className="bg-green-50 rounded p-1">
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                <div className="bg-green-50 rounded p-2">
                   <div className="text-sm font-bold text-green-600">{formatTime(timeLeft)}</div>
                   <div className="text-xs text-green-700">Restante</div>
                 </div>
-                <div className="bg-blue-50 rounded p-1">
+                <div className="bg-blue-50 rounded p-2">
                   <div className="text-sm font-bold text-blue-600">{formatTime(totalSessionTime)}</div>
                   <div className="text-xs text-blue-700">Total</div>
                 </div>
               </div>
               
-              <div className="flex justify-center space-x-1">
+              <div className="flex justify-center space-x-2">
                 <button
                   onClick={stopTimer}
-                  className="flex items-center space-x-1 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors"
+                  className="flex items-center space-x-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors"
                 >
-                  <Pause className="w-2.5 h-2.5" />
+                  <Pause className="w-3 h-3" />
                   <span>Parar</span>
                 </button>
                 <button
                   onClick={resetTimer}
-                  className="flex items-center space-x-1 bg-gray-500 text-white px-2 py-1 rounded-full text-xs font-semibold hover:bg-gray-600 transition-colors"
+                  className="flex items-center space-x-1 bg-gray-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-gray-600 transition-colors"
                 >
-                  <RotateCcw className="w-2.5 h-2.5" />
+                  <RotateCcw className="w-3 h-3" />
                   <span>Reiniciar</span>
                 </button>
               </div>
@@ -551,133 +667,13 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         )}
 
-        {/* Sound Controls */}
-        <div className="bg-white rounded-lg shadow-lg p-2 mb-3">
-          <div className="flex items-center justify-center space-x-1 mb-2">
-            <Volume2 className="w-3 h-3 text-gray-600" />
-            <h3 className="text-sm font-bold text-gray-800">Sons</h3>
-          </div>
-          
-          {/* Free Sounds Section */}
-          <div className="mb-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 mb-2">
-              {freeSounds.map((sound) => (
-                <button
-                  key={sound.id}
-                  onClick={() => handleSoundSelect(sound.id)}
-                  className={`p-1.5 rounded border transition-all duration-200 ${
-                    selectedSoundId === sound.id
-                      ? 'border-blue-500 bg-blue-50 shadow-lg'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-1">
-                    <div className={`p-0.5 rounded-full ${
-                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
-                    }`}>
-                      {sound.icon}
-                    </div>
-                    <div className="text-left">
-                      <div className="font-semibold text-gray-800 text-xs">{sound.name}</div>
-                      <div className="text-xs text-gray-600">{sound.description}</div>
-                    </div>
-                    {selectedSoundId === sound.id && isSoundPlaying && (
-                      <div className="ml-auto">
-                        <div className="flex space-x-1">
-                          <div className="w-0.5 h-3 bg-blue-500 rounded animate-pulse"></div>
-                          <div className="w-0.5 h-3 bg-blue-500 rounded animate-pulse delay-100"></div>
-                          <div className="w-0.5 h-3 bg-blue-500 rounded animate-pulse delay-200"></div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-            
-            {/* Audio Controls */}
-            {selectedSoundId && (
-              <div className="bg-gray-50 rounded p-1.5">
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-1 sm:space-y-0 sm:space-x-2">
-                  <button
-                    onClick={toggleSoundPlayback}
-                    className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-semibold transition-all duration-200 ${
-                      isSoundPlaying
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                  >
-                    {isSoundPlaying ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5" />}
-                    <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
-                  </button>
-                  
-                  <div className="flex items-center space-x-1">
-                    <VolumeX className="w-2.5 h-2.5 text-gray-500" />
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.1"
-                      value={soundVolume}
-                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                      className="w-12 h-1 bg-gray-200 rounded appearance-none cursor-pointer"
-                    />
-                    <Volume2 className="w-2.5 h-2.5 text-gray-500" />
-                    <span className="text-xs text-gray-600 min-w-[2rem]">
-                      {Math.round(soundVolume * 100)}%
-                    </span>
-                  </div>
-                  
-                  <button
-                    onClick={stopAllSounds}
-                    className="px-1.5 py-0.5 bg-gray-500 text-white rounded text-xs font-medium hover:bg-gray-600 transition-colors"
-                  >
-                    Parar
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Premium Sounds Teaser */}
-          <div className="border-t border-gray-200 pt-1">
-            <div className="bg-yellow-50 border border-yellow-200 rounded p-1.5 text-center">
-              <p className="text-gray-700 text-xs mb-1">🎼 50+ sons + Spotify</p>
-              <div className="flex flex-wrap justify-center gap-0.5 mb-1">
-                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🌲</span>
-                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🔥</span>
-                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🎵</span>
-                <span className="px-1 py-0.5 bg-white rounded text-xs text-gray-600">🧘</span>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-0.5 justify-center">
-                <a
-                  href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-1 bg-green-500 text-white px-2 py-0.5 rounded text-xs font-semibold hover:bg-green-600 transition-colors"
-                >
-                  <ExternalLink className="w-2 h-2" />
-                  <span>Abrir Spotify</span>
-                </a>
-                <button 
-                  onClick={() => onPageChange('premium')}
-                  className="bg-yellow-400 text-white px-2 py-0.5 rounded text-xs font-semibold hover:bg-yellow-500 transition-all"
-                >
-                  Premium
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Points Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
           {filteredPoints.map((point) => (
             <div
               key={point.id}
               onClick={() => {
-                console.log('🔍 CLIQUE NO CARD - ID:', point.id);
-                console.log('🔍 CLIQUE NO CARD - Nome:', point.name);
+                console.log('🔍 CLIQUE NO CARD:', point.id, point.name);
                 setViewingPoint(point.id);
               }}
               className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 cursor-pointer ${
