@@ -79,9 +79,15 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 
 **URL Oficial**: https://xzenpress.netlify.app
 **Data de Lançamento Final**: Janeiro 2025
-**Versão**: 2.3.0 - Versão Final (11 Idiomas + Analytics)
+**Versão**: 2.3.1 - Versão Final Corrigida (11 Idiomas + Analytics + Bugfixes)
 
-## 🌍 NOVIDADES DA VERSÃO 2.3.0
+## 🌍 NOVIDADES DA VERSÃO 2.3.1
+
+### ✅ Correções Críticas
+- **Timer de Acupressão** corrigido (erro nextDelay resolvido)
+- **Componente AcupressurePage** estabilizado
+- **useEffect dependencies** otimizadas
+- **Error boundaries** melhorados
 
 ### ✅ Internacionalização Completa
 - **11 idiomas** totalmente traduzidos
