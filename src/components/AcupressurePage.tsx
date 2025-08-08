@@ -152,7 +152,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         }
       };
       
-      totalTimeRef.current = setTimeout(totalTick, nextDelay);
+      totalTimeRef.current = setTimeout(totalTick, 1000);
       
       return () => {
         if (totalTimeRef.current) {
@@ -160,8 +160,13 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           totalTimeRef.current = null;
         }
       };
+    } else {
+      if (totalTimeRef.current) {
+        clearTimeout(totalTimeRef.current);
+        totalTimeRef.current = null;
+      }
     }
-  }, [isTimerActive, totalSessionTime]);
+  }, [isTimerActive]);
 
   // Breathing timer for integrated therapy
   useEffect(() => {
