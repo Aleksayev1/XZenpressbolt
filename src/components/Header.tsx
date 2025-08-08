@@ -105,7 +105,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   {/* Google Translate Option */}
                   <button
                     onClick={() => {
-                      (window as any).toggleGoogleTranslate();
+                      if ((window as any).toggleGoogleTranslate) {
+                        (window as any).toggleGoogleTranslate();
+                      }
                       setIsLanguageOpen(false);
                     }}
                     className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-100"
