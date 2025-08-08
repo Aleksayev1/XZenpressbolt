@@ -75,7 +75,11 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 
 ---
 
-**Status**: 🚀 **LANÇADO OFICIALMENTE** - Plataforma em produção no Netlify!
+**Status**: 🚀 **LANÇADO OFICIALMENTE** - Plataforma em produção no Netlify! ✅ **DEPLOY CONCLUÍDO**
+
+**URL Oficial**: https://xzenpress.netlify.app
+**Data de Lançamento**: Janeiro 2025
+**Versão**: 2.2.0 - Estável
 
 ## 🌐 Deploy em Produção
 
