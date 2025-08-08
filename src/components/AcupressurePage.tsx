@@ -377,418 +377,384 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         </div>
 
-        {/* Modal de Detalhes do Ponto */}
-        {viewingPoint && viewingPointData && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
-              {/* Header do Modal */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                <h2 className="text-3xl font-bold text-gray-900">{viewingPointData.name}</h2>
-                <button
-                  onClick={() => setViewingPoint(null)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+        {/* Main Layout: Lista de Pontos + Painel de Detalhes */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* COLUNA ESQUERDA: Lista de Pontos */}
+          <div className="lg:col-span-2">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Pontos Terapêuticos Visuais</h2>
+            
+            {/* Points Grid */}
+            <div className="space-y-4">
+              {filteredPoints.map((point) => (
+                <div
+                  key={point.id}
+                  onClick={() => {
+                    console.log('🔍 CLIQUE NO PONTO:', point.id, point.name);
+                    setViewingPoint(point.id);
+                  }}
+                  className={`bg-white rounded-xl shadow-lg transition-all duration-300 border-2 cursor-pointer p-4 ${
+                    viewingPoint === point.id
+                      ? 'border-blue-500 shadow-xl bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300 hover:shadow-xl'
+                  } ${
+                    point.isPremium && !user?.isPremium
+                      ? 'opacity-60'
+                      : ''
+                  }`}
                 >
-                  <span className="text-3xl text-gray-500">×</span>
-                </button>
-              </div>
-
-              <div className="p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Lado Esquerdo - Imagem e Informações */}
-                  <div>
-                    {/* Imagem do Ponto */}
-                    {viewingPointData.image && (
-                      <div className="relative mb-6">
+                  <div className="flex items-center space-x-4">
+                    {/* Point Image */}
+                    {point.image && (
+                      <div className="relative flex-shrink-0">
                         <img 
-                          src={viewingPointData.image} 
-                          alt={viewingPointData.imageAlt || viewingPointData.name}
-                          className="w-full h-80 object-cover rounded-2xl shadow-lg"
+                          src={point.image} 
+                          alt={point.imageAlt || point.name}
+                          className="w-20 h-20 object-cover rounded-lg"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                           }}
                         />
-                        {viewingPointData.isPremium && (
-                          <div className="absolute top-4 right-4">
-                            <div className="flex items-center space-x-2 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
-                              <Crown className="w-5 h-5" />
+                        {point.isPremium && (
+                          <div className="absolute -top-2 -right-2">
+                            <div className="bg-yellow-500 text-white p-1 rounded-full">
+                              <Crown className="w-3 h-3" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Point Info */}
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-bold text-gray-800">{point.name}</h3>
+                        <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-1 text-xs text-gray-500">
+                            <Clock className="w-3 h-3" />
+                            <span>{Math.floor((point.duration || 120) / 60)}:00</span>
+                          </div>
+                          <div className="text-xs text-gray-500 capitalize">
+                            {point.pressure || 'Leve'}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        {point.description}
+                      </p>
+
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            point.category === 'general' ? 'bg-blue-100 text-blue-800' :
+                            point.category === 'cranio' ? 'bg-purple-100 text-purple-800' :
+                            point.category === 'septicemia' ? 'bg-red-100 text-red-800' :
+                            point.category === 'atm' ? 'bg-orange-100 text-orange-800' :
+                            'bg-gray-100 text-gray-800'
+                          }`}>
+                            {point.category === 'general' ? 'MTC' : 
+                             point.category === 'cranio' ? 'Cranio' :
+                             point.category === 'septicemia' ? 'Septicemia' :
+                             point.category === 'atm' ? 'ATM' : point.category}
+                          </div>
+                          {point.isPremium && (
+                            <div className="flex items-center space-x-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
+                              <Crown className="w-3 h-3" />
                               <span>Premium</span>
                             </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Descrição */}
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">Descrição</h3>
-                      <p className="text-gray-600 leading-relaxed">
-                        {viewingPointData.description}
-                      </p>
-                    </div>
-
-                    {/* Benefícios */}
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">Benefícios</h3>
-                      <div className="grid grid-cols-1 gap-3">
-                        {viewingPointData.benefits.map((benefit, index) => (
-                          <div key={index} className="flex items-start space-x-3 bg-green-50 rounded-lg p-3">
-                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <span className="text-white text-sm">✓</span>
-                            </div>
-                            <span className="text-gray-700">{benefit}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Lado Direito - Controles e Terapias */}
-                  <div>
-                    {/* Informações Técnicas */}
-                    <div className="grid grid-cols-2 gap-4 mb-6">
-                      <div className="bg-blue-50 rounded-xl p-4 text-center border border-blue-200">
-                        <Clock className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-blue-800">{Math.floor((viewingPointData.duration || 120) / 60)}</div>
-                        <div className="text-sm text-blue-600">minutos</div>
-                      </div>
-                      <div className="bg-purple-50 rounded-xl p-4 text-center border border-purple-200">
-                        <Target className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                        <div className="text-lg font-bold text-purple-800 capitalize">{viewingPointData.pressure || 'moderada'}</div>
-                        <div className="text-sm text-purple-600">pressão</div>
-                      </div>
-                    </div>
-
-                    {/* Instruções */}
-                    {viewingPointData.instructions && (
-                      <div className="mb-6">
-                        <h3 className="text-xl font-bold text-gray-800 mb-3">Como Aplicar</h3>
-                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                          <p className="text-blue-800 leading-relaxed">
-                            {viewingPointData.instructions}
-                          </p>
+                          )}
                         </div>
-                      </div>
-                    )}
-
-                    {/* Cromoterapia */}
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">🎨 Cromoterapia</h3>
-                      <div className="grid grid-cols-3 gap-3">
-                        <div 
-                          className="bg-blue-500 rounded-xl p-4 text-center text-white cursor-pointer hover:bg-blue-600 transition-colors"
-                          onClick={() => setCurrentColor('#3B82F6')}
-                        >
-                          <div className="text-lg font-bold">Azul</div>
-                          <div className="text-xs opacity-90">Calmante</div>
-                        </div>
-                        <div 
-                          className="bg-green-500 rounded-xl p-4 text-center text-white cursor-pointer hover:bg-green-600 transition-colors"
-                          onClick={() => setCurrentColor('#10B981')}
-                        >
-                          <div className="text-lg font-bold">Verde</div>
-                          <div className="text-xs opacity-90">Equilibrante</div>
-                        </div>
-                        <div 
-                          className="bg-purple-500 rounded-xl p-4 text-center text-white cursor-pointer hover:bg-purple-600 transition-colors"
-                          onClick={() => setCurrentColor('#8B5CF6')}
-                        >
-                          <div className="text-lg font-bold">Roxo</div>
-                          <div className="text-xs opacity-90">Energizante</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Sons Harmonizantes */}
-                    <div className="mb-6">
-                      <h3 className="text-xl font-bold text-gray-800 mb-3">🎵 Sons Harmonizantes</h3>
-                      <div className="space-y-3">
-                        {freeSounds.map((sound) => (
-                          <button
-                            key={sound.id}
-                            onClick={() => handleSoundSelect(sound.id)}
-                            className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
-                              selectedSoundId === sound.id
-                                ? 'border-blue-500 bg-blue-50 shadow-lg'
-                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                            }`}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div className={`p-2 rounded-full ${
-                                selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
-                              }`}>
-                                {sound.icon}
-                              </div>
-                              <div className="text-left flex-1">
-                                <div className="font-semibold text-gray-800">{sound.name}</div>
-                                <div className="text-sm text-gray-600">{sound.description}</div>
-                              </div>
-                              {selectedSoundId === sound.id && isSoundPlaying && (
-                                <div className="flex space-x-1">
-                                  <div className="w-1 h-6 bg-blue-500 rounded animate-pulse"></div>
-                                  <div className="w-1 h-6 bg-blue-500 rounded animate-pulse delay-100"></div>
-                                  <div className="w-1 h-6 bg-blue-500 rounded animate-pulse delay-200"></div>
-                                </div>
-                              )}
-                            </div>
-                          </button>
-                        ))}
                         
-                        {/* Controles de Áudio */}
-                        {selectedSoundId && (
-                          <div className="bg-gray-50 rounded-xl p-4">
-                            <div className="flex items-center justify-center space-x-4">
-                              <button
-                                onClick={toggleSoundPlayback}
-                                className={`flex items-center space-x-2 px-4 py-2 rounded-full font-semibold transition-all ${
-                                  isSoundPlaying
-                                    ? 'bg-red-500 text-white hover:bg-red-600'
-                                    : 'bg-blue-500 text-white hover:bg-blue-600'
-                                }`}
-                              >
-                                {isSoundPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                                <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
-                              </button>
-                              
-                              <div className="flex items-center space-x-2">
-                                <VolumeX className="w-4 h-4 text-gray-500" />
-                                <input
-                                  type="range"
-                                  min="0"
-                                  max="1"
-                                  step="0.1"
-                                  value={soundVolume}
-                                  onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                                  className="w-20 h-2 bg-gray-200 rounded appearance-none cursor-pointer"
-                                />
-                                <Volume2 className="w-4 h-4 text-gray-500" />
-                              </div>
-                            </div>
-                          </div>
-                        )}
+                        <div className="text-blue-600 text-sm font-medium">
+                          Clique para ver detalhes →
+                        </div>
                       </div>
                     </div>
-
-                    {/* Botões de Ação */}
-                    {viewingPointData.isPremium && !user?.isPremium ? (
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-4 rounded-xl border border-yellow-200">
-                          <Lock className="w-5 h-5" />
-                          <span className="font-medium">Ponto Premium - Faça upgrade para acessar</span>
-                        </div>
-                        <button
-                          onClick={() => onPageChange('premium')}
-                          className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
-                        >
-                          🔓 Desbloquear Premium
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        <button
-                          onClick={() => {
-                            startPointTimer(viewingPoint);
-                            setViewingPoint(null);
-                          }}
-                          disabled={isTimerActive}
-                          className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
-                        >
-                          <Play className="w-6 h-6" />
-                          <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)} minutos)</span>
-                        </button>
-                        
-                        {user?.isPremium && (
-                          <button
-                            onClick={() => {
-                              startIntegratedTherapy(viewingPoint);
-                              setViewingPoint(null);
-                            }}
-                            disabled={isTimerActive}
-                            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
-                          >
-                            <Target className="w-5 h-5" />
-                            <span>Terapia Integrada (Respiração + Cores + Sons)</span>
-                          </button>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </div>
+              ))}
+            </div>
+
+            {/* Legend */}
+            <div className="mt-6 flex justify-center space-x-6">
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Pontos Gratuitos</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-yellow-500 rounded-full"></div>
+                <span className="text-sm text-gray-600">Pontos Premium</span>
               </div>
             </div>
           </div>
-        )}
 
-        {/* Active Session Display */}
-        {isTimerActive && selectedPoint && selectedPointData && (
-          <div className="bg-white rounded-lg shadow-lg p-3 mb-4 max-w-sm mx-auto border-2 border-green-500">
-            <div className="text-center">
-              <h3 className="text-sm font-bold text-gray-800 mb-2">
-                🎯 {selectedPointData.name}
-              </h3>
-              
-              {isIntegratedTherapy && (
-                <div className="mb-2">
-                  <div className="text-sm font-semibold mb-1" style={{ color: currentColor }}>
-                    {breathingPhase === 'inhale' ? 'Inspire' : 
-                     breathingPhase === 'hold' ? 'Segure' : 'Expire'} ({breathingTimeLeft}s)
-                  </div>
-                  <div className="text-xs text-gray-500">Terapia Integrada Ativa</div>
-                </div>
-              )}
-              
-              <div className="grid grid-cols-2 gap-2 mb-3">
-                <div className="bg-green-50 rounded p-2">
-                  <div className="text-sm font-bold text-green-600">{formatTime(timeLeft)}</div>
-                  <div className="text-xs text-green-700">Restante</div>
-                </div>
-                <div className="bg-blue-50 rounded p-2">
-                  <div className="text-sm font-bold text-blue-600">{formatTime(totalSessionTime)}</div>
-                  <div className="text-xs text-blue-700">Total</div>
-                </div>
-              </div>
-              
-              <div className="flex justify-center space-x-2">
-                <button
-                  onClick={stopTimer}
-                  className="flex items-center space-x-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-red-600 transition-colors"
-                >
-                  <Pause className="w-3 h-3" />
-                  <span>Parar</span>
-                </button>
-                <button
-                  onClick={resetTimer}
-                  className="flex items-center space-x-1 bg-gray-500 text-white px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-gray-600 transition-colors"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                  <span>Reiniciar</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Points Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mb-8">
-          {filteredPoints.map((point) => (
-            <div
-              key={point.id}
-              onClick={() => {
-                console.log('🔍 CLIQUE NO CARD:', point.id, point.name);
-                setViewingPoint(point.id);
-              }}
-              className={`bg-white rounded-2xl shadow-lg transition-all duration-300 border-2 cursor-pointer ${
-                viewingPoint === point.id
-                  ? 'border-green-500 shadow-xl'
-                  : 'border-gray-200 hover:border-gray-300'
-              } ${
-                point.isPremium && !user?.isPremium
-                  ? 'opacity-60'
-                  : 'hover:shadow-xl'
-              }`}
-            >
-              {/* Point Image */}
-              {point.image && (
-                <div className="relative">
-                  <img 
-                    src={point.image} 
-                    alt={point.imageAlt || point.name}
-                    className="w-full h-32 object-cover rounded-t-xl"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  {point.isPremium && (
-                    <div className="absolute top-3 right-3">
-                      <div className="bg-yellow-500 text-white p-1 rounded-full">
-                        <Crown className="w-3 h-3" />
-                      </div>
+          {/* COLUNA DIREITA: Painel de Detalhes */}
+          <div className="lg:col-span-1">
+            {viewingPoint && viewingPointData ? (
+              <div className="bg-white rounded-2xl shadow-2xl p-6 sticky top-24">
+                {/* Header do Ponto */}
+                <div className="text-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">{viewingPointData.name}</h2>
+                  {viewingPointData.isPremium && (
+                    <div className="inline-flex items-center space-x-2 bg-yellow-500 text-white px-4 py-2 rounded-full font-semibold">
+                      <Crown className="w-4 h-4" />
+                      <span>Premium</span>
                     </div>
                   )}
                 </div>
-              )}
 
-              <div className="p-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-sm font-bold text-gray-800 leading-tight">{point.name}</h3>
-                  <div className="flex items-center space-x-2">
-                    {point.isPremium && !user?.isPremium && (
-                      <Lock className="w-3 h-3 text-yellow-500" />
-                    )}
-                    <div className="text-xs text-gray-500 capitalize">
-                      {point.category}
+                {/* Imagem Grande */}
+                {viewingPointData.image && (
+                  <div className="mb-6">
+                    <img 
+                      src={viewingPointData.image} 
+                      alt={viewingPointData.imageAlt || viewingPointData.name}
+                      className="w-full h-48 object-cover rounded-xl shadow-lg"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Timer Ativo */}
+                {isTimerActive && selectedPoint === viewingPoint && (
+                  <div className="mb-6 bg-green-50 border border-green-200 rounded-xl p-4">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-600 mb-2">
+                        {formatTime(timeLeft)}
+                      </div>
+                      <div className="text-sm text-green-700 mb-3">
+                        Sessão Ativa • Total: {formatTime(totalSessionTime)}
+                      </div>
+                      
+                      {isIntegratedTherapy && (
+                        <div className="mb-3">
+                          <div className="text-sm font-semibold mb-1" style={{ color: currentColor }}>
+                            {breathingPhase === 'inhale' ? 'Inspire' : 
+                             breathingPhase === 'hold' ? 'Segure' : 'Expire'} ({breathingTimeLeft}s)
+                          </div>
+                          <div className="text-xs text-gray-500">Terapia Integrada</div>
+                        </div>
+                      )}
+                      
+                      <div className="flex justify-center space-x-2">
+                        <button
+                          onClick={stopTimer}
+                          className="flex items-center space-x-1 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition-colors"
+                        >
+                          <Pause className="w-4 h-4" />
+                          <span>Parar</span>
+                        </button>
+                        <button
+                          onClick={resetTimer}
+                          className="flex items-center space-x-1 bg-gray-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-600 transition-colors"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                          <span>Reiniciar</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
+                )}
+
+                {/* Cromoterapia */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">🎨 Cromoterapia</h3>
+                  <div className="grid grid-cols-3 gap-2">
+                    <button 
+                      onClick={() => setCurrentColor('#3B82F6')}
+                      className={`p-3 rounded-xl text-center text-white transition-all ${
+                        currentColor === '#3B82F6' ? 'bg-blue-600 shadow-lg scale-105' : 'bg-blue-500 hover:bg-blue-600'
+                      }`}
+                    >
+                      <div className="font-bold text-sm">Azul</div>
+                      <div className="text-xs opacity-90">Calma</div>
+                    </button>
+                    <button 
+                      onClick={() => setCurrentColor('#10B981')}
+                      className={`p-3 rounded-xl text-center text-white transition-all ${
+                        currentColor === '#10B981' ? 'bg-green-600 shadow-lg scale-105' : 'bg-green-500 hover:bg-green-600'
+                      }`}
+                    >
+                      <div className="font-bold text-sm">Verde</div>
+                      <div className="text-xs opacity-90">Equilíbrio</div>
+                    </button>
+                    <button 
+                      onClick={() => setCurrentColor('#8B5CF6')}
+                      className={`p-3 rounded-xl text-center text-white transition-all ${
+                        currentColor === '#8B5CF6' ? 'bg-purple-600 shadow-lg scale-105' : 'bg-purple-500 hover:bg-purple-600'
+                      }`}
+                    >
+                      <div className="font-bold text-sm">Roxo</div>
+                      <div className="text-xs opacity-90">Energia</div>
+                    </button>
+                  </div>
                 </div>
 
-                <p className="text-gray-600 text-xs mb-3 line-clamp-2">
-                  {point.description}
-                </p>
-
-                {/* Duration and Pressure */}
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
-                  <div className="flex items-center space-x-1">
-                    <Clock className="w-3 h-3" />
-                    <span>{Math.floor((point.duration || 120) / 60)}min</span>
-                  </div>
-                  <div className="capitalize text-xs">
-                    {point.pressure || 'moderada'}
+                {/* Sons Harmonizantes */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">🎵 Sons</h3>
+                  <div className="space-y-2">
+                    {freeSounds.map((sound) => (
+                      <button
+                        key={sound.id}
+                        onClick={() => handleSoundSelect(sound.id)}
+                        className={`w-full p-3 rounded-lg border-2 transition-all duration-200 ${
+                          selectedSoundId === sound.id
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className={`p-2 rounded-full ${
+                            selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
+                          }`}>
+                            {sound.icon}
+                          </div>
+                          <div className="text-left flex-1">
+                            <div className="font-semibold text-gray-800 text-sm">{sound.name}</div>
+                            <div className="text-xs text-gray-600">{sound.description}</div>
+                          </div>
+                          {selectedSoundId === sound.id && isSoundPlaying && (
+                            <div className="flex space-x-1">
+                              <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
+                              <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
+                              <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                    
+                    {/* Controles de Áudio */}
+                    {selectedSoundId && (
+                      <div className="bg-gray-50 rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <button
+                            onClick={toggleSoundPlayback}
+                            className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-semibold transition-all ${
+                              isSoundPlaying
+                                ? 'bg-red-500 text-white hover:bg-red-600'
+                                : 'bg-blue-500 text-white hover:bg-blue-600'
+                            }`}
+                          >
+                            {isSoundPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
+                            <span>{isSoundPlaying ? 'Pausar' : 'Play'}</span>
+                          </button>
+                          
+                          <div className="flex items-center space-x-2">
+                            <VolumeX className="w-3 h-3 text-gray-500" />
+                            <input
+                              type="range"
+                              min="0"
+                              max="1"
+                              step="0.1"
+                              value={soundVolume}
+                              onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                              className="w-16 h-1 bg-gray-200 rounded appearance-none cursor-pointer"
+                            />
+                            <Volume2 className="w-3 h-3 text-gray-500" />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                {/* Compact Action Buttons */}
-                {point.isPremium && !user?.isPremium ? (
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-center space-x-1 text-yellow-600 bg-yellow-50 py-2 rounded-lg">
-                      <Lock className="w-3 h-3" />
-                      <span className="text-xs font-medium">Premium</span>
+                {/* Informações do Ponto */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-gray-800 mb-3">Descrição</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                    {viewingPointData.description}
+                  </p>
+                  
+                  {/* Benefícios */}
+                  <h4 className="font-semibold text-gray-800 mb-2">Benefícios:</h4>
+                  <div className="space-y-2">
+                    {viewingPointData.benefits.slice(0, 3).map((benefit, index) => (
+                      <div key={index} className="flex items-start space-x-2">
+                        <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                        <span className="text-gray-700 text-sm">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Instruções */}
+                {viewingPointData.instructions && (
+                  <div className="mb-6">
+                    <h4 className="font-semibold text-gray-800 mb-2">Como Aplicar:</h4>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <p className="text-blue-800 text-sm leading-relaxed">
+                        {viewingPointData.instructions}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Botões de Ação */}
+                {viewingPointData.isPremium && !user?.isPremium ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-xl border border-yellow-200">
+                      <Lock className="w-5 h-5" />
+                      <span className="font-medium">Ponto Premium</span>
                     </div>
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onPageChange('premium');
-                      }}
-                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-2 rounded-lg text-xs font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                      onClick={() => onPageChange('premium')}
+                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-xl text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
                     >
-                      Desbloquear
+                      🔓 Desbloquear Premium
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-1">
+                  <div className="space-y-3">
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        startPointTimer(point.id);
-                      }}
+                      onClick={() => startPointTimer(viewingPoint)}
                       disabled={isTimerActive}
-                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-2 rounded-lg text-xs font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-1"
+                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
                     >
-                      <Play className="w-3 h-3" />
-                      <span>Aplicar</span>
+                      <Play className="w-5 h-5" />
+                      <span>Aplicar Ponto ({Math.floor((viewingPointData.duration || 120) / 60)} min)</span>
                     </button>
                     
                     {user?.isPremium && (
                       <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          startIntegratedTherapy(point.id);
-                        }}
+                        onClick={() => startIntegratedTherapy(viewingPoint)}
                         disabled={isTimerActive}
-                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-1.5 rounded-lg text-xs font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-1"
+                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
                       >
-                        <Target className="w-2.5 h-2.5" />
-                        <span>Integrada</span>
+                        <Target className="w-4 h-4" />
+                        <span>Terapia Integrada</span>
                       </button>
                     )}
                   </div>
                 )}
               </div>
-            </div>
-          ))}
+            ) : (
+              <div className="bg-white rounded-2xl shadow-lg p-8 text-center sticky top-24">
+                <div className="flex justify-center mb-4">
+                  <div className="p-4 bg-gray-100 rounded-full">
+                    <Target className="w-12 h-12 text-gray-400" />
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-gray-600 mb-2">
+                  Selecione um Ponto
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  Clique em qualquer ponto da lista para ver detalhes, sons e cromoterapia
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Premium CTA */}
         {!user?.isPremium && (
-          <div className="bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-8 text-center text-white mb-8">
+          <div className="mt-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-8 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">🔒 Pontos Premium</h2>
             <p className="text-xl mb-6 opacity-90">
               Desbloqueie {getPremiumPoints().length} pontos especializados + terapia integrada
@@ -825,7 +791,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         )}
 
         {/* Instructions */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
+        <div className="mt-12 bg-white rounded-3xl shadow-2xl p-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             Como Usar os Pontos de Acupressão
           </h2>
@@ -836,80 +802,26 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Escolha o Ponto</h3>
               <p className="text-gray-600 text-sm">
-                Selecione o ponto baseado nos seus sintomas ou necessidades
+                Clique no ponto da lista para ver detalhes completos
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">2️⃣</span>
               </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Aplique Pressão</h3>
+              <h3 className="font-semibold text-gray-800 mb-2">Configure Som e Cor</h3>
               <p className="text-gray-600 text-sm">
-                Use o timer para aplicar pressão pelo tempo recomendado
+                Escolha a cor terapêutica e som harmonizante
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">3️⃣</span>
               </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Respire Profundo</h3>
+              <h3 className="font-semibold text-gray-800 mb-2">Aplique com Timer</h3>
               <p className="text-gray-600 text-sm">
-                Mantenha respiração calma durante toda a aplicação
+                Use o timer para aplicar pressão pelo tempo recomendado
               </p>
-            </div>
-          </div>
-          
-          {/* Integrated Therapy Explanation */}
-          {user?.isPremium && (
-            <div className="mt-8 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 border border-purple-200">
-              <h3 className="text-lg font-bold text-purple-800 mb-4 text-center">
-                ⚡ Terapia Integrada Premium
-              </h3>
-              <p className="text-purple-700 text-center mb-4">
-                Combine acupressão + respiração 4-7-8 + cromoterapia em uma única sessão
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white rounded-lg p-3 text-center">
-                  <Target className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-                  <div className="font-semibold text-purple-800">Acupressão</div>
-                  <div className="text-xs text-purple-600">Pressão no ponto</div>
-                </div>
-                <div className="bg-white rounded-lg p-3 text-center">
-                  <Timer className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <div className="font-semibold text-blue-800">Respiração 4-7-8</div>
-                  <div className="text-xs text-blue-600">Sincronizada</div>
-                </div>
-                <div className="bg-white rounded-lg p-3 text-center">
-                  <div className="w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mx-auto mb-2"></div>
-                  <div className="font-semibold text-purple-800">Cromoterapia</div>
-                  <div className="text-xs text-purple-600">Cores automáticas</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Statistics */}
-        <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-6 border border-green-200">
-          <h3 className="text-lg font-bold text-gray-800 mb-4 text-center">
-            📊 Estatísticas da Plataforma
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-            <div>
-              <div className="text-2xl font-bold text-green-600">{acupressurePoints.length}</div>
-              <div className="text-sm text-gray-600">Pontos Totais</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-blue-600">{getFreePoints().length}</div>
-              <div className="text-sm text-gray-600">Pontos Gratuitos</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-purple-600">{getPremiumPoints().length}</div>
-              <div className="text-sm text-gray-600">Pontos Premium</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-orange-600">{categories.length - 1}</div>
-              <div className="text-sm text-gray-600">Categorias</div>
             </div>
           </div>
         </div>
