@@ -196,23 +196,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     currentPage === item.id
                       ? 'text-blue-600 bg-blue-50'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
-                
-                {/* Mobile Language Selector */}
-                <div className="mt-2 pt-2 border-t border-gray-200">
-                  <button
-                    onClick={() => {
-                      const element = document.getElementById('google_translate_element');
-                      if (element) {
-                        element.style.display = element.style.display === 'none' ? 'block' : 'none';
-                      }
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
-                  >
-                    <Globe className="w-4 h-4" />
-                    <span>🌐 Tradução Automática</span>
-                  </button>
-                </div>
                   }`}
                 >
                   <span>{t(`nav.${item.id}`)}</span>
@@ -221,6 +204,23 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   )}
                 </button>
               ))}
+              
+              {/* Mobile Language Selector */}
+              <div className="mt-2 pt-2 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    const element = document.getElementById('google_translate_element');
+                    if (element) {
+                      element.style.display = element.style.display === 'none' ? 'block' : 'none';
+                    }
+                    setIsMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+                >
+                  <Globe className="w-4 h-4" />
+                  <span>🌐 Tradução Automática</span>
+                </button>
+              </div>
               
               {/* Mobile User Actions */}
               {user ? (
