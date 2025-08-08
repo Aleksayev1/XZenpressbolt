@@ -100,25 +100,27 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 <Globe className="w-4 h-4" />
                 <span>{currentLanguage.flag}</span>
               </button>
-                  {languages.map((lang) => (
-                    <button
-                      key={lang.code}
-                      onClick={() => {
-                        setLanguage(lang);
-                        setIsLanguageOpen(false);
-                      }}
-                      className={`flex items-center space-x-3 w-full px-4 py-2 text-sm transition-colors ${
-                        currentLanguage.code === lang.code 
-                          ? 'bg-blue-50 text-blue-700 font-medium' 
-                          : 'text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      <span>{lang.flag}</span>
-                      <span>{lang.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
+               {isLanguageOpen && (
+                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                   {languages.map((lang) => (
+                     <button
+                       key={lang.code}
+                       onClick={() => {
+                         setLanguage(lang);
+                         setIsLanguageOpen(false);
+                       }}
+                       className={`flex items-center space-x-3 w-full px-4 py-2 text-sm transition-colors ${
+                         currentLanguage.code === lang.code 
+                           ? 'bg-blue-50 text-blue-700 font-medium' 
+                           : 'text-gray-700 hover:bg-gray-100'
+                       }`}
+                     >
+                       <span>{lang.flag}</span>
+                       <span>{lang.name}</span>
+                     </button>
+                   ))}
+                 </div>
+               )}
             </div>
 
             {/* User Actions */}
