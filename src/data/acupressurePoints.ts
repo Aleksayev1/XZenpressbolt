@@ -322,7 +322,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     nameEn: 'Xiaguan (ST7) - Lower Joint',
     nameEs: 'Xiaguan (ST7) - Articulación Inferior',
     nameFr: 'Xiaguan (ST7) - Articulation Inférieure',
-    description: 'Ponto do estômago na articulação da mandíbula. Trata dor e travamento da ATM.',
+    description: 'Ponto Boca Trata dor e travamento da ATM.',
     descriptionEn: 'Stomach point at jaw joint. Treats TMJ pain and locking.',
     descriptionEs: 'Punto del estómago en articulación mandibular. Trata dolor y bloqueo de ATM.',
     descriptionFr: 'Point estomac à articulation mâchoire. Traite douleur et blocage ATM.',
