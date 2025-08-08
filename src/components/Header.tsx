@@ -209,11 +209,11 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
               <div className="mt-2 pt-2 border-t border-gray-200">
                 <button
                   onClick={() => {
-                    const element = document.getElementById('google_translate_element');
-                    if (element) {
-                      element.style.display = element.style.display === 'none' ? 'block' : 'none';
-                    }
-                    setIsMenuOpen(false);
+                    if (typeof window.toggleGoogleTranslate === 'function') {
+                      window.toggleGoogleTranslate();
+                    } else {
+                      console.warn('Google Translate não carregado ainda');
+                      console.warn('Google Translate não carregado ainda');
                   }}
                   className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
                 >

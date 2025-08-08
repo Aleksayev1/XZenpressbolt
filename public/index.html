@@ -33,31 +33,74 @@
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://translate.googleapis.com" />
     
     <title>XZenPress - Plataforma de Bem-Estar Holística</title>
+  </head>
+  <body>
+    <noscript>
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h2>JavaScript é necessário</h2>
+        <p>Por favor, habilite o JavaScript no seu navegador para usar o XZenPress.</p>
+      </div>
+    </noscript>
     
-    <!-- Google Translate Script -->
+    <div id="root"></div>
+    
+    <!-- Google Translate Integration -->
     <script type="text/javascript">
+      // Função global para inicializar Google Translate
       function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'pt',
-          includedLanguages: 'en,es,fr,de,it,ja,ko,zh,ar,hi,ru',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false,
-          multilanguagePage: true
-        }, 'google_translate_element');
+        try {
+          new google.translate.TranslateElement({
+            pageLanguage: 'pt',
+            includedLanguages: 'en,es,fr,de,it,ja,ko,zh,ar,hi,ru',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+            multilanguagePage: true
+          }, 'google_translate_element');
+          console.log('✅ Google Translate inicializado com sucesso');
+        } catch (error) {
+          console.error('❌ Erro ao inicializar Google Translate:', error);
+        }
       }
+      
+      // Função global para mostrar/esconder o widget
+      window.toggleGoogleTranslate = function() {
+        const element = document.getElementById('google_translate_element');
+        if (element) {
+          const isVisible = element.style.display !== 'none';
+          element.style.display = isVisible ? 'none' : 'block';
+          console.log('🌐 Google Translate:', isVisible ? 'Escondido' : 'Mostrado');
+        } else {
+          console.warn('⚠️ Elemento Google Translate não encontrado');
+          // Criar elemento se não existir
+          const newElement = document.createElement('div');
+          newElement.id = 'google_translate_element';
+          newElement.style.cssText = 'position: fixed; top: 80px; right: 20px; z-index: 1000; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e5e7eb;';
+          document.body.appendChild(newElement);
+          
+          // Recarregar Google Translate
+          if (typeof google !== 'undefined' && google.translate) {
+            googleTranslateElementInit();
+          }
+        }
+      };
     </script>
+    
+    <!-- Google Translate Widget Container -->
+    <div id="google_translate_element" style="position: fixed; top: 80px; right: 20px; z-index: 1000; display: none; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid #e5e7eb;"></div>
+    
+    <!-- Carregar Google Translate -->
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     
-    <!-- Google Translate CSS Override -->
+    <!-- CSS para customizar Google Translate -->
     <style>
-      /* Customizar aparência do widget Google Translate */
+      /* Esconder banner do Google Translate */
       .goog-te-banner-frame.skiptranslate {
         display: none !important;
       }
       
+      /* Customizar widget */
       .goog-te-gadget {
         font-family: inherit !important;
         font-size: 14px !important;
@@ -77,27 +120,16 @@
         border-color: #3b82f6 !important;
       }
       
+      /* Remover espaçamento do body */
       body {
         top: 0 !important;
       }
       
+      /* Esconder frame do banner */
       .goog-te-banner-frame {
         display: none !important;
       }
     </style>
-  </head>
-  <body>
-    <noscript>
-      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
-        <h2>JavaScript é necessário</h2>
-        <p>Por favor, habilite o JavaScript no seu navegador para usar o XZenPress.</p>
-      </div>
-    </noscript>
-    
-    <!-- Google Translate Widget Container -->
-    <div id="google_translate_element" style="position: fixed; top: 80px; right: 20px; z-index: 1000; display: none; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"></div>
-    
-    <div id="root"></div>
     
     <!-- Service Worker Registration -->
     <script>
