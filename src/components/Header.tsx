@@ -100,24 +100,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 <Globe className="w-4 h-4" />
                 <span>{currentLanguage.flag}</span>
               </button>
-              {isLanguageOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
-                  {/* Google Translate Option */}
-                  <button
-                    onClick={() => {
-                      const element = document.getElementById('google_translate_element');
-                      if (element) {
-                        element.style.display = element.style.display === 'none' ? 'block' : 'none';
-                      } else {
-                        console.warn('Google Translate element not found');
-                      }
-                      setIsLanguageOpen(false);
-                    }}
-                    className="flex items-center space-x-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b border-gray-100"
-                  >
-                    <span>🌐</span>
-                    <span>Tradução Automática</span>
-                  </button>
                   {languages.map((lang) => (
                     <button
                       key={lang.code}
@@ -213,7 +195,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                       window.toggleGoogleTranslate();
                     } else {
                       console.warn('Google Translate não carregado ainda');
-                      console.warn('Google Translate não carregado ainda');
+                    }
                   }}
                   className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
                 >
