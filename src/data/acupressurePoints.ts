@@ -85,7 +85,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     descriptionEs: 'Ubicado en región frontal, técnica craneal específica para reducir estrés y ansiedad a través de estimulación directa del córtex frontal.',
     descriptionFr: 'Situé en région frontale, technique crânienne spécifique pour réduire stress et anxiété par stimulation directe du cortex frontal.',
     position: { x: 50, y: 30 },
-    image: '/Ponto A Dor de cabeça e ansiedade cranio.jpg',
+    image: '/Ponto básico A dor de cabeça e enxaqueca copy copy copy.jpg',
     imageAlt: 'Localização do ponto frontal craniano na região frontal da cabeça',
     benefits: ['Reduz estresse e ansiedade', 'Acalma sistema nervoso', 'Promove relaxamento cerebral', 'Diminui tensão craniana'],
     benefitsEn: ['Reduces stress and anxiety', 'Calms nervous system', 'Promotes brain relaxation', 'Decreases cranial tension'],
