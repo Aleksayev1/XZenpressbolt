@@ -5,6 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { AIRecommendationsPanel } from './AIRecommendationsPanel';
 import { PixPaymentComponent } from './PixPaymentComponent';
 import { CreditCardPaymentComponent } from './CreditCardPaymentComponent';
+import { trackPremiumUpgrade } from './GoogleAnalytics';
 
 interface PremiumStructureProps {
   onPageChange: (page: string) => void;
@@ -335,6 +336,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   const handlePayment = () => {
     // Simular processamento de pagamento bem-sucedido
     console.log('💳 Processando pagamento...');
+    trackPremiumUpgrade(selectedPlan, paymentMethod);
     setTimeout(() => {
       console.log('✅ Pagamento confirmado, ativando Premium...');
       alert(`Pagamento ${paymentMethod.toUpperCase()} confirmado! Bem-vindo ao Premium!`);
@@ -345,6 +347,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
 
   const handlePixPaymentSuccess = (paymentData: any) => {
     console.log('🎯 PIX confirmado:', paymentData);
+    trackPremiumUpgrade(selectedPlan, 'pix');
     alert('Pagamento PIX confirmado! Bem-vindo ao Premium!');
     upgradeToPremium();
     setShowPayment(false);

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 import { acupressurePoints, getPointsByCategory, getFreePoints, getPremiumPoints } from '../data/acupressurePoints';
+import { trackAcupressureSession } from './GoogleAnalytics';
 
 interface AcupressurePageProps {
   onPageChange: (page: string) => void;
@@ -151,7 +152,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         }
       };
       
-      totalTimeRef.current = setTimeout(totalTick, 1000);
+      totalTimeRef.current = setTimeout(totalTick, nextDelay);
       
       return () => {
         if (totalTimeRef.current) {
@@ -219,6 +220,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setCurrentColor('#3B82F6');
     sessionStartTime.current = Date.now();
     
+    trackAcupressureSession(pointId, point.duration || 120, false);
+    
     if (!usedPoints.includes(pointId)) {
       setUsedPoints(prev => [...prev, pointId]);
     }
@@ -242,6 +245,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setBreathingTimeLeft(4);
     setCurrentColor('#3B82F6');
     sessionStartTime.current = Date.now();
+    
+    trackAcupressureSession(pointId, point.duration || 120, true);
     
     if (!usedPoints.includes(pointId)) {
       setUsedPoints(prev => [...prev, pointId]);

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Building2, Users, BarChart3, Shield, CheckCircle, Star, Crown, TrendingUp, FileText, Phone, Mail, ArrowRight, Target, Zap, Award, Globe } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { submitCorporateLead, CorporateLeadData } from '../lib/supabase';
+import { trackCorporateLead } from './GoogleAnalytics';
 
 interface CorporatePlansPageProps {
   onPageChange: (page: string) => void;
@@ -225,6 +226,9 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
 
       await submitCorporateLead(leadData);
       setSubmitStatus('success');
+      
+      // Track corporate lead
+      trackCorporateLead(selectedPlanType, formData.employees_count);
       
       // Reset form after successful submission
       setTimeout(() => {
