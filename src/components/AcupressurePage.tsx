@@ -940,46 +940,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         {/* Instructions */}
         <div className="mt-12 bg-white rounded-3xl shadow-2xl p-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Como Usar a Terapia Integrada
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">1️⃣</span>
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Escolha o Ponto</h3>
-              <p className="text-gray-600 text-sm">
-                Clique no ponto da lista para ver detalhes
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">2️⃣</span>
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Configure Som e Cor</h3>
-              <p className="text-gray-600 text-sm">
-                Escolha cor terapêutica e som harmonizante
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">3️⃣</span>
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Terapia Integrada</h3>
-              <p className="text-gray-600 text-sm">
-                Respiração 4-7-8 + acupressão + cores
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">4️⃣</span>
-              </div>
-              <h3 className="font-semibold text-gray-800 mb-2">Sinta os Efeitos</h3>
-              <p className="text-gray-600 text-sm">
-                Cores vibrantes + som + respiração sincronizada
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
