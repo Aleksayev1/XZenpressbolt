@@ -105,8 +105,10 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   {/* Google Translate Option */}
                   <button
                     onClick={() => {
-                      if ((window as any).toggleGoogleTranslate) {
+                      if (typeof (window as any).toggleGoogleTranslate === 'function') {
                         (window as any).toggleGoogleTranslate();
+                      } else {
+                        console.warn('Google Translate not ready yet');
                       }
                       setIsLanguageOpen(false);
                     }}
