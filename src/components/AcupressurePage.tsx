@@ -715,37 +715,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </div>
                 )}
 
-                {/* Cromoterapia Interativa */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">🎨 Cromoterapia</h3>
-                  <div className="grid grid-cols-3 gap-2">
-                    {colors.map((color) => (
-                      <button 
-                        key={color.hex}
-                        onClick={() => setCurrentColor(color.hex)}
-                        className={`p-3 rounded-xl text-center text-white transition-all duration-300 transform ${
-                          currentColor === color.hex 
-                            ? 'shadow-2xl scale-110 ring-4 ring-white ring-opacity-50' 
-                            : 'hover:scale-105 shadow-lg'
-                        }`}
-                        style={{ 
-                          background: `linear-gradient(135deg, ${color.hex}, ${color.hex}CC)`,
-                          boxShadow: currentColor === color.hex 
-                            ? `0 0 30px ${color.hex}60, 0 10px 25px rgba(0,0,0,0.2)`
-                            : `0 4px 15px ${color.hex}40`
-                        }}
-                      >
-                        <div className="font-bold text-sm drop-shadow-lg">{color.name.split(' ')[0]}</div>
-                        <div className="text-xs opacity-90 drop-shadow">{color.name.split(' ')[1]}</div>
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-3 text-center">
-                    <div className="text-sm font-medium" style={{ color: currentColor }}>
-                      {colors.find(c => c.hex === currentColor)?.effect}
-                    </div>
-                  </div>
-                </div>
 
                 {/* Sons Harmonizantes */}
                 <div className="mb-6">
