@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, Globe, User, LogOut, Crown } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage, languages } from '../contexts/LanguageContext';
+import { trackPageView, trackLanguageChange } from './GoogleAnalytics';
 
 interface HeaderProps {
   currentPage: string;
@@ -14,6 +15,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
   const { user, logout } = useAuth();
   const { currentLanguage, setLanguage, t } = useLanguage();
   
+  const handlePageChange = (page: string) => {
+    onPageChange(page);
+    trackPageView(page, t(`nav.${page}`));
+  };
+
+  const handleLanguageChange = (newLanguage: any) => {
+    const oldLanguage = currentLanguage.code;
+    setLanguage(newLanguage);
+    setIsLanguageOpen(false);
+    trackLanguageChange(oldLanguage, newLanguage.code);
+  };
 
   const navItems = [
     { id: 'home' },
@@ -61,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
             {allNavItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => onPageChange(item.id)}
+                onClick={() => handlePageChange(item.id)}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 ${
                   currentPage === item.id
                     ? 'text-blue-600 bg-blue-50'
@@ -106,8 +118,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                      <button
                        key={lang.code}
                        onClick={() => {
-                         setLanguage(lang);
-                         setIsLanguageOpen(false);
+                         handleLanguageChange(lang);
                        }}
                        className={`flex items-center space-x-3 w-full px-4 py-2 text-sm transition-colors ${
                          currentLanguage.code === lang.code 
@@ -174,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   key={item.id}
                   onClick={() => {
                     onPageChange(item.id);
-                    setIsMenuOpen(false);
+                    setIsMenuOpen(false); 
                   }}
                   className={`flex items-center justify-between w-full text-left px-3 py-2 rounded-md text-base font-medium ${
                     currentPage === item.id
@@ -249,7 +260,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 <div className="px-3 py-2 border-t border-gray-200">
                   <button
                     onClick={() => {
-                      onPageChange('login');
+                      handlePageChange('login');
                       setIsMenuOpen(false);
                     }}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md text-sm font-medium"

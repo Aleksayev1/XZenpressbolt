@@ -3,6 +3,7 @@ import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain, Music } fro
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
+import { trackBreathingSession } from './GoogleAnalytics';
 
 export const BreathingExercise: React.FC = () => {
   const { t } = useLanguage();
@@ -141,10 +142,12 @@ export const BreathingExercise: React.FC = () => {
   const startExercise = () => {
     setIsActive(true);
     sessionStartTime.current = Date.now();
+    trackBreathingSession(0, false); // Track session start
   };
 
   const stopExercise = () => {
     setIsActive(false);
+    trackBreathingSession(totalTime, totalTime > 30); // Track session end
     
     // Registrar sessão se usuário estiver logado e sessão durou mais de 30 segundos
     if (user && sessionStartTime.current && totalTime > 30) {

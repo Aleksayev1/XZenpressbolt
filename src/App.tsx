@@ -14,6 +14,7 @@ import { ProgressTrackingPage } from './components/ProgressTrackingPage';
 import { PersonalizationPage } from './components/PersonalizationPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { GoogleAnalytics } from './components/GoogleAnalytics';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -50,6 +51,7 @@ function App() {
   return (
     <LanguageProvider>
       <AuthProvider>
+        <GoogleAnalytics />
         <div className="min-h-screen bg-gray-50">
           <Header currentPage={currentPage} onPageChange={setCurrentPage} />
           {renderPage()}
