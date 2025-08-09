@@ -188,7 +188,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     benefitsEs: ['Alivia rinitis alérgica', 'Desobstruye vías nasales', 'Reduce sinusitis', 'Mejora respiración nasal'],
     benefitsFr: ['Soulage rhinite allergique', 'Débloque voies nasales', 'Réduit sinusite', 'Améliore respiration nasale'],
     isPremium: false,
-    category: 'general',
+    category: 'cranio',
     instructions: 'Massagear suavemente as laterais do nariz com movimentos circulares por 2-3 minutos.',
     duration: 180,
     pressure: 'leve'
