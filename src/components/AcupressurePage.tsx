@@ -20,7 +20,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const [timeLeft, setTimeLeft] = useState(0);
   const [totalSessionTime, setTotalSessionTime] = useState(0);
   const [currentColor, setCurrentColor] = useState('#3B82F6');
-  const [isIntegratedTherapy, setIsIntegratedTherapy] = useState(false);
   const [breathingPhase, setBreathingPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [breathingTimeLeft, setBreathingTimeLeft] = useState(4);
   const [usedPoints, setUsedPoints] = useState<string[]>([]);
@@ -36,6 +35,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const sessionStartTime = useRef<number | null>(null);
   const expectedPhaseTimeRef = useRef<number>(0);
   const expectedTotalTimeRef = useRef<number>(0);
+  const expectedBreathingTimeRef = useRef<number>(0);
 
   const freeSounds = [
     {
@@ -68,12 +68,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: 'Expire' },
   };
 
-  const colors = [
-    { hex: '#3B82F6', name: 'Azul Calmante', effect: 'Reduz ansiedade' },
-    { hex: '#10B981', name: 'Verde Equilibrante', effect: 'Harmoniza emoções' },
-    { hex: '#8B5CF6', name: 'Roxo Energizante', effect: 'Estimula criatividade' }
-  ];
-
   const filteredPoints = getPointsByCategory(selectedCategory, user?.isPremium || false);
   const selectedPointData = selectedPoint ? acupressurePoints.find(p => p.id === selectedPoint) : null;
   const viewingPointData = viewingPoint ? acupressurePoints.find(p => p.id === viewingPoint) : null;
@@ -95,7 +89,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     }
   }, [isSoundPlaying, selectedSoundId]);
 
-  // Precise timer effects with drift correction
+  // Timer principal para duração do ponto
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
       const startTime = Date.now();
@@ -132,6 +126,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     }
   }, [isTimerActive, timeLeft]);
 
+  // Timer total da sessão
   useEffect(() => {
     if (isTimerActive) {
       const startTime = Date.now();
@@ -159,23 +154,18 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           totalTimeRef.current = null;
         }
       };
-    } else {
-      if (totalTimeRef.current) {
-        clearTimeout(totalTimeRef.current);
-        totalTimeRef.current = null;
-      }
     }
   }, [isTimerActive]);
 
-  // Breathing timer for integrated therapy
+  // Timer de respiração 4-7-8 (sempre ativo quando timer principal está ativo)
   useEffect(() => {
-    if (isIntegratedTherapy && isTimerActive) {
+    if (isTimerActive) {
       const startTime = Date.now();
-      let expectedBreathingTime = startTime + 1000;
+      expectedBreathingTimeRef.current = startTime + 1000;
       
       const breathingTick = () => {
         const now = Date.now();
-        const drift = now - expectedBreathingTime;
+        const drift = now - expectedBreathingTimeRef.current;
         
         setBreathingTimeLeft(prev => {
           if (prev <= 1) {
@@ -188,10 +178,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           return prev - 1;
         });
         
-        expectedBreathingTime += 1000;
+        expectedBreathingTimeRef.current += 1000;
         const nextDelay = Math.max(0, 1000 - drift);
         
-        if (isIntegratedTherapy && isTimerActive) {
+        if (isTimerActive) {
           breathingTimerRef.current = setTimeout(breathingTick, nextDelay);
         }
       };
@@ -205,9 +195,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         }
       };
     }
-  }, [isIntegratedTherapy, isTimerActive, breathingPhase, breathingTimeLeft]);
+  }, [isTimerActive, breathingPhase, breathingTimeLeft]);
 
-  const startPointTimer = (pointId: string) => {
+  // Função única para iniciar terapia integrada
+  const startIntegratedTherapy = (pointId: string) => {
     const point = acupressurePoints.find(p => p.id === pointId);
     if (!point) return;
 
@@ -220,32 +211,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setViewingPoint(pointId);
     setTimeLeft(point.duration || 120);
     setIsTimerActive(true);
-    setIsIntegratedTherapy(false);
-    setTotalSessionTime(0);
-    setCurrentColor('#3B82F6');
-    sessionStartTime.current = Date.now();
-    
-    trackAcupressureSession(pointId, point.duration || 120, false);
-    
-    if (!usedPoints.includes(pointId)) {
-      setUsedPoints(prev => [...prev, pointId]);
-    }
-  };
-
-  const startIntegratedTherapy = (pointId: string) => {
-    const point = acupressurePoints.find(p => p.id === pointId);
-    if (!point) return;
-
-    if (point.isPremium && !user?.isPremium) {
-      alert('Terapia integrada é exclusiva para usuários Premium!');
-      return;
-    }
-
-    setSelectedPoint(pointId);
-    setViewingPoint(pointId);
-    setTimeLeft(point.duration || 120);
-    setIsTimerActive(true);
-    setIsIntegratedTherapy(true);
     setTotalSessionTime(0);
     setBreathingPhase('inhale');
     setBreathingTimeLeft(4);
@@ -261,7 +226,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
   const stopTimer = () => {
     setIsTimerActive(false);
-    setIsIntegratedTherapy(false);
     
     if (timerRef.current) {
       clearTimeout(timerRef.current);
@@ -283,7 +247,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
   const resetTimer = () => {
     setIsTimerActive(false);
-    setIsIntegratedTherapy(false);
     setSelectedPoint(null);
     setTimeLeft(0);
     setTotalSessionTime(0);
@@ -311,22 +274,22 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
     try {
       await recordSession({
-        sessionType: isIntegratedTherapy ? 'integrated' : 'acupressure',
+        sessionType: 'integrated',
         durationSeconds: totalSessionTime,
         pointsUsed: usedPoints,
         effectivenessRating: 4.0,
         sessionData: {
-          integratedTherapy: isIntegratedTherapy,
-          chromotherapyUsed: isIntegratedTherapy,
+          integratedTherapy: true,
+          chromotherapyUsed: true,
           selectedPoint: selectedPoint,
-          completedCycles: isIntegratedTherapy ? Math.floor(totalSessionTime / 19) : 1
+          completedCycles: Math.floor(totalSessionTime / 19)
         },
         completedAt: new Date().toISOString()
       });
       
-      console.log('✅ Sessão de acupressão registrada com sucesso');
+      console.log('✅ Sessão de terapia integrada registrada com sucesso');
     } catch (error) {
-      console.error('❌ Erro ao registrar sessão de acupressão:', error);
+      console.error('❌ Erro ao registrar sessão de terapia integrada:', error);
     }
   };
 
@@ -356,10 +319,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Calculate pulse scale for breathing circle (same as BreathingExercise)
+  // Calculate pulse scale for breathing circle
   const getPulseScale = () => {
-    if (!isIntegratedTherapy) return 60;
-    
     const phaseProgress = (breathingPhases[breathingPhase].duration - breathingTimeLeft) / breathingPhases[breathingPhase].duration;
     if (breathingPhase === 'inhale') {
       return 60 + (30 * phaseProgress); // Expand from 60 to 90
@@ -372,16 +333,14 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
   const circleRadius = 80;
   const circumference = 2 * Math.PI * circleRadius;
-  const progress = isIntegratedTherapy 
-    ? ((breathingPhases[breathingPhase].duration - breathingTimeLeft) / breathingPhases[breathingPhase].duration) * circumference
-    : ((selectedPointData?.duration || 120) - timeLeft) / (selectedPointData?.duration || 120) * circumference;
+  const breathingProgress = ((breathingPhases[breathingPhase].duration - breathingTimeLeft) / breathingPhases[breathingPhase].duration) * circumference;
 
   return (
     <div 
       className="min-h-screen transition-all duration-1000 ease-in-out pt-16"
       style={{ 
-        background: isIntegratedTherapy && isTimerActive
-          ? `radial-gradient(circle at center, ${currentColor}40, ${currentColor}20, ${currentColor}10, white)`
+        background: isTimerActive
+          ? `radial-gradient(circle at center, ${currentColor}50, ${currentColor}30, ${currentColor}15, white)`
           : 'linear-gradient(135deg, #f0f9ff, #e0f2fe, white)'
       }}
     >
@@ -410,11 +369,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             <span className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Pontos de Acupressão
+              Terapia Integrada
             </span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Medicina Tradicional Chinesa com técnicas modernas de aplicação
+            Acupressão + Respiração 4-7-8 + Cromoterapia + Sons Harmonizantes
           </p>
         </div>
 
@@ -444,6 +403,138 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         </div>
 
+        {/* Timer Ativo - Experiência Completa */}
+        {isTimerActive && selectedPointData && (
+          <div className="mb-8">
+            <div 
+              className="bg-white rounded-3xl shadow-2xl p-8 border-2 transition-all duration-1000"
+              style={{ 
+                borderColor: currentColor + '60',
+                background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)`
+              }}
+            >
+              {/* Breathing Circle */}
+              <div className="relative mb-8">
+                <svg className="w-80 h-80 mx-auto transform -rotate-90" viewBox="0 0 280 280">
+                  {/* Background circle */}
+                  <circle
+                    cx="140"
+                    cy="140"
+                    r={circleRadius * 1.75}
+                    stroke="#E5E7EB"
+                    strokeWidth="8"
+                    fill="none"
+                  />
+                  {/* Progress circle */}
+                  <circle
+                    cx="140"
+                    cy="140"
+                    r={circleRadius * 1.75}
+                    stroke={currentColor}
+                    strokeWidth="8"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeDasharray={circumference * 1.75}
+                    strokeDashoffset={(circumference * 1.75) - breathingProgress * 1.75}
+                    className="transition-all duration-1000 ease-in-out"
+                  />
+                  {/* Inner breathing circle */}
+                  <circle
+                    cx="140"
+                    cy="140"
+                    r={getPulseScale() * 1.5}
+                    fill={currentColor}
+                    fillOpacity="0.4"
+                    className="transition-all duration-500 ease-in-out"
+                  />
+                </svg>
+                
+                {/* Center content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <div 
+                    className="text-6xl font-bold mb-2 transition-colors duration-500"
+                    style={{ color: currentColor }}
+                  >
+                    {breathingTimeLeft}
+                  </div>
+                  <div 
+                    className="text-2xl font-semibold uppercase tracking-wider transition-colors duration-500"
+                    style={{ color: currentColor }}
+                  >
+                    {breathingPhases[breathingPhase].label}
+                  </div>
+                  <div className="text-sm text-gray-600 mt-2">
+                    {selectedPointData.name}
+                  </div>
+                </div>
+              </div>
+
+              {/* Breathing Phase Indicators */}
+              <div className="grid grid-cols-3 gap-4 text-center mb-8">
+                <div className={`p-4 rounded-xl transition-all duration-500 ${
+                  breathingPhase === 'inhale' 
+                    ? 'bg-blue-500 text-white border-2 border-blue-600 shadow-lg transform scale-105' 
+                    : 'bg-blue-50 text-blue-700 border-2 border-blue-200'
+                }`}>
+                  <div className="text-2xl font-bold mb-1">4s</div>
+                  <div className="text-sm">Inspire</div>
+                  <div className="text-xs mt-1 opacity-80">Azul Calmante</div>
+                </div>
+                <div className={`p-4 rounded-xl transition-all duration-500 ${
+                  breathingPhase === 'hold' 
+                    ? 'bg-green-500 text-white border-2 border-green-600 shadow-lg transform scale-105' 
+                    : 'bg-green-50 text-green-700 border-2 border-green-200'
+                }`}>
+                  <div className="text-2xl font-bold mb-1">7s</div>
+                  <div className="text-sm">Segure</div>
+                  <div className="text-xs mt-1 opacity-80">Verde Equilibrante</div>
+                </div>
+                <div className={`p-4 rounded-xl transition-all duration-500 ${
+                  breathingPhase === 'exhale' 
+                    ? 'bg-purple-500 text-white border-2 border-purple-600 shadow-lg transform scale-105' 
+                    : 'bg-purple-50 text-purple-700 border-2 border-purple-200'
+                }`}>
+                  <div className="text-2xl font-bold mb-1">8s</div>
+                  <div className="text-sm">Expire</div>
+                  <div className="text-xs mt-1 opacity-80">Roxo Energizante</div>
+                </div>
+              </div>
+
+              {/* Timer Info */}
+              <div className="text-center mb-6">
+                <div className="text-sm text-gray-600 mb-2">Tempo do Ponto</div>
+                <div className="text-3xl font-bold text-gray-700 mb-2">{formatTime(timeLeft)}</div>
+                <div className="text-sm text-gray-500">Total da Sessão: {formatTime(totalSessionTime)}</div>
+              </div>
+
+              {/* Controls */}
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={stopTimer}
+                  className="flex items-center space-x-2 bg-red-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-red-600 transition-all shadow-lg"
+                >
+                  <Pause className="w-5 h-5" />
+                  <span>Parar</span>
+                </button>
+                <button
+                  onClick={resetTimer}
+                  className="flex items-center space-x-2 bg-gray-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-gray-600 transition-all shadow-lg"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                  <span>Reiniciar</span>
+                </button>
+                <button
+                  onClick={() => onPageChange('sounds')}
+                  className="flex items-center space-x-2 bg-purple-500 text-white px-6 py-3 rounded-full text-lg font-semibold hover:bg-purple-600 transition-all shadow-lg"
+                >
+                  <Music className="w-5 h-5" />
+                  <span>Biblioteca</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Main Layout: Lista de Pontos + Painel de Detalhes */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
@@ -457,11 +548,16 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div
                   key={point.id}
                   onClick={() => {
-                    console.log('🔍 CLIQUE NO PONTO:', point.id, point.name);
-                    setViewingPoint(point.id);
+                    if (!isTimerActive) {
+                      startIntegratedTherapy(point.id);
+                    } else {
+                      setViewingPoint(point.id);
+                    }
                   }}
                   className={`bg-white rounded-xl shadow-lg transition-all duration-300 border-2 cursor-pointer p-4 ${
-                    viewingPoint === point.id
+                    selectedPoint === point.id
+                      ? 'border-green-500 shadow-xl bg-green-50'
+                    : viewingPoint === point.id
                       ? 'border-blue-500 shadow-xl bg-blue-50'
                       : 'border-gray-200 hover:border-gray-300 hover:shadow-xl'
                   } ${
@@ -533,8 +629,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                           )}
                         </div>
                         
-                        <div className="text-blue-600 text-sm font-medium">
-                          Clique para ver detalhes →
+                        <div className="text-green-600 text-sm font-medium">
+                          {isTimerActive ? 'Ver detalhes →' : 'Iniciar terapia →'}
                         </div>
                       </div>
                     </div>
@@ -556,7 +652,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             </div>
           </div>
 
-          {/* COLUNA DIREITA: Painel de Detalhes Integrado */}
+          {/* COLUNA DIREITA: Painel de Detalhes */}
           <div className="lg:col-span-1">
             {viewingPoint && viewingPointData ? (
               <div className="bg-white rounded-2xl shadow-2xl p-6 sticky top-24">
@@ -571,263 +667,19 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   )}
                 </div>
 
-                {/* Timer Ativo com Círculo de Respiração INTEGRADO */}
-                {isTimerActive && selectedPoint === viewingPoint && (
-                  <div 
-                    className="mb-6 rounded-2xl p-6 border-2 transition-all duration-1000"
-                    style={{ 
-                      background: isIntegratedTherapy 
-                        ? `linear-gradient(135deg, ${currentColor}30, ${currentColor}15, white)`
-                        : 'linear-gradient(135deg, #f0f9ff, #e0f2fe, white)',
-                      borderColor: currentColor + '40'
-                    }}
-                  >
-                    {/* Breathing Circle - SEMPRE VISÍVEL quando timer ativo */}
-                    <div className="relative mb-6">
-                      <svg className="w-48 h-48 mx-auto transform -rotate-90" viewBox="0 0 200 200">
-                        {/* Background circle */}
-                        <circle
-                          cx="100"
-                          cy="100"
-                          r={circleRadius}
-                          stroke="#E5E7EB"
-                          strokeWidth="6"
-                          fill="none"
-                        />
-                        {/* Progress circle */}
-                        <circle
-                          cx="100"
-                          cy="100"
-                          r={circleRadius}
-                          stroke={currentColor}
-                          strokeWidth="6"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeDasharray={circumference}
-                          strokeDashoffset={circumference - progress}
-                          className="transition-all duration-1000 ease-in-out"
-                        />
-                        {/* Inner breathing circle - SEMPRE ATIVO */}
-                        <circle
-                          cx="100"
-                          cy="100"
-                          r={getPulseScale()}
-                          fill={currentColor}
-                          fillOpacity="0.3"
-                          className="transition-all duration-500 ease-in-out"
-                        />
-                      </svg>
-                      
-                      {/* Center content */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <div 
-                          className="text-4xl font-bold mb-1 transition-colors duration-500"
-                          style={{ color: currentColor }}
-                        >
-                          {isIntegratedTherapy ? breathingTimeLeft : timeLeft}
-                        </div>
-                        <div 
-                          className="text-lg font-semibold uppercase tracking-wider transition-colors duration-500"
-                          style={{ color: currentColor }}
-                        >
-                          {isIntegratedTherapy ? breathingPhases[breathingPhase].label : 'APLICAR'}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Timer Display */}
-                    <div className="text-center">
-                      <div className="text-3xl font-bold mb-2" style={{ color: currentColor }}>
-                        {formatTime(timeLeft)}
-                      </div>
-                      <div className="text-sm mb-3" style={{ color: currentColor }}>
-                        {isIntegratedTherapy ? 'Terapia Integrada' : 'Acupressão'} • Total: {formatTime(totalSessionTime)}
-                      </div>
-                      
-                      {/* Breathing Phase Indicators - SEMPRE VISÍVEL */}
-                      <div className="grid grid-cols-3 gap-2 mb-4">
-                        <div className={`p-2 rounded-lg text-center transition-all duration-500 ${
-                          (isIntegratedTherapy && breathingPhase === 'inhale') || (!isIntegratedTherapy && Math.floor(totalSessionTime / 19) % 3 === 0)
-                            ? 'bg-blue-500 text-white shadow-lg transform scale-105' 
-                            : 'bg-blue-100 text-blue-700'
-                        }`}>
-                          <div className="text-sm font-bold">4s</div>
-                          <div className="text-xs">Inspire</div>
-                        </div>
-                        <div className={`p-2 rounded-lg text-center transition-all duration-500 ${
-                          (isIntegratedTherapy && breathingPhase === 'hold') || (!isIntegratedTherapy && Math.floor(totalSessionTime / 19) % 3 === 1)
-                            ? 'bg-green-500 text-white shadow-lg transform scale-105' 
-                            : 'bg-green-100 text-green-700'
-                        }`}>
-                          <div className="text-sm font-bold">7s</div>
-                          <div className="text-xs">Segure</div>
-                        </div>
-                        <div className={`p-2 rounded-lg text-center transition-all duration-500 ${
-                          (isIntegratedTherapy && breathingPhase === 'exhale') || (!isIntegratedTherapy && Math.floor(totalSessionTime / 19) % 3 === 2)
-                            ? 'bg-purple-500 text-white shadow-lg transform scale-105' 
-                            : 'bg-purple-100 text-purple-700'
-                        }`}>
-                          <div className="text-sm font-bold">8s</div>
-                          <div className="text-xs">Expire</div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-center space-x-2">
-                        <button
-                          onClick={stopTimer}
-                          className="flex items-center space-x-1 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-red-600 transition-colors"
-                        >
-                          <Pause className="w-4 h-4" />
-                          <span>Parar</span>
-                        </button>
-                        <button
-                          onClick={resetTimer}
-                          className="flex items-center space-x-1 bg-gray-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-gray-600 transition-colors"
-                        >
-                          <RotateCcw className="w-4 h-4" />
-                          <span>Reiniciar</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Imagem do Ponto com Overlay de Cor */}
+                {/* Imagem do Ponto */}
                 {viewingPointData.image && (
                   <div className="mb-6 relative">
-                    <div 
-                      className="absolute inset-0 rounded-xl transition-all duration-1000 opacity-30"
-                      style={{ 
-                        background: isIntegratedTherapy && isTimerActive
-                          ? `radial-gradient(circle at center, ${currentColor}60, ${currentColor}30, transparent)`
-                          : 'transparent'
-                      }}
-                    />
                     <img 
                       src={viewingPointData.image} 
                       alt={viewingPointData.imageAlt || viewingPointData.name}
-                      className="w-full h-48 object-cover rounded-xl shadow-lg relative z-10"
+                      className="w-full h-48 object-cover rounded-xl shadow-lg"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
                       }}
                     />
                   </div>
                 )}
-
-                {/* Sons Harmonizantes - SEMPRE VISÍVEL */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">🎵 Sons Harmonizantes</h3>
-                  <div className="space-y-2">
-                    {freeSounds.map((sound) => (
-                      <button
-                        key={sound.id}
-                        onClick={() => handleSoundSelect(sound.id)}
-                        className={`w-full p-3 rounded-lg border-2 transition-all duration-200 ${
-                          selectedSoundId === sound.id
-                            ? 'border-blue-500 bg-blue-50 shadow-lg'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <div className={`p-2 rounded-full ${
-                            selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
-                          }`}>
-                            {sound.icon}
-                          </div>
-                          <div className="text-left flex-1">
-                            <div className="font-semibold text-gray-800 text-sm">{sound.name}</div>
-                            <div className="text-xs text-gray-600">{sound.description}</div>
-                          </div>
-                          {selectedSoundId === sound.id && isSoundPlaying && (
-                            <div className="flex space-x-1">
-                              <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
-                              <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
-                              <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
-                            </div>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                    
-                    {/* Controles de Áudio */}
-                    {selectedSoundId && (
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <div className="flex items-center justify-between">
-                          <button
-                            onClick={toggleSoundPlayback}
-                            className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-semibold transition-all ${
-                              isSoundPlaying
-                                ? 'bg-red-500 text-white hover:bg-red-600'
-                                : 'bg-blue-500 text-white hover:bg-blue-600'
-                            }`}
-                          >
-                            {isSoundPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-                            <span>{isSoundPlaying ? 'Pausar' : 'Play'}</span>
-                          </button>
-                          
-                          <div className="flex items-center space-x-2">
-                            <VolumeX className="w-3 h-3 text-gray-500" />
-                            <input
-                              type="range"
-                              min="0"
-                              max="1"
-                              step="0.1"
-                              value={soundVolume}
-                              onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                              className="w-16 h-1 bg-gray-200 rounded appearance-none cursor-pointer"
-                            />
-                            <Volume2 className="w-3 h-3 text-gray-500" />
-                            <span className="text-xs text-gray-600">{Math.round(soundVolume * 100)}%</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Premium Sounds Teaser */}
-                    <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-3 border border-purple-200">
-                      <div className="text-center">
-                        <div className="text-sm font-semibold text-purple-800 mb-1">🎼 Biblioteca Premium</div>
-                        <div className="text-xs text-purple-700 mb-2">50+ sons + Spotify</div>
-                        <button
-                          onClick={() => onPageChange('sounds')}
-                          className="text-xs bg-purple-500 text-white px-3 py-1 rounded-full hover:bg-purple-600 transition-colors"
-                        >
-                          Ver Biblioteca
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cromoterapia - SEMPRE VISÍVEL */}
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-gray-800 mb-3">🎨 Cromoterapia Integrada</h3>
-                  <div className="grid grid-cols-3 gap-2">
-                    {colors.map((color, index) => (
-                      <div
-                        key={index}
-                        className={`p-3 rounded-lg text-center transition-all duration-500 border-2 ${
-                          currentColor === color.hex
-                            ? 'border-gray-800 shadow-lg transform scale-105'
-                            : 'border-gray-200'
-                        }`}
-                        style={{ backgroundColor: color.hex + '20' }}
-                      >
-                        <div 
-                          className="w-8 h-8 rounded-full mx-auto mb-2 shadow-md"
-                          style={{ backgroundColor: color.hex }}
-                        />
-                        <div className="text-xs font-semibold text-gray-800">{color.name}</div>
-                        <div className="text-xs text-gray-600">{color.effect}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3 text-center">
-                    <div className="text-xs text-gray-600">
-                      {isIntegratedTherapy ? 'Cores sincronizadas com respiração' : 'Cores terapêuticas ativas'}
-                    </div>
-                  </div>
-                </div>
 
                 {/* Informações do Ponto */}
                 <div className="mb-6">
@@ -862,7 +714,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </div>
                 )}
 
-                {/* Botões de Ação */}
+                {/* Botão de Ação */}
                 {viewingPointData.isPremium && !user?.isPremium ? (
                   <div className="space-y-3">
                     <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-xl border border-yellow-200">
@@ -876,26 +728,30 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       🔓 Desbloquear Premium
                     </button>
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    <button
-                      onClick={() => startPointTimer(viewingPoint)}
-                      disabled={isTimerActive}
-                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-xl font-semibold hover:from-green-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
-                    >
-                      <Play className="w-4 h-4" />
-                      <span>🫴 Acupressão ({Math.floor((viewingPointData.duration || 120) / 60)} min)</span>
-                    </button>
-                    
-                    <button
-                      onClick={() => startIntegratedTherapy(viewingPoint)}
-                      disabled={isTimerActive}
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 shadow-lg"
-                    >
-                      <Target className="w-4 h-4" />
-                      <span>🧘 Terapia Integrada (Respiração + Cores)</span>
-                    </button>
+                ) : !isTimerActive ? (
+                  <button
+                    onClick={() => startIntegratedTherapy(viewingPoint)}
+                    className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg flex items-center justify-center space-x-2"
+                  >
+                    <Play className="w-5 h-5" />
+                    <span>🧘 Iniciar Terapia Integrada</span>
+                  </button>
+                ) : selectedPoint === viewingPoint ? (
+                  <div className="text-center">
+                    <div className="bg-green-100 border border-green-300 rounded-xl p-4 mb-4">
+                      <div className="flex items-center justify-center space-x-2 text-green-700">
+                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="font-semibold">Terapia Ativa</span>
+                      </div>
+                    </div>
                   </div>
+                ) : (
+                  <button
+                    onClick={() => startIntegratedTherapy(viewingPoint)}
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg"
+                  >
+                    Trocar para este Ponto
+                  </button>
                 )}
               </div>
             ) : (
@@ -909,16 +765,16 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   Selecione um Ponto
                 </h3>
                 <p className="text-gray-500 text-sm mb-4">
-                  Clique em qualquer ponto da lista para ver detalhes, sons e cromoterapia
+                  Clique em qualquer ponto para iniciar a terapia integrada completa
                 </p>
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
                   <div className="text-sm text-gray-600">
-                    <div className="font-semibold mb-2">🎯 Experiência Completa:</div>
+                    <div className="font-semibold mb-2">🧘 Terapia Integrada:</div>
                     <div className="space-y-1 text-xs">
-                      <div>• Timer visual com círculo de respiração</div>
+                      <div>• Acupressão com timer preciso</div>
+                      <div>• Respiração 4-7-8 sincronizada</div>
                       <div>• Cromoterapia com cores vibrantes</div>
-                      <div>• Sons harmonizantes integrados</div>
-                      <div>• Terapia integrada (respiração + acupressão)</div>
+                      <div>• Sons harmonizantes opcionais</div>
                     </div>
                   </div>
                 </div>
@@ -927,12 +783,137 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         </div>
 
+        {/* Sound Controls - Sempre Visível */}
+        <div className="mt-8 bg-white rounded-3xl shadow-2xl p-8">
+          <div className="flex items-center justify-center space-x-2 mb-6">
+            <Volume2 className="w-6 h-6 text-gray-600" />
+            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
+          </div>
+          
+          {/* Free Sounds Section */}
+          <div className="mb-8">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {freeSounds.map((sound) => (
+                <button
+                  key={sound.id}
+                  onClick={() => handleSoundSelect(sound.id)}
+                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                    selectedSoundId === sound.id
+                      ? 'border-blue-500 bg-blue-50 shadow-lg'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className={`p-2 rounded-full ${
+                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
+                    }`}>
+                      {sound.icon}
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-gray-800">{sound.name}</div>
+                      <div className="text-sm text-gray-600">{sound.description}</div>
+                    </div>
+                    {selectedSoundId === sound.id && isSoundPlaying && (
+                      <div className="ml-auto">
+                        <div className="flex space-x-1">
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
+                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </button>
+              ))}
+            </div>
+            
+            {/* Audio Controls */}
+            {selectedSoundId && (
+              <div className="bg-gray-50 rounded-xl p-6">
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                  {/* Play/Pause Button */}
+                  <button
+                    onClick={toggleSoundPlayback}
+                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
+                      isSoundPlaying
+                        ? 'bg-red-500 text-white hover:bg-red-600'
+                        : 'bg-blue-500 text-white hover:bg-blue-600'
+                    }`}
+                  >
+                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+                    <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
+                  </button>
+                  
+                  {/* Volume Control */}
+                  <div className="flex items-center space-x-3">
+                    <VolumeX className="w-5 h-5 text-gray-500" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={soundVolume}
+                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
+                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                    />
+                    <Volume2 className="w-5 h-5 text-gray-500" />
+                    <span className="text-sm text-gray-600 min-w-[3rem]">
+                      {Math.round(soundVolume * 100)}%
+                    </span>
+                  </div>
+                  
+                  {/* Stop Button */}
+                  <button
+                    onClick={stopAllSounds}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
+                  >
+                    Parar
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {/* Premium Sounds Teaser */}
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Biblioteca Premium</h4>
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
+              <p className="text-gray-700 mb-4">Mais de 50 sons exclusivos + integração Spotify Premium</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 Lareira</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 Clássica</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 Mantras</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">+45 sons</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <a
+                  href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-600 transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Abrir Spotify</span>
+                </a>
+                <button 
+                  onClick={() => onPageChange('premium')}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                >
+                  Upgrade Premium
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Premium CTA */}
         {!user?.isPremium && (
           <div className="mt-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-8 text-center text-white">
             <h2 className="text-3xl font-bold mb-4">🔒 Pontos Premium</h2>
             <p className="text-xl mb-6 opacity-90">
-              Desbloqueie {getPremiumPoints().length} pontos especializados + terapia integrada avançada
+              Desbloqueie {getPremiumPoints().length} pontos especializados com terapia integrada avançada
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
@@ -953,7 +934,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
               <div className="bg-white bg-opacity-20 rounded-lg p-4">
                 <div className="text-2xl mb-2">⚡</div>
                 <div className="font-semibold">Terapia Integrada</div>
-                <div className="text-sm opacity-80">Respiração + Cores</div>
+                <div className="text-sm opacity-80">Sempre Ativa</div>
               </div>
             </div>
             <button 
