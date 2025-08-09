@@ -616,7 +616,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                             point.category === 'atm' ? 'bg-orange-100 text-orange-800' :
                             'bg-gray-100 text-gray-800'
                           }`}>
-                            {point.category === 'general' ? 'MTC' : 
+                            {point.category === 'general' ? 'MTC Geral' : 
                              point.category === 'cranio' ? 'Cranio' :
                              point.category === 'septicemia' ? 'Septicemia' :
                              point.category === 'atm' ? 'ATM' : point.category}
