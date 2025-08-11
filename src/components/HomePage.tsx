@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Play, Heart, Brain, Palette, Music, Star, ArrowRight, BarChart3, User } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -8,6 +9,7 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
   const { t } = useLanguage();
+  const [showTherapySelection, setShowTherapySelection] = useState(false);
 
   const features = [
     {
@@ -64,6 +66,134 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     }
   ];
 
+  // Se mostrar seleção de terapia, renderizar interface de escolha
+  if (showTherapySelection) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-8">
+              <img 
+                src="/Logo Xzenpress oficial.png" 
+                alt="XZenPress Logo" 
+                className="h-20 w-auto"
+              />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
+                Escolha sua Terapia
+              </span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+              Selecione a modalidade que melhor atende suas necessidades no momento
+            </p>
+          </div>
+
+          {/* Therapy Selection Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            {/* Respiração 4-7-8 */}
+            <div 
+              onClick={() => onPageChange('breathing')}
+              className="group bg-white rounded-3xl shadow-2xl p-8 cursor-pointer transform hover:scale-105 transition-all duration-300 border-2 border-transparent hover:border-blue-300"
+            >
+              <div className="text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="p-6 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full group-hover:from-blue-600 group-hover:to-cyan-600 transition-all">
+                    <Brain className="w-16 h-16 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  Respiração 4-7-8
+                </h2>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Técnica científica de respiração com cromoterapia integrada. 
+                  Reduz ansiedade, melhora o sono e ativa o sistema parassimpático.
+                </p>
+                <div className="space-y-2 text-sm text-gray-500 mb-6">
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <span>4 segundos: Inspiração (Azul Calmante)</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span>7 segundos: Retenção (Verde Equilibrante)</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                    <span>8 segundos: Expiração (Roxo Energizante)</span>
+                  </div>
+                </div>
+                <div className="bg-blue-50 rounded-xl p-4 mb-6">
+                  <div className="text-sm text-blue-800">
+                    <strong>Ideal para:</strong> Estresse, ansiedade, insônia, pressão alta
+                  </div>
+                </div>
+                <div className="flex items-center justify-center space-x-2 text-blue-600 font-semibold group-hover:text-blue-700">
+                  <span>Começar Respiração</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+
+            {/* Terapia Integrada (Acupressão) */}
+            <div 
+              onClick={() => onPageChange('acupressure')}
+              className="group bg-white rounded-3xl shadow-2xl p-8 cursor-pointer transform hover:scale-105 transition-all duration-300 border-2 border-transparent hover:border-green-300"
+            >
+              <div className="text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="p-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full group-hover:from-green-600 group-hover:to-emerald-600 transition-all">
+                    <Heart className="w-16 h-16 text-white" />
+                  </div>
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                  Terapia Integrada
+                </h2>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  Acupressão + Respiração + Cromoterapia + Sons harmonizantes. 
+                  Experiência completa de bem-estar holístico.
+                </p>
+                <div className="space-y-2 text-sm text-gray-500 mb-6">
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span>20 pontos terapêuticos (9 gratuitos + 11 premium)</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <span>Respiração 4-7-8 sincronizada</span>
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                    <span>Cromoterapia + Sons harmonizantes</span>
+                  </div>
+                </div>
+                <div className="bg-green-50 rounded-xl p-4 mb-6">
+                  <div className="text-sm text-green-800">
+                    <strong>Ideal para:</strong> Dores específicas, problemas crônicos, bem-estar completo
+                  </div>
+                </div>
+                <div className="flex items-center justify-center space-x-2 text-green-600 font-semibold group-hover:text-green-700">
+                  <span>Explorar Pontos</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Back Button */}
+          <div className="text-center">
+            <button
+              onClick={() => setShowTherapySelection(false)}
+              className="text-gray-600 hover:text-gray-800 font-medium underline"
+            >
+              ← Voltar à página inicial
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
       {/* Hero Section */}
@@ -92,7 +222,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
-                onClick={() => onPageChange('breathing')}
+                onClick={() => setShowTherapySelection(true)}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 {t('home.hero.startNow')}
@@ -198,7 +328,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onPageChange('breathing')}
+              onClick={() => setShowTherapySelection(true)}
               className="bg-white text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg"
             >
               {t('home.cta.demo')}
