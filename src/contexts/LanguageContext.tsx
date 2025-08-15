@@ -59,9 +59,9 @@ const translations: Record<string, Record<string, string>> = {
     'home.hero.startNow': 'Começar Agora',
     'home.hero.createAccount': 'Criar Conta',
     'home.features.title': 'Recursos Completos',
-    'home.features.subtitle': 'Acupressão :MTC e Craniopuntura: Através de sequências guiadas, você aprenderá a aplicar toques terapêuticos em pontos específicos do corpo e da cabeça. Essas técnicas milenares ajudam a dissolver tensões, aliviar dores e restaurar o equilíbrio energético, promovendo um profundo relaxamento e clareza mental.
-Respiração Guiada: Descubra o poder da sua respiração para controlar o estresse, reduzir a ansiedade e cultivar a presença. Nossas sessões de respiração guiada são projetadas para acalmar seu sistema nervoso e oxigenar cada célula do seu corpo.
-Sons Meditativos: Imersão em paisagens sonoras cuidadosamente elaboradas. As frequências e harmonias dos sons meditativos são ferramentas poderosas para induzir estados de relaxamento profundo, facilitando a meditação e o alinhamento de seus centros energéticos.',
+    'home.features.subtitle': 'Acupressão MTC e Craniopuntura: Através de sequências guiadas, você aprenderá a aplicar toques terapêuticos em pontos específicos do corpo e da cabeça. Essas técnicas milenares ajudam a dissolver tensões, aliviar dores e restaurar o equilíbrio energético, promovendo um profundo relaxamento e clareza mental.
+Respiração Guiada: Descubra o poder da sua respiração para controlar o estresse, reduzir a ansiedade e cultivar a presença.
+Sons Meditativos: Imersão em paisagens sonoras cuidadosamente elaboradas..',
     'home.feature.acupressure.title': 'Acupressão MTC',
     'home.feature.acupressure.desc': '20 pontos terapêuticos da Medicina Tradicional Chinesa',
     'home.feature.cranio.title': 'Craniopuntura',
