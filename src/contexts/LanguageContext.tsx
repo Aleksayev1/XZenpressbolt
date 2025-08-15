@@ -54,8 +54,8 @@ const translations: Record<string, Record<string, string>> = {
     'nav.logout': 'Sair',
 
     // Home
-    'home.hero.title': 'Transforme sua vida com terapias holísticas',
-    'home.hero.subtitle': 'Transforme sua vida com terapias holísticas baseadas em evidências científicas',
+    'home.hero.title': 'Transforme sua vida',
+    'home.hero.subtitle': 'Reconecte a sua energia de forma simples e baseada em evidências científicas',
     'home.hero.startNow': 'Começar Agora',
     'home.hero.createAccount': 'Criar Conta',
     'home.features.title': 'Recursos Completos',
@@ -372,8 +372,8 @@ const translations: Record<string, Record<string, string>> = {
     'nav.logout': 'Logout',
 
     // Home
-    'home.hero.title': 'Transform your life with holistic therapies',
-    'home.hero.subtitle': 'Transform your life with evidence-based holistic therapies',
+    'home.hero.title': 'Transform your life',
+    'home.hero.subtitle': 'Transmute with evidence-based holistic therapies',
     'home.hero.startNow': 'Start Now',
     'home.hero.createAccount': 'Create Account',
     'home.features.title': 'Complete Features',
@@ -690,8 +690,8 @@ const translations: Record<string, Record<string, string>> = {
     'nav.logout': 'Salir',
 
     // Inicio
-    'home.hero.title': 'Transforma tu vida con terapias holísticas',
-    'home.hero.subtitle': 'Transforma tu vida con terapias holísticas basadas en evidencia científica',
+    'home.hero.title': 'Transforma tu vida con terapias integrativas',
+    'home.hero.subtitle': 'Transmutar tu vida con terapias basadas en evidencia científica',
     'home.hero.startNow': 'Comenzar Ahora',
     'home.hero.createAccount': 'Crear Cuenta',
     'home.features.title': 'Características Completas',
