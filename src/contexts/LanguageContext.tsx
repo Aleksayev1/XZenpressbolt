@@ -1403,7 +1403,7 @@ const translations: Record<string, Record<string, string>> = {
 
     // Accueil
     'home.hero.title': 'Transformez votre vie avec des thérapies holistiques',
-    'home.hero.subtitle': 'Transformez votre vie avec des thérapies holistiques basées sur des preuves scientifiques',
+    'home.hero.subtitle': 'Transmuter avec des thérapies intégrateur basées sur des preuves scientifiques',
     'home.hero.startNow': 'Commencer maintenant',
     'home.hero.createAccount': 'Créer un compte',
     'home.features.title': 'Fonctionnalités complètes',
