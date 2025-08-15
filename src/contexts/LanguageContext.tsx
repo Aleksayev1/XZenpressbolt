@@ -54,7 +54,7 @@ const translations: Record<string, Record<string, string>> = {
     'nav.logout': 'Sair',
 
     // Home
-    'home.hero.title': 'Melhore a sua vida',
+    'home.hero.title': 'Evolua',
     'home.hero.subtitle': 'Reconecte a sua energia de forma simples e baseada em evidências científicas',
     'home.hero.startNow': 'Começar Agora',
     'home.hero.createAccount': 'Criar Conta',
