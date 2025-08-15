@@ -296,6 +296,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onPageChange }) => {
     </div>
   );
 };
+
 import { WebView } from 'react-native-webview';
 
 const PrivacyPolicyScreen = () => {
