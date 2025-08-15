@@ -369,11 +369,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             <span className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Terapia Integrada
+              {t('acupressure.title')}
             </span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Acupressão + Respiração 4-7-8 + Cromoterapia + Sons Harmonizantes
+            {t('acupressure.subtitle')}
           </p>
         </div>
 
@@ -394,7 +394,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 }`}
               >
                 <span>{category.icon}</span>
-                <span>{category.name}</span>
+                <span>{t(`acupressure.categories.${category.id}`)}</span>
                 {category.premium && !user?.isPremium && (
                   <Lock className="w-4 h-4" />
                 )}
@@ -705,7 +705,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 {/* Instruções */}
                 {viewingPointData.instructions && (
                   <div className="mb-6">
-                    <h4 className="font-semibold text-gray-800 mb-2">Como Aplicar:</h4>
+                    <h4 className="font-semibold text-gray-800 mb-2">{t('acupressure.point.instructions')}:</h4>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                       <p className="text-blue-800 text-sm leading-relaxed">
                         {viewingPointData.instructions}
@@ -734,14 +734,14 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg flex items-center justify-center space-x-2"
                   >
                     <Play className="w-5 h-5" />
-                    <span>🧘 Iniciar Terapia Integrada</span>
+                    <span>🧘 {t('acupressure.timer.start')}</span>
                   </button>
                 ) : selectedPoint === viewingPoint ? (
                   <div className="text-center">
                     <div className="bg-green-100 border border-green-300 rounded-xl p-4 mb-4">
                       <div className="flex items-center justify-center space-x-2 text-green-700">
                         <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="font-semibold">Terapia Ativa</span>
+                        <span className="font-semibold">{t('acupressure.timer.active')}</span>
                       </div>
                     </div>
                   </div>
@@ -750,7 +750,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     onClick={() => startIntegratedTherapy(viewingPoint)}
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg"
                   >
-                    Trocar para este Ponto
+                    {t('acupressure.timer.switch')}
                   </button>
                 )}
               </div>
@@ -762,19 +762,19 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   </div>
                 </div>
                 <h3 className="text-xl font-bold text-gray-600 mb-2">
-                  Selecione um Ponto
+                  {t('acupressure.select.title')}
                 </h3>
                 <p className="text-gray-500 text-sm mb-4">
-                  Clique em qualquer ponto para iniciar a terapia integrada completa
+                  {t('acupressure.select.subtitle')}
                 </p>
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
                   <div className="text-sm text-gray-600">
-                    <div className="font-semibold mb-2">🧘 Terapia Integrada:</div>
+                    <div className="font-semibold mb-2">🧘 {t('acupressure.title')}:</div>
                     <div className="space-y-1 text-xs">
-                      <div>• Acupressão com timer preciso</div>
-                      <div>• Respiração 4-7-8 sincronizada</div>
-                      <div>• Cromoterapia com cores vibrantes</div>
-                      <div>• Sons harmonizantes opcionais</div>
+                      <div>• {t('acupressure.integrated.description').split(', ')[0]}</div>
+                      <div>• {t('acupressure.integrated.description').split(', ')[1]}</div>
+                      <div>• {t('acupressure.integrated.description').split(', ')[2]}</div>
+                      <div>• {t('acupressure.integrated.description').split(', ')[3]}</div>
                     </div>
                   </div>
                 </div>

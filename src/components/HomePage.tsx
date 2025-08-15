@@ -209,16 +209,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
-                Bem-estar
+                {t('home.hero.title').split(' ')[0]}
               </span>
               <div className="mt-2">
                 <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent text-3xl md:text-4xl">
-                  Wellness
+                  {t('home.hero.title').split(' ')[1] || 'Wellness'}
                 </span>
               </div>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Transforme sua vida com terapias
+              {t('home.hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button

@@ -514,10 +514,10 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
               </div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Soluções Corporativas B2B
+              {t('corporate.hero.title')}
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              Transforme o bem-estar da sua empresa com tecnologia e dados
+              {t('corporate.hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -528,7 +528,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                     : 'bg-white/20 text-white hover:bg-white/30'
                 }`}
               >
-                🏢 Planos Corporativos
+                🏢 {t('corporate.plans.title')}
               </button>
               <button
                 onClick={() => setSelectedPlanType('analytics')}
@@ -538,7 +538,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                     : 'bg-white/20 text-white hover:bg-white/30'
                 }`}
               >
-                📊 Analytics B2B
+                📊 {t('corporate.analytics.title')}
               </button>
             </div>
           </div>
@@ -549,7 +549,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         {/* Benefits Section */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            Por que escolher XZenPress B2B?
+            {t('corporate.benefits.title')}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
@@ -560,10 +560,10 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </div>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {benefit.title}
+                  {t(`corporate.benefits.${benefit.title.toLowerCase().replace(' ', '')}`)}
                 </h3>
                 <p className="text-gray-600">
-                  {benefit.description}
+                  {t(`corporate.benefits.${benefit.title.toLowerCase().replace(' ', '')}.desc`)}
                 </p>
               </div>
             ))}
@@ -574,12 +574,12 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         <div className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {selectedPlanType === 'corporate' ? '🏢 Planos Corporativos' : '📊 Analytics B2B'}
+              {selectedPlanType === 'corporate' ? `🏢 ${t('corporate.plans.title')}` : `📊 ${t('corporate.analytics.title')}`}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               {selectedPlanType === 'corporate' 
-                ? 'Soluções completas de bem-estar para empresas de todos os tamanhos'
-                : 'Inteligência de dados para otimizar o bem-estar corporativo'
+                ? t('corporate.plans.subtitle')
+                : t('corporate.analytics.subtitle')
               }
             </p>
           </div>
@@ -681,28 +681,28 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-3xl p-8 mb-16">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              📈 ROI Comprovado
+              📈 {t('corporate.roi.title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Empresas que implementaram XZenPress relatam:
+              {t('corporate.roi.subtitle')}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="text-4xl font-bold text-green-600 mb-2">40%</div>
-              <div className="text-gray-700">Redução no estresse</div>
+              <div className="text-gray-700">{t('corporate.roi.stress')}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-blue-600 mb-2">25%</div>
-              <div className="text-gray-700">Menos afastamentos</div>
+              <div className="text-gray-700">{t('corporate.roi.absences')}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-purple-600 mb-2">60%</div>
-              <div className="text-gray-700">Maior engajamento</div>
+              <div className="text-gray-700">{t('corporate.roi.engagement')}</div>
             </div>
             <div className="text-center">
               <div className="text-4xl font-bold text-orange-600 mb-2">6 meses</div>
-              <div className="text-gray-700">Retorno do investimento</div>
+              <div className="text-gray-700">{t('corporate.roi.return')}</div>
             </div>
           </div>
         </div>
@@ -710,10 +710,10 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         {/* Contact CTA */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">
-            Pronto para transformar sua empresa?
+            {t('corporate.contact.title')}
           </h2>
           <p className="text-xl mb-6 opacity-90">
-            Fale com nossos especialistas e receba uma proposta personalizada
+            {t('corporate.contact.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
