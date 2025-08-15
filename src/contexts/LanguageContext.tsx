@@ -372,8 +372,8 @@ const translations: Record<string, Record<string, string>> = {
     'nav.logout': 'Logout',
 
     // Home
-    'home.hero.title': 'Transform your life',
-    'home.hero.subtitle': 'Transmute with evidence-based holistic therapies',
+    'home.hero.title': 'Transform yourself',
+    'home.hero.subtitle': 'Transmute with evidence-based integrative therapies',
     'home.hero.startNow': 'Start Now',
     'home.hero.createAccount': 'Create Account',
     'home.features.title': 'Complete Features',
