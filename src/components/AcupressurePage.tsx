@@ -549,11 +549,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   <img 
                     src={selectedPointData.image} 
                     alt={selectedPointData.imageAlt || selectedPointData.name}
-                    className="w-full h-48 object-cover rounded-xl shadow-lg"
+                    className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
+                  {/* Overlay com informações do ponto */}
+                  <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
+                    <div className="text-xs font-medium">
+                      📍 {selectedPointData.name} • ⏱️ {Math.floor((selectedPointData.duration || 120) / 60)}min
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -611,6 +617,23 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="text-sm text-gray-600">
                   Respiração 4-7-8 + Acupressão + Cromoterapia
                 </div>
+                
+                {/* Botão para voltar aos pontos */}
+                <button
+                  onClick={() => {
+                    setViewingPoint(null);
+                    setSelectedPoint(null);
+                  }}
+                  className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all border-2"
+                  style={{ 
+                    backgroundColor: 'white',
+                    borderColor: currentColor + '40',
+                    color: currentColor
+                  }}
+                >
+                  <Target className="w-4 h-4" />
+                  <span>Ver Outros Pontos</span>
+                </button>
               </div>
             </div>
           </div>
@@ -631,7 +654,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     key={point.id}
                     onClick={() => {
                       if (!isTimerActive) {
-                        startIntegratedTherapy(point.id);
+                        setViewingPoint(point.id);
                       } else {
                         setViewingPoint(point.id);
                       }
@@ -655,7 +678,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                           <img 
                             src={point.image} 
                             alt={point.imageAlt || point.name}
-                            className="w-20 h-20 object-cover rounded-lg"
+                            className="w-20 h-20 object-contain bg-gray-50 rounded-lg border border-gray-200"
                             onError={(e) => {
                               e.currentTarget.style.display = 'none';
                             }}
@@ -712,7 +735,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                           </div>
                         
                           <div className="text-green-600 text-sm font-medium">
-                            Iniciar terapia →
+                            Ver detalhes →
                           </div>
                         </div>
                       </div>
@@ -738,15 +761,26 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             <div className="lg:col-span-1">
               {viewingPoint && viewingPointData ? (
                 <div className="bg-white rounded-2xl shadow-2xl p-6 sticky top-24">
-                  {/* Header do Ponto */}
-                  <div className="text-center mb-6">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">{viewingPointData.name}</h2>
+                  {/* Botão Voltar - Topo do painel */}
+                  <div className="flex items-center justify-between mb-4">
+                    <button
+                      onClick={() => setViewingPoint(null)}
+                      className="flex items-center space-x-2 text-gray-600 hover:text-gray-800 transition-colors text-sm"
+                    >
+                      <Target className="w-4 h-4" />
+                      <span>← Voltar aos pontos</span>
+                    </button>
                     {viewingPointData.isPremium && (
-                      <div className="inline-flex items-center space-x-2 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      <div className="flex items-center space-x-1 bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs">
                         <Crown className="w-3 h-3" />
                         <span>Premium</span>
                       </div>
                     )}
+                  </div>
+
+                  {/* Header do Ponto */}
+                  <div className="text-center mb-6">
+                    <h2 className="text-xl font-bold text-gray-900 mb-2">{viewingPointData.name}</h2>
                   </div>
 
                   {/* Imagem do Ponto */}
@@ -755,11 +789,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       <img 
                         src={viewingPointData.image} 
                         alt={viewingPointData.imageAlt || viewingPointData.name}
-                        className="w-full h-48 object-cover rounded-xl shadow-lg"
+                        className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
                       />
+                      {/* Overlay com nome do ponto */}
+                      <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
+                        <div className="text-xs font-medium text-center">
+                          📍 {viewingPointData.name}
+                        </div>
+                      </div>
                     </div>
                   )}
 
@@ -853,6 +893,17 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   <p className="text-gray-500 text-sm mb-4">
                     {t('acupressure.select.subtitle')}
                   </p>
+                  <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg p-4 mb-4">
+                    <div className="text-sm text-gray-600">
+                      <div className="font-semibold mb-2">💡 Como usar:</div>
+                      <div className="space-y-1 text-xs text-left">
+                        <div>1. Clique em um ponto para ver detalhes</div>
+                        <div>2. Leia as instruções e benefícios</div>
+                        <div>3. Clique "Iniciar Terapia" para começar</div>
+                        <div>4. Siga a respiração 4-7-8 + cromoterapia</div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
                     <div className="text-sm text-gray-600">
                       <div className="font-semibold mb-2">🧘 {t('acupressure.title')}:</div>
