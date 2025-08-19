@@ -12,6 +12,7 @@ import { DashboardPage } from './components/DashboardPage';
 import { SoundsLibraryPage } from './components/SoundsLibraryPage';
 import { ProgressTrackingPage } from './components/ProgressTrackingPage';
 import { PersonalizationPage } from './components/PersonalizationPage';
+import { DataDeletionPage } from './components/DataDeletionPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
@@ -43,6 +44,8 @@ function App() {
         return <ProgressTrackingPage onPageChange={setCurrentPage} />;
       case 'personalization':
         return <PersonalizationPage onPageChange={setCurrentPage} />;
+      case 'data-deletion':
+        return <DataDeletionPage onPageChange={setCurrentPage} />;
       default:
         return <HomePage onPageChange={setCurrentPage} />;
     }

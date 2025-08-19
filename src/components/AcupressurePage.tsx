@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Brain, Heart } from 'lucide-react';
+import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Brain, Heart, Volume2, VolumeX, ExternalLink } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
@@ -341,15 +341,15 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           </div>
         )}
 
-        {/* ACTIVE THERAPY VIEW - Optimized Layout */}
+        {/* ACTIVE THERAPY VIEW - Optimized Layout with Maximum Color Harmony */}
         {isTimerActive && selectedPointData && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* LEFT COLUMN: Breathing Circle & Timers */}
+            {/* LEFT COLUMN: Breathing Circle & Timers - CORES DINÂMICAS */}
             <div 
-              className="bg-white rounded-3xl shadow-2xl p-6 border-2 transition-all duration-1000"
+              className="rounded-3xl shadow-2xl p-6 border-2 transition-all duration-1000"
               style={{ 
                 borderColor: currentColor + '60',
-                background: `linear-gradient(135deg, ${currentColor}15, ${currentColor}08, white)`
+                background: `linear-gradient(135deg, ${currentColor}25, ${currentColor}15, ${currentColor}08, white)`
               }}
             >
               {/* Compact Header */}
@@ -358,8 +358,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div 
                   className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold"
                   style={{ 
-                    backgroundColor: currentColor + '20',
-                    color: currentColor
+                    backgroundColor: currentColor + '30',
+                    color: currentColor,
+                    borderColor: currentColor + '50'
                   }}
                 >
                   <div className="w-2 h-2 rounded-full mr-2 animate-pulse" style={{ backgroundColor: currentColor }}></div>
@@ -420,62 +421,68 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 </div>
               </div>
 
-              {/* Breathing Phase Indicators - Compact */}
+              {/* Breathing Phase Indicators - CORES HARMONIOSAS */}
               <div className="grid grid-cols-3 gap-3 text-center mb-6">
-                <div className={`p-4 rounded-xl transition-all duration-500 ${
-                  breathingPhase === 'inhale' 
-                    ? 'text-white border-2 shadow-lg transform scale-105' 
-                    : 'border-2'
-                style={breathingPhase === 'inhale' ? {
-                  backgroundColor: '#3B82F6',
-                  borderColor: '#3B82F6'
-                } : {
-                  backgroundColor: '#3B82F650',
-                  borderColor: '#3B82F6',
-                  color: '#1E40AF'
-                }}
-                }`}>
+                <div 
+                  className={`p-4 rounded-xl transition-all duration-500 border-2 ${
+                    breathingPhase === 'inhale' 
+                      ? 'text-white shadow-lg transform scale-105' 
+                      : 'border-2'
+                  }`}
+                  style={breathingPhase === 'inhale' ? {
+                    backgroundColor: '#3B82F6',
+                    borderColor: '#3B82F6'
+                  } : {
+                    backgroundColor: '#3B82F650',
+                    borderColor: '#3B82F6',
+                    color: '#1E40AF'
+                  }}
+                >
                   <div className="text-xl font-bold mb-1">4s</div>
                   <div className="text-sm">Inspire</div>
                   <div className="text-xs mt-1 opacity-80">Azul</div>
                 </div>
-                <div className={`p-4 rounded-xl transition-all duration-500 ${
-                  breathingPhase === 'hold' 
-                    ? 'text-white border-2 shadow-lg transform scale-105' 
-                    : 'border-2'
-                style={breathingPhase === 'hold' ? {
-                  backgroundColor: '#10B981',
-                  borderColor: '#10B981'
-                } : {
-                  backgroundColor: '#10B98150',
-                  borderColor: '#10B981',
-                  color: '#047857'
-                }}
-                }`}>
+                <div 
+                  className={`p-4 rounded-xl transition-all duration-500 border-2 ${
+                    breathingPhase === 'hold' 
+                      ? 'text-white shadow-lg transform scale-105' 
+                      : 'border-2'
+                  }`}
+                  style={breathingPhase === 'hold' ? {
+                    backgroundColor: '#10B981',
+                    borderColor: '#10B981'
+                  } : {
+                    backgroundColor: '#10B98150',
+                    borderColor: '#10B981',
+                    color: '#047857'
+                  }}
+                >
                   <div className="text-xl font-bold mb-1">7s</div>
                   <div className="text-sm">Segure</div>
                   <div className="text-xs mt-1 opacity-80">Verde</div>
                 </div>
-                <div className={`p-4 rounded-xl transition-all duration-500 ${
-                  breathingPhase === 'exhale' 
-                    ? 'text-white border-2 shadow-lg transform scale-105' 
-                    : 'border-2'
-                style={breathingPhase === 'exhale' ? {
-                  backgroundColor: '#8B5CF6',
-                  borderColor: '#8B5CF6'
-                } : {
-                  backgroundColor: '#8B5CF650',
-                  borderColor: '#8B5CF6',
-                  color: '#7C3AED'
-                }}
-                }`}>
+                <div 
+                  className={`p-4 rounded-xl transition-all duration-500 border-2 ${
+                    breathingPhase === 'exhale' 
+                      ? 'text-white shadow-lg transform scale-105' 
+                      : 'border-2'
+                  }`}
+                  style={breathingPhase === 'exhale' ? {
+                    backgroundColor: '#8B5CF6',
+                    borderColor: '#8B5CF6'
+                  } : {
+                    backgroundColor: '#8B5CF650',
+                    borderColor: '#8B5CF6',
+                    color: '#7C3AED'
+                  }}
+                >
                   <div className="text-xl font-bold mb-1">8s</div>
                   <div className="text-sm">Expire</div>
                   <div className="text-xs mt-1 opacity-80">Roxo</div>
                 </div>
               </div>
 
-              {/* Timer Info */}
+              {/* Timer Info - CORES DINÂMICAS */}
               <div className="text-center mb-6">
                 <div 
                   className="text-4xl font-bold mb-2 transition-colors duration-500"
@@ -487,7 +494,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="text-sm text-gray-500">Total: {formatTime(totalSessionTime)}</div>
               </div>
 
-              {/* Controls */}
+              {/* Controls - CORES HARMONIOSAS */}
               <div className="flex flex-col sm:flex-row justify-center gap-3">
                 <button
                   onClick={stopTimer}
@@ -503,15 +510,26 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                   <RotateCcw className="w-5 h-5" />
                   <span>Reiniciar</span>
                 </button>
+                <button
+                  onClick={() => onPageChange('sounds')}
+                  className="flex items-center justify-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all shadow-lg"
+                  style={{ 
+                    backgroundColor: currentColor,
+                    color: 'white'
+                  }}
+                >
+                  <Volume2 className="w-5 h-5" />
+                  <span>Biblioteca</span>
+                </button>
               </div>
             </div>
 
-            {/* RIGHT COLUMN: Point Details */}
+            {/* RIGHT COLUMN: Point Details - CORES HARMONIOSAS */}
             <div 
-              className="bg-white rounded-3xl shadow-2xl p-6 border-2 transition-all duration-1000"
+              className="rounded-3xl shadow-2xl p-6 border-2 transition-all duration-1000"
               style={{ 
                 borderColor: currentColor + '40',
-                background: `linear-gradient(135deg, ${currentColor}10, ${currentColor}05, white)`
+                background: `linear-gradient(135deg, ${currentColor}15, ${currentColor}08, ${currentColor}05, white)`
               }}
             >
               {/* Point Header */}
@@ -539,7 +557,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 </div>
               )}
 
-              {/* Point Description */}
+              {/* Point Benefits - PRIMEIRO */}
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-gray-800 mb-3">Para que serve:</h3>
                 <div className="space-y-2 mb-4">
@@ -555,13 +573,16 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     </div>
                   ))}
                 </div>
-                
-                <h4 className="font-semibold text-gray-800 mb-2">Localização & Aplicação:</h4>
+              </div>
+
+              {/* Point Description - SEGUNDO */}
+              <div className="mb-6">
+                <h4 className="font-semibold text-gray-800 mb-2">Localização & Como aplicar:</h4>
                 <div 
                   className="rounded-lg p-3 border"
                   style={{ 
-                    backgroundColor: currentColor + '10',
-                    borderColor: currentColor + '30'
+                    backgroundColor: currentColor + '15',
+                    borderColor: currentColor + '40'
                   }}
                 >
                   <p className="text-gray-700 text-sm leading-relaxed">
@@ -570,12 +591,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 </div>
               </div>
 
-              {/* Active Session Status */}
+              {/* Active Session Status - CORES HARMONIOSAS */}
               <div 
                 className="text-center p-4 rounded-xl border-2"
                 style={{ 
-                  backgroundColor: currentColor + '15',
-                  borderColor: currentColor + '40'
+                  backgroundColor: currentColor + '20',
+                  borderColor: currentColor + '50'
                 }}
               >
                 <div className="flex items-center justify-center space-x-2 mb-2">
@@ -665,7 +686,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                         </div>
                       
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                          {point.description}
+                          {point.benefits[0]} • {point.benefits[1]}
                         </p>
 
                         <div className="flex items-center justify-between">
@@ -742,7 +763,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     </div>
                   )}
 
-                  {/* Informações do Ponto */}
+                  {/* Para que serve - PRIMEIRO */}
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-gray-800 mb-3">Para que serve:</h3>
                     <div className="space-y-2 mb-4">
@@ -755,7 +776,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                         </div>
                       ))}
                     </div>
-                  
+                  </div>
+
+                  {/* Localização & Como aplicar - SEGUNDO */}
+                  <div className="mb-6">
                     <h4 className="font-semibold text-gray-800 mb-2">Localização & Como aplicar:</h4>
                     <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                       <p className="text-blue-800 text-sm leading-relaxed">
@@ -790,13 +814,29 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                         🔓 Desbloquear Premium
                       </button>
                     </div>
-                  ) : (
+                  ) : !isTimerActive ? (
                     <button
                       onClick={() => startIntegratedTherapy(viewingPoint)}
                       className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg flex items-center justify-center space-x-2"
                     >
                       <Play className="w-5 h-5" />
-                      <span>🧘 Iniciar Terapia Integrada</span>
+                      <span>🧘 {t('acupressure.timer.start')}</span>
+                    </button>
+                  ) : selectedPoint === viewingPoint ? (
+                    <div className="text-center">
+                      <div className="bg-green-100 border border-green-300 rounded-xl p-4 mb-4">
+                        <div className="flex items-center justify-center space-x-2 text-green-700">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="font-semibold">{t('acupressure.timer.active')}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => startIntegratedTherapy(viewingPoint)}
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg"
+                    >
+                      {t('acupressure.timer.switch')}
                     </button>
                   )}
                 </div>
@@ -808,19 +848,19 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     </div>
                   </div>
                   <h3 className="text-xl font-bold text-gray-600 mb-2">
-                    Selecione um Ponto
+                    {t('acupressure.select.title')}
                   </h3>
                   <p className="text-gray-500 text-sm mb-4">
-                    Clique em um ponto para ver detalhes e iniciar a terapia integrada
+                    {t('acupressure.select.subtitle')}
                   </p>
                   <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
                     <div className="text-sm text-gray-600">
-                      <div className="font-semibold mb-2">🧘 Terapia Integrada:</div>
+                      <div className="font-semibold mb-2">🧘 {t('acupressure.title')}:</div>
                       <div className="space-y-1 text-xs">
                         <div>• Acupressão + Respiração 4-7-8</div>
                         <div>• Cromoterapia sincronizada</div>
                         <div>• Sons harmonizantes</div>
-                        <div>• Timer automático</div>
+                        <div>• Timer inteligente</div>
                       </div>
                     </div>
                   </div>
@@ -867,250 +907,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             </button>
           </div>
         )}
-      </div>
-    </div>
-  );
-};
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                      <p className="text-blue-800 text-sm leading-relaxed">
-                        {viewingPointData.instructions}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Botão de Ação */}
-                {viewingPointData.isPremium && !user?.isPremium ? (
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-xl border border-yellow-200">
-                      <Lock className="w-5 h-5" />
-                      <span className="font-medium">Ponto Premium</span>
-                    </div>
-                    <button
-                      onClick={() => onPageChange('premium')}
-                      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-xl text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
-                    >
-                      🔓 Desbloquear Premium
-                    </button>
-                  </div>
-                ) : !isTimerActive ? (
-                  <button
-                    onClick={() => startIntegratedTherapy(viewingPoint)}
-                    className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg flex items-center justify-center space-x-2"
-                  >
-                    <Play className="w-5 h-5" />
-                    <span>🧘 {t('acupressure.timer.start')}</span>
-                  </button>
-                ) : selectedPoint === viewingPoint ? (
-                  <div className="text-center">
-                    <div className="bg-green-100 border border-green-300 rounded-xl p-4 mb-4">
-                      <div className="flex items-center justify-center space-x-2 text-green-700">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="font-semibold">{t('acupressure.timer.active')}</span>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => startIntegratedTherapy(viewingPoint)}
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg"
-                  >
-                    {t('acupressure.timer.switch')}
-                  </button>
-                )}
-              </div>
-            ) : (
-              <div className="bg-white rounded-2xl shadow-lg p-8 text-center sticky top-24">
-                <div className="flex justify-center mb-4">
-                  <div className="p-4 bg-gray-100 rounded-full">
-                    <Target className="w-12 h-12 text-gray-400" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-600 mb-2">
-                  {t('acupressure.select.title')}
-                </h3>
-                <p className="text-gray-500 text-sm mb-4">
-                  {t('acupressure.select.subtitle')}
-                </p>
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4">
-                  <div className="text-sm text-gray-600">
-                    <div className="font-semibold mb-2">🧘 {t('acupressure.title')}:</div>
-                    <div className="space-y-1 text-xs">
-                      <div>• {t('acupressure.integrated.description').split(', ')[0]}</div>
-                      <div>• {t('acupressure.integrated.description').split(', ')[1]}</div>
-                      <div>• {t('acupressure.integrated.description').split(', ')[2]}</div>
-                      <div>• {t('acupressure.integrated.description').split(', ')[3]}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Sound Controls - Sempre Visível */}
-        <div className="mt-8 bg-white rounded-3xl shadow-2xl p-8">
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Volume2 className="w-6 h-6 text-gray-600" />
-            <h3 className="text-2xl font-bold text-gray-800">Sons Harmonizantes</h3>
-          </div>
-          
-          {/* Free Sounds Section */}
-          <div className="mb-8">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 Sons Gratuitos</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {freeSounds.map((sound) => (
-                <button
-                  key={sound.id}
-                  onClick={() => handleSoundSelect(sound.id)}
-                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                    selectedSoundId === sound.id
-                      ? 'border-blue-500 bg-blue-50 shadow-lg'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-full ${
-                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
-                    }`}>
-                      {sound.icon}
-                    </div>
-                    <div className="text-left">
-                      <div className="font-semibold text-gray-800">{sound.name}</div>
-                      <div className="text-sm text-gray-600">{sound.description}</div>
-                    </div>
-                    {selectedSoundId === sound.id && isSoundPlaying && (
-                      <div className="ml-auto">
-                        <div className="flex space-x-1">
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-            
-            {/* Audio Controls */}
-            {selectedSoundId && (
-              <div className="bg-gray-50 rounded-xl p-6">
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                  {/* Play/Pause Button */}
-                  <button
-                    onClick={toggleSoundPlayback}
-                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
-                      isSoundPlaying
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                  >
-                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                    <span>{isSoundPlaying ? 'Pausar' : 'Reproduzir'}</span>
-                  </button>
-                  
-                  {/* Volume Control */}
-                  <div className="flex items-center space-x-3">
-                    <VolumeX className="w-5 h-5 text-gray-500" />
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.1"
-                      value={soundVolume}
-                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                    />
-                    <Volume2 className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm text-gray-600 min-w-[3rem]">
-                      {Math.round(soundVolume * 100)}%
-                    </span>
-                  </div>
-                  
-                  {/* Stop Button */}
-                  <button
-                    onClick={stopAllSounds}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
-                  >
-                    Parar
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Premium Sounds Teaser */}
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 Biblioteca Premium</h4>
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
-              <p className="text-gray-700 mb-4">Mais de 50 sons exclusivos + integração Spotify Premium</p>
-              <div className="flex flex-wrap justify-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 Floresta</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 Lareira</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 Clássica</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 Mantras</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">+45 sons</span>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-green-600 transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Abrir Spotify</span>
-                </a>
-                <button 
-                  onClick={() => onPageChange('premium')}
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
-                >
-                  Upgrade Premium
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Premium CTA */}
-        {!user?.isPremium && (
-          <div className="mt-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-3xl p-8 text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">🔒 Pontos Premium</h2>
-            <p className="text-xl mb-6 opacity-90">
-              Desbloqueie {getPremiumPoints().length} pontos especializados com terapia integrada avançada
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl mb-2">🩸</div>
-                <div className="font-semibold">Septicemia</div>
-                <div className="text-sm opacity-80">3 pontos</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl mb-2">🦷</div>
-                <div className="font-semibold">ATM</div>
-                <div className="text-sm opacity-80">3 pontos</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl mb-2">🧠</div>
-                <div className="font-semibold">Cranio Premium</div>
-                <div className="text-sm opacity-80">3 pontos</div>
-              </div>
-              <div className="bg-white bg-opacity-20 rounded-lg p-4">
-                <div className="text-2xl mb-2">⚡</div>
-                <div className="font-semibold">Terapia Integrada</div>
-                <div className="text-sm opacity-80">Sempre Ativa</div>
-              </div>
-            </div>
-            <button 
-              onClick={() => onPageChange('premium')}
-              className="bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 shadow-lg"
-            >
-              🔓 Desbloquear Pontos Premium
-            </button>
-          </div>
-        )}
-
       </div>
     </div>
   );

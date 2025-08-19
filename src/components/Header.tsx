@@ -255,6 +255,23 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     <LogOut className="w-4 h-4" />
                     <span>{t('nav.logout')}</span>
                   </button>
+                  <button
+                    onClick={() => {
+                      onPageChange('data-deletion');
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
+                  >
+                    <span>🗑️</span>
+                    <span>Excluir Dados</span>
+                  </button>
+                  <button
+                    onClick={() => onPageChange('data-deletion')}
+                    className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+                  >
+                    <span>🗑️</span>
+                    <span>Excluir Dados</span>
+                  </button>
                 </div>
               ) : (
                 <div className="px-3 py-2 border-t border-gray-200">
