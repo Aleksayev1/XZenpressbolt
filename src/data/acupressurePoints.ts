@@ -196,7 +196,7 @@ export const acupressurePoints: AcupressurePoint[] = [
     descriptionFr: 'Point pour soulager rhinite allergique, débloquer voies nasales, réduire sinusite et améliorer respiration nasale. Situé sur côtés du nez. Masser doucement avec mouvements circulaires pendant 2-3 minutes.',
     position: { x: 50, y: 35 },
     image: '/Ponto Nariz Alergia, rinite, sinusite, obstrução.jpg',
-    imageAlt: 'Localização do ponto nasal para alergias e rinite',
+    imageAlt: 'Localização do ponto nasal anti-alérgico nas laterais do nariz - massagear com movimentos circulares',
     benefits: ['Alivia rinite alérgica', 'Desobstrui vias nasais', 'Reduz sinusite', 'Melhora respiração nasal'],
     benefitsEn: ['Relieves allergic rhinitis', 'Unblocks nasal passages', 'Reduces sinusitis', 'Improves nasal breathing'],
     benefitsEs: ['Alivia rinitis alérgica', 'Desobstruye vías nasales', 'Reduce sinusitis', 'Mejora respiración nasal'],
