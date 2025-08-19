@@ -783,6 +783,46 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     <h2 className="text-xl font-bold text-gray-900 mb-2">{viewingPointData.name}</h2>
                   </div>
 
+                  {/* Botão de Ação - ACIMA DA IMAGEM */}
+                  {viewingPointData.isPremium && !user?.isPremium ? (
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-xl border border-yellow-200">
+                        <Lock className="w-5 h-5" />
+                        <span className="font-medium">Ponto Premium</span>
+                      </div>
+                      <button
+                        onClick={() => onPageChange('premium')}
+                        className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-xl text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
+                      >
+                        🔓 Desbloquear Premium
+                      </button>
+                    </div>
+                  ) : !isTimerActive ? (
+                    <button
+                      onClick={() => startIntegratedTherapy(viewingPoint)}
+                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg flex items-center justify-center space-x-2 mb-6"
+                    >
+                      <Play className="w-5 h-5" />
+                      <span>🧘 {t('acupressure.timer.start')}</span>
+                    </button>
+                  ) : selectedPoint === viewingPoint ? (
+                    <div className="text-center mb-6">
+                      <div className="bg-green-100 border border-green-300 rounded-xl p-4">
+                        <div className="flex items-center justify-center space-x-2 text-green-700">
+                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="font-semibold">{t('acupressure.timer.active')}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => startIntegratedTherapy(viewingPoint)}
+                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg mb-6"
+                    >
+                      {t('acupressure.timer.switch')}
+                    </button>
+                  )}
+
                   {/* Imagem do Ponto */}
                   {viewingPointData.image && (
                     <div className="mb-6 relative">
@@ -840,45 +880,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     </div>
                   )}
 
-                  {/* Botão de Ação */}
-                  {viewingPointData.isPremium && !user?.isPremium ? (
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-center space-x-2 text-yellow-600 bg-yellow-50 py-3 rounded-xl border border-yellow-200">
-                        <Lock className="w-5 h-5" />
-                        <span className="font-medium">Ponto Premium</span>
-                      </div>
-                      <button
-                        onClick={() => onPageChange('premium')}
-                        className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white py-3 rounded-xl text-lg font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all shadow-lg"
-                      >
-                        🔓 Desbloquear Premium
-                      </button>
-                    </div>
-                  ) : !isTimerActive ? (
-                    <button
-                      onClick={() => startIntegratedTherapy(viewingPoint)}
-                      className="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-600 transition-all shadow-lg flex items-center justify-center space-x-2"
-                    >
-                      <Play className="w-5 h-5" />
-                      <span>🧘 {t('acupressure.timer.start')}</span>
-                    </button>
-                  ) : selectedPoint === viewingPoint ? (
-                    <div className="text-center">
-                      <div className="bg-green-100 border border-green-300 rounded-xl p-4 mb-4">
-                        <div className="flex items-center justify-center space-x-2 text-green-700">
-                          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                          <span className="font-semibold">{t('acupressure.timer.active')}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => startIntegratedTherapy(viewingPoint)}
-                      className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all shadow-lg"
-                    >
-                      {t('acupressure.timer.switch')}
-                    </button>
-                  )}
                 </div>
               ) : (
                 <div className="bg-white rounded-2xl shadow-lg p-8 text-center sticky top-24">
