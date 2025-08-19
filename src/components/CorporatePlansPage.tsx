@@ -724,11 +724,11 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
               <span>AleksayevAcupress@gmail.com</span>
             </a>
             <a
-              href="tel:+5511999999999"
+              href="tel:+5562983216363"
               className="inline-flex items-center space-x-2 bg-white/20 text-white px-8 py-4 rounded-full font-semibold hover:bg-white/30 transition-colors"
             >
               <Phone className="w-5 h-5" />
-              <span>(11) 99999-9999</span>
+              <span>(62) 98321-6363</span>
             </a>
           </div>
         </div>
