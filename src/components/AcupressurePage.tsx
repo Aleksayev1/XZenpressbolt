@@ -621,8 +621,30 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 {/* Botão para voltar aos pontos */}
                 <button
                   onClick={() => {
+                    // Reset completo do estado para evitar página em branco
                     setViewingPoint(null);
                     setSelectedPoint(null);
+                    setIsTimerActive(false);
+                    setTimeLeft(0);
+                    setTotalSessionTime(0);
+                    setBreathingPhase('inhale');
+                    setBreathingTimeLeft(4);
+                    setCurrentColor('#3B82F6');
+                    sessionStartTime.current = null;
+                    
+                    // Limpar todos os timers
+                    if (timerRef.current) {
+                      clearTimeout(timerRef.current);
+                      timerRef.current = null;
+                    }
+                    if (totalTimeRef.current) {
+                      clearTimeout(totalTimeRef.current);
+                      totalTimeRef.current = null;
+                    }
+                    if (breathingTimerRef.current) {
+                      clearTimeout(breathingTimerRef.current);
+                      breathingTimerRef.current = null;
+                    }
                   }}
                   className="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all border-2"
                   style={{ 
