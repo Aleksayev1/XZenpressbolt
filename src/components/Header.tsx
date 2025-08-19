@@ -266,6 +266,16 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     <span>Excluir Dados</span>
                   </button>
                   <button
+                    onClick={() => {
+                      onPageChange('data-deletion');
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
+                  >
+                    <span>🗑️</span>
+                    <span>Excluir Dados</span>
+                  </button>
+                  <button
                     onClick={() => onPageChange('data-deletion')}
                     className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
                   >
@@ -287,6 +297,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 </div>
               )}
             </div>
+
+            {/* Desktop Data Deletion Link - Only for logged users */}
+            {user && (
+              <button
+                onClick={() => onPageChange('data-deletion')}
+                className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
+              >
+                <span>🗑️</span>
+                <span>Excluir Dados</span>
+              </button>
+            )}
           </div>
         )}
       </div>
