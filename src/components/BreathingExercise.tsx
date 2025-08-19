@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Volume2, VolumeX, Waves, CloudRain, Music } from 'lucide-react';
+import { Play, Pause, RotateCcw, Music } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 import { trackBreathingSession } from './GoogleAnalytics';
+import { CompactSoundPlayer } from './CompactSoundPlayer';
 
 export const BreathingExercise: React.FC = () => {
   const { t } = useLanguage();
@@ -14,14 +15,10 @@ export const BreathingExercise: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState(4);
   const [totalTime, setTotalTime] = useState(0);
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
-  const [selectedSoundId, setSelectedSoundId] = useState<string | null>(null);
-  const [isSoundPlaying, setIsSoundPlaying] = useState(false);
-  const [soundVolume, setSoundVolume] = useState(0.3);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const manualColorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sessionStartTime = useRef<number | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
   const expectedPhaseTimeRef = useRef<number>(0);
   const expectedTotalTimeRef = useRef<number>(0);
@@ -35,23 +32,6 @@ export const BreathingExercise: React.FC = () => {
   const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
   const colorNames = ['Azul', 'Verde', 'Roxo'];
   
-  const freeSounds = [
-    {
-      id: 'ocean',
-      name: t('breathing.sounds.ocean'),
-      icon: <Waves className="w-5 h-5" />,
-      src: '/sounds/ocean.mp3',
-      description: t('breathing.sounds.ocean.desc')
-    },
-    {
-      id: 'rain',
-      name: t('breathing.sounds.rain'),
-      icon: <CloudRain className="w-5 h-5" />,
-      src: '/sounds/rain.mp3',
-      description: t('breathing.sounds.rain.desc')
-    }
-  ];
-
   useEffect(() => {
     if (isActive) {
       const startTime = Date.now();
@@ -122,23 +102,6 @@ export const BreathingExercise: React.FC = () => {
     };
   }, [isActive, phase]);
 
-  // Audio control effects
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = soundVolume;
-    }
-  }, [soundVolume]);
-
-  useEffect(() => {
-    if (audioRef.current && selectedSoundId) {
-      if (isSoundPlaying) {
-        audioRef.current.play().catch(console.error);
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [isSoundPlaying, selectedSoundId]);
-
   const startExercise = () => {
     setIsActive(true);
     sessionStartTime.current = Date.now();
@@ -183,7 +146,6 @@ export const BreathingExercise: React.FC = () => {
         sessionData: {
           technique: '4-7-8',
           chromotherapyUsed: isChromotherapyEnabled,
-          soundUsed: selectedSoundId,
           completedCycles: Math.floor(totalTime / 19) // Cada ciclo 4+7+8 = 19s
         },
         completedAt: new Date().toISOString()
@@ -193,27 +155,6 @@ export const BreathingExercise: React.FC = () => {
     } catch (error) {
       console.error('❌ Erro ao registrar sessão de respiração:', error);
     }
-  };
-  const handleSoundSelect = (soundId: string) => {
-    if (selectedSoundId === soundId) {
-      // If same sound is selected, toggle play/pause
-      setIsSoundPlaying(!isSoundPlaying);
-    } else {
-      // If different sound is selected, switch to it and start playing
-      setSelectedSoundId(soundId);
-      setIsSoundPlaying(true);
-    }
-  };
-
-  const toggleSoundPlayback = () => {
-    if (selectedSoundId) {
-      setIsSoundPlaying(!isSoundPlaying);
-    }
-  };
-
-  const stopAllSounds = () => {
-    setIsSoundPlaying(false);
-    setSelectedSoundId(null);
   };
 
   const startColorTherapy = () => {
@@ -287,20 +228,11 @@ export const BreathingExercise: React.FC = () => {
         background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)` 
       }}
     >
-      {/* Audio Element */}
-      {selectedSoundId && (
-        <audio
-          ref={audioRef}
-          src={freeSounds.find(sound => sound.id === selectedSoundId)?.src}
-          loop
-          preload="auto"
-          onError={(e) => {
-            console.warn('Audio file not found:', e.currentTarget.src);
-            setSelectedSoundId(null);
-            setIsSoundPlaying(false);
-          }}
-        />
-      )}
+      {/* Compact Sound Player - Fixed Position */}
+      <CompactSoundPlayer 
+        currentColor={currentColor}
+        onNavigateToLibrary={() => onPageChange?.('sounds')}
+      />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex justify-center mb-6">
@@ -431,122 +363,6 @@ export const BreathingExercise: React.FC = () => {
           </div>
         </div>
 
-        {/* Sound Controls */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
-          <div className="flex items-center justify-center space-x-2 mb-6"><Volume2 className="w-6 h-6 text-gray-600" /><h3 className="text-2xl font-bold text-gray-800">{t('breathing.sounds.title')}</h3></div>
-          
-          {/* Free Sounds Section */}
-          <div className="mb-8">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎵 {t('breathing.sounds.free.title')}</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {freeSounds.map((sound) => (
-                <button
-                  key={sound.id}
-                  onClick={() => handleSoundSelect(sound.id)}
-                  className={`p-4 rounded-xl border-2 transition-all duration-200 ${
-                    selectedSoundId === sound.id
-                      ? 'border-blue-500 bg-blue-50 shadow-lg'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-full ${
-                      selectedSoundId === sound.id ? 'bg-blue-100' : 'bg-gray-100'
-                    }`}>
-                      {sound.icon}
-                    </div>
-                    <div className="text-left">
-                      <div className="font-semibold text-gray-800">{sound.name}</div>
-                      <div className="text-sm text-gray-600">{sound.description}</div>
-                    </div>
-                    {selectedSoundId === sound.id && isSoundPlaying && (
-                      <div className="ml-auto">
-                        <div className="flex space-x-1">
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse"></div>
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-100"></div>
-                          <div className="w-1 h-4 bg-blue-500 rounded animate-pulse delay-200"></div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-            
-            {/* Audio Controls */}
-            {selectedSoundId && (
-              <div className="bg-gray-50 rounded-xl p-6">
-                <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-                  {/* Play/Pause Button */}
-                  <button
-                    onClick={toggleSoundPlayback}
-                    className={`flex items-center space-x-2 px-6 py-3 rounded-full font-semibold transition-all duration-200 ${
-                      isSoundPlaying
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
-                  >
-                    {isSoundPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                    <span>{isSoundPlaying ? t('breathing.sounds.pause') : t('breathing.sounds.play')}</span>
-                  </button>
-                  
-                  {/* Volume Control */}
-                  <div className="flex items-center space-x-3">
-                    <VolumeX className="w-5 h-5 text-gray-500" />
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.1"
-                      value={soundVolume}
-                      onChange={(e) => setSoundVolume(parseFloat(e.target.value))}
-                      className="w-24 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                    />
-                    <Volume2 className="w-5 h-5 text-gray-500" />
-                    <span className="text-sm text-gray-600 min-w-[3rem]">
-                      {Math.round(soundVolume * 100)}%
-                    </span>
-                  </div>
-                  
-                  {/* Stop Button */}
-                  <button
-                    onClick={stopAllSounds}
-                    className="px-4 py-2 bg-gray-500 text-white rounded-full text-sm font-medium hover:bg-gray-600 transition-colors"
-                  >
-                    {t('breathing.sounds.stop')}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* Premium Sounds Teaser */}
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold text-gray-700 mb-4 text-center">🎼 {t('breathing.sounds.premium.title')}</h4>
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4 text-center">
-              <p className="text-gray-700 mb-4">{t('breathing.sounds.premium.desc')}</p>
-              <div className="flex flex-wrap justify-center gap-2 mb-4">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 {t('breathing.sounds.mantras')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">{t('breathing.sounds.more')}</span>
-              </div>
-              <a
-                href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors mr-3"
-              >
-                <span>{t('breathing.sounds.premium.spotify')}</span>
-              </a>
-              <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all">
-                {t('breathing.sounds.premium.upgrade')}
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* Chromotherapy Education Section */}
         <div className="bg-white rounded-3xl shadow-2xl p-8 mb-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">{t('breathing.chromotherapy.title')}</h2>
@@ -638,6 +454,42 @@ export const BreathingExercise: React.FC = () => {
                 <li>• {t('breathing.science.magenta.effect')}</li>
                 <li>• {t('breathing.science.melatonin')}</li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Premium Sounds Teaser */}
+        <div className="bg-white rounded-3xl shadow-2xl p-8">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-center">
+              <Music className="w-6 h-6 text-purple-600 mr-2" />
+              🎼 {t('breathing.sounds.premium.title')}
+            </h2>
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-6">
+              <p className="text-gray-700 mb-6">{t('breathing.sounds.premium.desc')}</p>
+              <div className="flex flex-wrap justify-center gap-2 mb-6">
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 {t('breathing.sounds.mantras')}</span>
+                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">{t('breathing.sounds.more')}</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors"
+                >
+                  <span>{t('breathing.sounds.premium.spotify')}</span>
+                </a>
+                <button 
+                  onClick={() => onPageChange?.('premium')}
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
+                >
+                  {t('breathing.sounds.premium.upgrade')}
+                </button>
+              </div>
             </div>
           </div>
         </div>
