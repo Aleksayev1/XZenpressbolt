@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Globe, User, LogOut, Crown } from 'lucide-react';
+import { Menu, X, Globe, User, LogOut, Crown, Trash2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage, languages } from '../contexts/LanguageContext';
 import { trackPageView, trackLanguageChange } from './GoogleAnalytics';
@@ -46,6 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
   const allNavItems = user?.isPremium 
     ? [...navItems.slice(0, 3), ...premiumNavItems, ...navItems.slice(3)]
     : navItems;
+
   const handleLogout = () => {
     logout();
     onPageChange('home');
@@ -112,26 +113,26 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 <Globe className="w-4 h-4" />
                 <span>{currentLanguage.flag}</span>
               </button>
-               {isLanguageOpen && (
-                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                   {languages.map((lang) => (
-                     <button
-                       key={lang.code}
-                       onClick={() => {
-                         handleLanguageChange(lang);
-                       }}
-                       className={`flex items-center space-x-3 w-full px-4 py-2 text-sm transition-colors ${
-                         currentLanguage.code === lang.code 
-                           ? 'bg-blue-50 text-blue-700 font-medium' 
-                           : 'text-gray-700 hover:bg-gray-100'
-                       }`}
-                     >
-                       <span>{lang.flag}</span>
-                       <span>{lang.name}</span>
-                     </button>
-                   ))}
-                 </div>
-               )}
+              {isLanguageOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        handleLanguageChange(lang);
+                      }}
+                      className={`flex items-center space-x-3 w-full px-4 py-2 text-sm transition-colors ${
+                        currentLanguage.code === lang.code 
+                          ? 'bg-blue-50 text-blue-700 font-medium' 
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      <span>{lang.flag}</span>
+                      <span>{lang.name}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* User Actions */}
@@ -147,6 +148,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     </div>
                   )}
                 </div>
+                
+                {/* Data Deletion Link - Desktop */}
+                <button
+                  onClick={() => onPageChange('data-deletion')}
+                  className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
+                  title="Solicitar exclusão de dados (LGPD)"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span>Excluir Dados</span>
+                </button>
+                
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-1 px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
@@ -235,6 +247,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                       <span>Consulta WhatsApp</span>
                     </button>
                   )}
+                  
+                  {/* User Info */}
                   <div className="flex items-center space-x-2 mb-2">
                     <User className="w-4 h-4 text-gray-600" />
                     <span className="text-sm text-gray-700">{user.name}</span>
@@ -245,6 +259,20 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                       <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full ml-2">ADMIN</span>
                     )}
                   </div>
+                  
+                  {/* Data Deletion Link - Mobile */}
+                  <button
+                    onClick={() => {
+                      onPageChange('data-deletion');
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md mb-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span>Excluir Dados</span>
+                  </button>
+                  
+                  {/* Logout Button */}
                   <button
                     onClick={() => {
                       handleLogout();
@@ -254,33 +282,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   >
                     <LogOut className="w-4 h-4" />
                     <span>{t('nav.logout')}</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onPageChange('data-deletion');
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
-                  >
-                    <span>🗑️</span>
-                    <span>Excluir Dados</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      onPageChange('data-deletion');
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center space-x-2 w-full px-3 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
-                  >
-                    <span>🗑️</span>
-                    <span>Excluir Dados</span>
-                  </button>
-                  <button
-                    onClick={() => onPageChange('data-deletion')}
-                    className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
-                  >
-                    <span>🗑️</span>
-                    <span>Excluir Dados</span>
                   </button>
                 </div>
               ) : (
@@ -297,17 +298,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                 </div>
               )}
             </div>
-
-            {/* Desktop Data Deletion Link - Only for logged users */}
-            {user && (
-              <button
-                onClick={() => onPageChange('data-deletion')}
-                className="flex items-center space-x-1 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md"
-              >
-                <span>🗑️</span>
-                <span>Excluir Dados</span>
-              </button>
-            )}
           </div>
         )}
       </div>
