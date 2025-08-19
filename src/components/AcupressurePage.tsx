@@ -789,11 +789,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       <img 
                         src={viewingPointData.image} 
                         alt={viewingPointData.imageAlt || viewingPointData.name}
-                        className={`w-full rounded-xl shadow-lg border border-gray-200 ${
-                          viewingPointData.id === 'nariz-alergia' || viewingPointData.id === 'cranio-frontal'
-                            ? 'h-64 object-cover object-top bg-gray-50' 
-                            : 'h-56 object-contain bg-gray-50'
-                        }`}
+                        className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
@@ -802,9 +798,6 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
                         <div className="text-xs font-medium text-center">
                           📍 {viewingPointData.name}
-                          {(viewingPointData.id === 'nariz-alergia' || viewingPointData.id === 'cranio-frontal') && (
-                            <span className="block mt-1 text-yellow-200">🎯 Ponto marcado na imagem</span>
-                          )}
                         </div>
                       </div>
                     </div>
