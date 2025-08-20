@@ -1,0 +1,27 @@
+{
+  "id": "com.xzenpress.app",
+  "name": "XZenPress - Acupressão e Medicina Tradicional Chinesa", 
+  "short_name": "XZenPress",
+  "description": "Plataforma de bem-estar holística com acupressão MTC, respiração 4-7-8 e cromoterapia",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#059669",
+  "background_color": "#ffffff",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/images/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ]
+}
