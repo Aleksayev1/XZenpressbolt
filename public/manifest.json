@@ -1,72 +1,32 @@
 {
   "name": "XZenPress - Plataforma de Bem-Estar Holística",
   "short_name": "XZenPress",
-  "description": "Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes para transformar sua qualidade de vida",
-  "icons": [
-    {
-      "src": "/Logo Xzenpress oficial.png",
-      "type": "image/png",
-      "sizes": "192x192",
-      "purpose": "any"
-    },
-    {
-      "src": "/Logo Xzenpress oficial.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "any"
-    },
-    {
-      "src": "/Logo Xzenpress oficial.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
-    }
-  ],
+  "description": "Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#059669",
   "background_color": "#ffffff",
   "orientation": "portrait-primary",
   "scope": "/",
-  "categories": ["health", "lifestyle", "medical", "wellness"],
   "lang": "pt-BR",
-  "shortcuts": [
+  "icons": [
     {
-      "name": "Respiração 4-7-8",
-      "short_name": "Respiração",
-      "description": "Acesso rápido à técnica de respiração 4-7-8",
-      "url": "/breathing",
-      "icons": [
-        {
-          "src": "/Logo Xzenpress oficial.png",
-          "sizes": "192x192"
-        }
-      ]
+      "src": "/Logo Xzenpress oficial.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "name": "Pontos de Acupressão",
-      "short_name": "Acupressão",
-      "description": "Mapa interativo de pontos terapêuticos",
-      "url": "/acupressure",
-      "icons": [
-        {
-          "src": "/Logo Xzenpress oficial.png",
-          "sizes": "192x192"
-        }
-      ]
+      "src": "/Logo Xzenpress oficial.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "name": "Área Premium",
-      "short_name": "Premium",
-      "description": "Consultas WhatsApp e pontos específicos",
-      "url": "/premium",
-      "icons": [
-        {
-          "src": "/Logo Xzenpress oficial.png",
-          "sizes": "192x192"
-        }
-      ]
+      "src": "/Logo Xzenpress oficial.png",
+      "sizes": "512x512", 
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ],
-  "prefer_related_applications": false
+  ]
 }
