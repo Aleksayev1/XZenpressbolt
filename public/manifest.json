@@ -1,31 +1,25 @@
 {
-  "id": "xzenpress-holistic-wellness",
-  "short_name": "XZenPress",
   "name": "XZenPress - Plataforma de Bem-Estar Holística",
+  "short_name": "XZenPress",
   "description": "Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes para transformar sua qualidade de vida",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
+      "src": "/Logo Xzenpress oficial.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "maskable any"
+      "purpose": "any"
     },
     {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable any"
-    },
-    {
-      "src": "Logo Xzenpress oficial.png",
+      "src": "/Logo Xzenpress oficial.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
+    },
+    {
+      "src": "/Logo Xzenpress oficial.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ],
   "start_url": "/",
@@ -36,23 +30,6 @@
   "scope": "/",
   "categories": ["health", "lifestyle", "medical", "wellness"],
   "lang": "pt-BR",
-  "dir": "ltr",
-  "screenshots": [
-    {
-      "src": "screenshot-mobile.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Vista mobile do XZenPress com pontos de acupressão"
-    },
-    {
-      "src": "screenshot-desktop.png", 
-      "sizes": "1280x800",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Vista desktop do XZenPress com cromoterapia"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Respiração 4-7-8",
@@ -61,7 +38,7 @@
       "url": "/breathing",
       "icons": [
         {
-          "src": "logo192.png",
+          "src": "/Logo Xzenpress oficial.png",
           "sizes": "192x192"
         }
       ]
@@ -73,7 +50,7 @@
       "url": "/acupressure",
       "icons": [
         {
-          "src": "logo192.png",
+          "src": "/Logo Xzenpress oficial.png",
           "sizes": "192x192"
         }
       ]
@@ -85,12 +62,11 @@
       "url": "/premium",
       "icons": [
         {
-          "src": "logo192.png",
+          "src": "/Logo Xzenpress oficial.png",
           "sizes": "192x192"
         }
       ]
     }
   ],
-  "related_applications": [],
   "prefer_related_applications": false
 }

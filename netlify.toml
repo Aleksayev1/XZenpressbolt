@@ -17,13 +17,21 @@
 [[headers]]
   for = "/*"
   [headers.values]
+    X-Forwarded-Proto = "https"
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://checkout.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https:; media-src 'self' https:;"
+    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://checkout.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https:; media-src 'self' https:; upgrade-insecure-requests;"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains"
     X-Permitted-Cross-Domain-Policies = "none"
+
+# Force HTTPS redirect
+[[redirects]]
+  from = "http://xzenpress.netlify.app/*"
+  to = "https://xzenpress.netlify.app/:splat"
+  status = 301
+  force = true
 
 # Cache Headers for Static Assets
 [[headers]]

@@ -5,12 +5,12 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    https: false,
+    https: true,
     host: true,
     port: 5173
   },
   preview: {
-    https: false,
+    https: true,
     host: true,
     port: 4173
   },
@@ -29,13 +29,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['lucide-react'],
-  },
-  server: {
-    port: 5173,
-    host: true,
-  },
-  preview: {
-    port: 4173,
-    host: true,
   },
 });
