@@ -14,19 +14,30 @@
       "src": "/Logo Xzenpress oficial.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "/Logo Xzenpress oficial.png", 
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "medical", "wellness", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Respiração 4-7-8",
+      "short_name": "Respiração",
+      "description": "Exercício de respiração com cromoterapia",
+      "url": "/breathing",
+      "icons": [{ "src": "/Logo Xzenpress oficial.png", "sizes": "192x192" }]
     },
     {
-      "src": "/Logo Xzenpress oficial.png",
-      "sizes": "512x512", 
-      "type": "image/png",
-      "purpose": "maskable"
+      "name": "Pontos de Acupressão",
+      "short_name": "Acupressão",
+      "description": "Pontos terapêuticos MTC",
+      "url": "/acupressure",
+      "icons": [{ "src": "/Logo Xzenpress oficial.png", "sizes": "192x192" }]
     }
   ]
 }
