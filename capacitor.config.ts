@@ -4,18 +4,28 @@ const config: CapacitorConfig = {
   appId: 'com.xzenpress.app',
   appName: 'XZenPress',
   webDir: 'dist',
+  bundledWebRuntime: false,
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    allowNavigation: [
+      'xzenpress.netlify.app',
+      '*.netlify.app'
+    ]
   },
   plugins: {
     SplashScreen: {
       launchShowDuration: 2000,
       backgroundColor: "#059669",
-      showSpinner: false
+      showSpinner: false,
+      androidSplashResourceName: "splash",
+      androidScaleType: "CENTER_CROP"
     },
     StatusBar: {
-      style: 'DARK',
+      style: 'DEFAULT',
       backgroundColor: "#059669"
+    },
+    App: {
+      launchUrl: 'https://xzenpress.netlify.app'
     }
   }
 };
