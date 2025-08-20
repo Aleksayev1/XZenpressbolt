@@ -20,6 +20,12 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable any"
+    },
+    {
+      "src": "Logo Xzenpress oficial.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
     }
   ],
   "start_url": "/",
