@@ -13,14 +13,46 @@
     </script>
     <link rel="icon" type="image/png" href="/Logo Xzenpress oficial.png" />
     <link rel="apple-touch-icon" href="/Logo Xzenpress oficial.png" />
+    <link rel="apple-touch-icon" href="/Logo Xzenpress oficial.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#059669" />
     <meta name="description" content="XZenPress - Plataforma de bem-estar holística com acupressão MTC, respiração 4-7-8 e cromoterapia" />
-    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#059669" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="XZenPress" />
+    
+    <!-- SEO and Description -->
+    <meta name="description" content="XZenPress - Plataforma de bem-estar holística com acupressão MTC, respiração 4-7-8 e cromoterapia" />
+    <meta name="keywords" content="acupressão, medicina tradicional chinesa, respiração 4-7-8, cromoterapia, bem-estar, saúde natural" />
+    <meta name="author" content="XZenPress" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="XZenPress - Plataforma de Bem-Estar Holística" />
+    <meta property="og:description" content="Acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes" />
+    <meta property="og:image" content="/Logo Xzenpress oficial.png" />
+    <meta property="og:url" content="https://xzenpress.netlify.app" />
+    <meta property="og:type" content="website" />
+    
     <title>XZenPress</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
