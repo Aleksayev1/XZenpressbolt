@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 import { trackBreathingSession } from './GoogleAnalytics';
 import { CompactSoundPlayer } from './CompactSoundPlayer';
-import { CompactSoundPlayer } from './CompactSoundPlayer';
 
 export const BreathingExercise: React.FC = () => {
   const { t } = useLanguage();
