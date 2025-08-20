@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, Music } from 'lucide-react';
+import { Play, Pause, RotateCcw } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
 import { trackBreathingSession } from './GoogleAnalytics';
+import { CompactSoundPlayer } from './CompactSoundPlayer';
 import { CompactSoundPlayer } from './CompactSoundPlayer';
 
 export const BreathingExercise: React.FC = () => {
@@ -17,9 +18,7 @@ export const BreathingExercise: React.FC = () => {
   const [currentColor, setCurrentColor] = useState('#3B82F6'); // Blue
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const manualColorIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const sessionStartTime = useRef<number | null>(null);
-  const [isColorTherapyActive, setIsColorTherapyActive] = useState(false);
   const expectedPhaseTimeRef = useRef<number>(0);
   const expectedTotalTimeRef = useRef<number>(0);
 
@@ -96,9 +95,6 @@ export const BreathingExercise: React.FC = () => {
       if (totalTimeIntervalRef.current) {
         clearTimeout(totalTimeIntervalRef.current);
       }
-      if (manualColorIntervalRef.current) {
-        clearTimeout(manualColorIntervalRef.current);
-      }
     };
   }, [isActive, phase]);
 
@@ -145,7 +141,7 @@ export const BreathingExercise: React.FC = () => {
         effectivenessRating: 4.5, // Valor padrão, pode ser ajustado
         sessionData: {
           technique: '4-7-8',
-          chromotherapyUsed: isChromotherapyEnabled,
+          chromotherapyUsed: true,
           completedCycles: Math.floor(totalTime / 19) // Cada ciclo 4+7+8 = 19s
         },
         completedAt: new Date().toISOString()
@@ -155,48 +151,6 @@ export const BreathingExercise: React.FC = () => {
     } catch (error) {
       console.error('❌ Erro ao registrar sessão de respiração:', error);
     }
-  };
-
-  const startColorTherapy = () => {
-    if (isColorTherapyActive) return;
-    
-    setIsColorTherapyActive(true);
-    let colorIndex = 0;
-    
-    // Precise color timer with drift correction
-    const colorStartTime = Date.now();
-    let expectedColorTime = colorStartTime + 20000;
-    
-    const colorTick = () => {
-      const now = Date.now();
-      const drift = now - expectedColorTime;
-      
-      colorIndex = (colorIndex + 1) % colors.length;
-      setCurrentColor(colors[colorIndex]);
-      
-      expectedColorTime += 20000;
-      const nextDelay = Math.max(0, 20000 - drift);
-      
-      if (colorIndex < 2) { // Only 3 colors total (0, 1, 2)
-        manualColorIntervalRef.current = setTimeout(colorTick, nextDelay);
-      } else {
-        // Stop after 60 seconds (3 colors × 20s each)
-        setIsColorTherapyActive(false);
-        setCurrentColor('#3B82F6');
-      }
-    };
-    
-    manualColorIntervalRef.current = setTimeout(colorTick, 20000);
-    
-    // Fallback safety stop after 65 seconds
-    setTimeout(() => {
-      if (manualColorIntervalRef.current) {
-        clearTimeout(manualColorIntervalRef.current);
-        manualColorIntervalRef.current = null;
-      }
-      setIsColorTherapyActive(false);
-      setCurrentColor('#3B82F6');
-    }, 65000);
   };
 
   const formatTime = (seconds: number) => {
@@ -228,6 +182,12 @@ export const BreathingExercise: React.FC = () => {
         background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)` 
       }}
     >
+      {/* Compact Sound Player - Fixed Position */}
+      <CompactSoundPlayer 
+        currentColor={currentColor}
+        onNavigateToLibrary={() => onPageChange?.('sounds')}
+      />
+      
       {/* Compact Sound Player - Fixed Position */}
       <CompactSoundPlayer 
         currentColor={currentColor}
@@ -346,14 +306,6 @@ export const BreathingExercise: React.FC = () => {
               <RotateCcw className="w-5 h-5" />
               <span>{t('breathing.reset')}</span>
             </button>
-            
-            <button
-              onClick={() => onPageChange?.('sounds')}
-              className="flex items-center space-x-2 bg-purple-500 text-white px-6 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
-            >
-              <Music className="w-5 h-5" />
-              <span>Biblioteca</span>
-            </button>
           </div>
 
           {/* Timer */}
@@ -458,41 +410,6 @@ export const BreathingExercise: React.FC = () => {
           </div>
         </div>
 
-        {/* Premium Sounds Teaser */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-center">
-              <Music className="w-6 h-6 text-purple-600 mr-2" />
-              🎼 {t('breathing.sounds.premium.title')}
-            </h2>
-            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-6">
-              <p className="text-gray-700 mb-6">{t('breathing.sounds.premium.desc')}</p>
-              <div className="flex flex-wrap justify-center gap-2 mb-6">
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🌲 {t('breathing.sounds.forest')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🔥 {t('breathing.sounds.fireplace')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🎵 {t('breathing.sounds.classical')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">🧘 {t('breathing.sounds.mantras')}</span>
-                <span className="px-3 py-1 bg-white rounded-full text-sm text-gray-600">{t('breathing.sounds.more')}</span>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-2 bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors"
-                >
-                  <span>{t('breathing.sounds.premium.spotify')}</span>
-                </a>
-                <button 
-                  onClick={() => onPageChange?.('premium')}
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-semibold hover:from-yellow-500 hover:to-orange-600 transition-all"
-                >
-                  {t('breathing.sounds.premium.upgrade')}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>
