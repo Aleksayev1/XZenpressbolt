@@ -1,68 +1,26 @@
-# Netlify Configuration for XZenPress Production
-[build]
-  publish = "dist"
-  command = "npm run build"
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y74MT1V5JC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
-[build.environment]
-  NODE_VERSION = "18"
-  NPM_VERSION = "9"
-
-# SPA Redirects
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-# Security Headers
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Forwarded-Proto = "https"
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://checkout.stripe.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https: wss:; frame-src https:; media-src 'self' https:; upgrade-insecure-requests;"
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
-    X-Permitted-Cross-Domain-Policies = "none"
-
-# Force HTTPS redirect
-[[redirects]]
-  from = "http://xzenpress.netlify.app/*"
-  to = "https://xzenpress.netlify.app/:splat"
-  status = 301
-  force = true
-
-# Cache Headers for Static Assets
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.js"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-[[headers]]
-  for = "/*.css"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# PWA Headers
-[[headers]]
-  for = "/manifest.json"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-[[headers]]
-  for = "/sw.js"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-
-# Environment Variables (configure these in Netlify dashboard)
-# VITE_PIX_PROVIDER=mock
-# VITE_PIX_KEY=aleksayevacupress@gmail.com
-# VITE_CREDIT_CARD_PROVIDER=mock
-# VITE_SUPABASE_URL=your_supabase_url
-# VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+      gtag('config', 'G-Y74MT1V5JC');
+    </script>
+    <link rel="icon" type="image/png" href="/Logo Xzenpress oficial.png" />
+    <link rel="apple-touch-icon" href="/Logo Xzenpress oficial.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#059669" />
+    <meta name="description" content="XZenPress - Plataforma de bem-estar holística com acupressão MTC, respiração 4-7-8 e cromoterapia" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>XZenPress</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
