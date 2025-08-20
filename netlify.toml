@@ -42,7 +42,7 @@
 
 # Static assets caching
 [[headers]]
-  for = "/static/*"
+  for = "/assets/*" # Targeting Vite's asset directory
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
