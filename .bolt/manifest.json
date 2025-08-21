@@ -1,8 +1,8 @@
 {
-  "id": "com.xzenpress.app",
-  "name": "XZenPress - Acupressão e Medicina Tradicional Chinesa",
+  "name": "XZenPress - Acupressão, Medicina Tradicional Chinesa e Craniopuntura",
   "short_name": "XZenPress",
-  "description": "Plataforma de bem-estar holística com acupressão MTC, respiração 4-7-8 e cromoterapia",
+  "description": "Plataforma de bem-estar holística com acupressão MTC, respiração 4-7-8 e cromoterapia para alívio natural da dor",
+  "id": "com.xzenpress.app",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
