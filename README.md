@@ -10,7 +10,7 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 - **Dashboard Inteligente** - Analytics avançados e acompanhamento de progresso
 - **Personalização IA** - Recomendações baseadas no perfil do usuário
 - **Biblioteca de Sons** - Mais de 50 sons + integração Spotify
-- **Área Premium** - Consultas WhatsApp e pontos específicos
+- **Área Premium** - Consultas WhatsApp individuais e pontos específicos
 
 ## 🚀 Funcionalidades Implementadas
 

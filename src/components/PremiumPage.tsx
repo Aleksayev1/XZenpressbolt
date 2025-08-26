@@ -50,7 +50,7 @@ export const PremiumPage: React.FC<PremiumPageProps> = ({ onPageChange }) => {
               </div>
             </div>
             <p className="text-gray-600 mb-4">
-              Formulário detalhado para casos complexos que precisam de atenção personalizada
+              Formulário detalhado para casos complexos que precisam de atenção personalizada via WhatsApp
             </p>
             <div className="flex items-center text-green-600 font-medium group-hover:text-green-700">
               <span>Acessar formulário</span>

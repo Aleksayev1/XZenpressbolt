@@ -60,7 +60,6 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
       employees: '51-200 funcionários',
       features: [
         'Tudo do plano Starter',
-        'Consultas WhatsApp especializadas',
         'Relatórios avançados de engajamento',
         'Opções de integração para grandes empresas',
         'Suporte prioritário',
