@@ -146,32 +146,18 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     setIsProcessing(true);
     
     try {
-      // Processar pagamento real com Stripe
-      console.log('🔄 Processando pagamento com Stripe...');
+      console.log('🔄 Iniciando processamento de pagamento...');
       
-      // Em produção, aqui seria chamado o hook de pagamento
-      // Por enquanto simulamos para manter a funcionalidade
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // IMPORTANTE: Não processar automaticamente
+      // Aguardar confirmação real do provedor de pagamento
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
-      const paymentResult = {
-        id: `cc_${Date.now()}`,
-        status: 'approved',
-        amount,
-        currency: 'BRL',
-        orderId,
-        paymentMethod: 'credit_card',
-        card: {
-          brand: getCardBrand(cardData.number),
-          lastFour: cardData.number.slice(-4),
-          name: cardData.name
-        },
-        processedAt: new Date().toISOString()
-      };
-      
-      onPaymentSuccess?.(paymentResult);
+      // Simular falha para evitar aprovação automática
+      throw new Error('Pagamento em modo demonstração - Configure Stripe para ativar');
       
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Erro no processamento';
+      const errorMessage = error instanceof Error ? error.message : 'Erro no processamento do pagamento';
+      console.error('❌ Pagamento não processado:', errorMessage);
       onPaymentError?.(errorMessage);
     } finally {
       setIsProcessing(false);

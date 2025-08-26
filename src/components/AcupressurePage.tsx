@@ -43,9 +43,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   ];
 
   const breathingPhases = {
-    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: 'Inspire' },
-    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: 'Segure' },
-    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: 'Expire' },
+    inhale: { duration: 4, next: 'hold' as const, color: '#1E40AF', label: 'Inspire' },
+    hold: { duration: 7, next: 'exhale' as const, color: '#047857', label: 'Segure' },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#6B21A8', label: 'Expire' },
   };
 
   const filteredPoints = getPointsByCategory(selectedCategory, user?.isPremium || false);
@@ -177,7 +177,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setTotalSessionTime(0);
     setBreathingPhase('inhale');
     setBreathingTimeLeft(4);
-    setCurrentColor('#3B82F6');
+    setCurrentColor('#1E40AF');
     sessionStartTime.current = Date.now();
     
     trackAcupressureSession(pointId, point.duration || 120, true);
@@ -215,7 +215,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     setTotalSessionTime(0);
     setBreathingPhase('inhale');
     setBreathingTimeLeft(4);
-    setCurrentColor('#3B82F6');
+    setCurrentColor('#1E40AF');
     sessionStartTime.current = null;
     
     if (timerRef.current) {
@@ -426,59 +426,59 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div 
                   className={`p-4 rounded-xl transition-all duration-500 border-2 ${
                     breathingPhase === 'inhale' 
-                      ? 'text-white shadow-lg transform scale-105' 
+                      ? 'text-white shadow-xl transform scale-110' 
                       : 'border-2'
                   }`}
                   style={breathingPhase === 'inhale' ? {
-                    backgroundColor: '#3B82F6',
-                    borderColor: '#3B82F6'
+                    backgroundColor: '#1E40AF',
+                    borderColor: '#1E40AF'
                   } : {
-                    backgroundColor: '#3B82F650',
-                    borderColor: '#3B82F6',
-                    color: '#1E40AF'
+                    backgroundColor: '#1E40AF80',
+                    borderColor: '#1E40AF',
+                    color: '#1E3A8A'
                   }}
                 >
                   <div className="text-xl font-bold mb-1">4s</div>
                   <div className="text-sm">Inspire</div>
-                  <div className="text-xs mt-1 opacity-80">Azul</div>
+                  <div className="text-xs mt-1 font-bold">Azul Intenso</div>
                 </div>
                 <div 
                   className={`p-4 rounded-xl transition-all duration-500 border-2 ${
                     breathingPhase === 'hold' 
-                      ? 'text-white shadow-lg transform scale-105' 
+                      ? 'text-white shadow-xl transform scale-110' 
                       : 'border-2'
                   }`}
                   style={breathingPhase === 'hold' ? {
-                    backgroundColor: '#10B981',
-                    borderColor: '#10B981'
+                    backgroundColor: '#047857',
+                    borderColor: '#047857'
                   } : {
-                    backgroundColor: '#10B98150',
-                    borderColor: '#10B981',
-                    color: '#047857'
+                    backgroundColor: '#04785780',
+                    borderColor: '#047857',
+                    color: '#065F46'
                   }}
                 >
                   <div className="text-xl font-bold mb-1">7s</div>
                   <div className="text-sm">Segure</div>
-                  <div className="text-xs mt-1 opacity-80">Verde</div>
+                  <div className="text-xs mt-1 font-bold">Verde Intenso</div>
                 </div>
                 <div 
                   className={`p-4 rounded-xl transition-all duration-500 border-2 ${
                     breathingPhase === 'exhale' 
-                      ? 'text-white shadow-lg transform scale-105' 
+                      ? 'text-white shadow-xl transform scale-110' 
                       : 'border-2'
                   }`}
                   style={breathingPhase === 'exhale' ? {
-                    backgroundColor: '#8B5CF6',
-                    borderColor: '#8B5CF6'
+                    backgroundColor: '#6B21A8',
+                    borderColor: '#6B21A8'
                   } : {
-                    backgroundColor: '#8B5CF650',
-                    borderColor: '#8B5CF6',
-                    color: '#7C3AED'
+                    backgroundColor: '#6B21A880',
+                    borderColor: '#6B21A8',
+                    color: '#581C87'
                   }}
                 >
                   <div className="text-xl font-bold mb-1">8s</div>
                   <div className="text-sm">Expire</div>
-                  <div className="text-xs mt-1 opacity-80">Roxo</div>
+                  <div className="text-xs mt-1 font-bold">Roxo Intenso</div>
                 </div>
               </div>
 
@@ -629,7 +629,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     setTotalSessionTime(0);
                     setBreathingPhase('inhale');
                     setBreathingTimeLeft(4);
-                    setCurrentColor('#3B82F6');
+                    setCurrentColor('#1E40AF');
                     sessionStartTime.current = null;
                     
                     // Limpar todos os timers

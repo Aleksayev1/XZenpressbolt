@@ -22,13 +22,13 @@ export const BreathingExercise: React.FC = () => {
   const expectedTotalTimeRef = useRef<number>(0);
 
   const phases = {
-    inhale: { duration: 4, next: 'hold' as const, color: '#3B82F6', label: t('breathing.inhale') },
-    hold: { duration: 7, next: 'exhale' as const, color: '#10B981', label: t('breathing.hold') },
-    exhale: { duration: 8, next: 'inhale' as const, color: '#8B5CF6', label: t('breathing.exhale') },
+    inhale: { duration: 4, next: 'hold' as const, color: '#1E40AF', label: t('breathing.inhale') },
+    hold: { duration: 7, next: 'exhale' as const, color: '#047857', label: t('breathing.hold') },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#6B21A8', label: t('breathing.exhale') },
   };
 
-  const colors = ['#3B82F6', '#10B981', '#8B5CF6']; // Blue, Green, Magenta
-  const colorNames = ['Azul', 'Verde', 'Roxo'];
+  const colors = ['#1E40AF', '#047857', '#6B21A8']; // Blue, Green, Magenta - CORES INTENSAS
+  const colorNames = ['Azul Intenso', 'Verde Intenso', 'Roxo Intenso'];
   
   useEffect(() => {
     if (isActive) {
@@ -126,7 +126,7 @@ export const BreathingExercise: React.FC = () => {
     setPhase('inhale');
     setTimeLeft(4);
     setTotalTime(0);
-    setCurrentColor('#3B82F6');
+    setCurrentColor('#1E40AF');
     sessionStartTime.current = null;
   };
 
@@ -253,20 +253,20 @@ export const BreathingExercise: React.FC = () => {
           {/* Instructions */}
           <div className="mb-8">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-50 border-2 border-blue-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
-                <div className="text-2xl font-bold text-blue-600 mb-1">4s</div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-100 border-2 border-blue-400 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
+                <div className="text-2xl font-bold text-blue-800 mb-1">4s</div>
                 <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
-                <div className="text-xs text-blue-500 mt-1">{t('breathing.chromotherapy.blue.short')}</div>
+                <div className="text-xs text-blue-700 mt-1 font-semibold">{t('breathing.chromotherapy.blue.short')}</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-50 border-2 border-green-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
-                <div className="text-2xl font-bold text-green-600 mb-1">7s</div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-100 border-2 border-green-400 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
+                <div className="text-2xl font-bold text-green-800 mb-1">7s</div>
                 <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
-                <div className="text-xs text-green-500 mt-1">{t('breathing.chromotherapy.green.short')}</div>
+                <div className="text-xs text-green-700 mt-1 font-semibold">{t('breathing.chromotherapy.green.short')}</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-50 border-2 border-purple-200 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
-                <div className="text-2xl font-bold text-purple-600 mb-1">8s</div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-100 border-2 border-purple-400 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
+                <div className="text-2xl font-bold text-purple-800 mb-1">8s</div>
                 <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
-                <div className="text-xs text-purple-500 mt-1">{t('breathing.chromotherapy.magenta.short')}</div>
+                <div className="text-xs text-purple-700 mt-1 font-semibold">{t('breathing.chromotherapy.magenta.short')}</div>
               </div>
             </div>
           </div>

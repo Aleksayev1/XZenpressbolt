@@ -346,15 +346,9 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
   };
 
   const handlePayment = () => {
-    // Simular processamento de pagamento bem-sucedido
-    console.log('💳 Processando pagamento...');
-    trackPremiumUpgrade(selectedPlan, paymentMethod);
-    setTimeout(() => {
-      console.log('✅ Pagamento confirmado, ativando Premium...');
-      alert(`Pagamento ${paymentMethod.toUpperCase()} confirmado! Bem-vindo ao Premium!`);
-      confirmPremiumPayment();
-      setShowPayment(false);
-    }, 2000);
+    // REMOVIDO: Não processar pagamento automaticamente
+    // O pagamento deve ser confirmado apenas pelos componentes específicos (PIX/Cartão)
+    console.log('⚠️ Use os métodos de pagamento específicos (PIX ou Cartão)');
   };
 
   const handlePixPaymentSuccess = (paymentData: any) => {
@@ -521,12 +515,11 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
               >
                 {t('premium.payment.back')}
               </button>
-              <button
-                onClick={handlePayment}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all font-semibold"
-              >
-                {t('premium.payment.confirm')}
-              </button>
+              <div className="flex-1 bg-blue-50 border border-blue-200 rounded-xl p-4 text-center">
+                <p className="text-blue-800 text-sm font-medium">
+                  💳 Use o método de pagamento acima para confirmar
+                </p>
+              </div>
             </div>
           </div>
         </div>

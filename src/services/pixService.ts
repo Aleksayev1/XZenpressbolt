@@ -231,16 +231,16 @@ export class MockPixProvider implements PixProvider {
     // Simular delay da API
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Simular pagamento aprovado após 2 minutos (para demonstração)
-    const isOld = paymentId.includes('mock_') && 
-      (Date.now() - parseInt(paymentId.replace('mock_', ''))) > 120000;
+    // IMPORTANTE: Não aprovar automaticamente
+    // Manter sempre como pendente para evitar aprovação irregular
+    console.log('🔍 Verificando status PIX (modo demonstração)');
     
     return {
       qrCode: '',
       pixKey: '',
       expiresAt: new Date(),
       paymentId,
-      status: isOld ? 'paid' : 'pending'
+      status: 'pending' // Sempre pendente em modo demo
     };
   }
 
