@@ -178,7 +178,9 @@ export const BreathingExercise: React.FC = () => {
     <div 
       className="min-h-screen flex items-center justify-center transition-all duration-1000 ease-in-out pt-16"
       style={{ 
-        background: `linear-gradient(135deg, ${currentColor}20, ${currentColor}10, white)` 
+        background: isActive
+          ? `radial-gradient(circle at center, ${currentColor}50, ${currentColor}30, ${currentColor}15, white)`
+          : `linear-gradient(135deg, ${currentColor}25, ${currentColor}15, white)`
       }}
     >
       {/* Compact Sound Player - Fixed Position */}
@@ -196,7 +198,15 @@ export const BreathingExercise: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">{t('breathing.title')}</h1>
         
-        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">
+        <div 
+          className="rounded-3xl shadow-2xl p-8 md:p-12 mb-8 border-2 transition-all duration-1000"
+          style={{
+            background: isActive 
+              ? `linear-gradient(135deg, ${currentColor}25, ${currentColor}15, ${currentColor}08, white)`
+              : 'white',
+            borderColor: isActive ? currentColor + '60' : '#E5E7EB'
+          }}
+        >
           {/* Breathing Circle */}
           <div className="relative mb-8">
             <svg className="w-80 h-80 mx-auto transform -rotate-90" viewBox="0 0 280 280">
@@ -253,19 +263,43 @@ export const BreathingExercise: React.FC = () => {
           {/* Instructions */}
           <div className="mb-8">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-900 text-white border-2 border-blue-700 shadow-2xl transform scale-110' : 'bg-blue-800 text-white border border-blue-600'}`}>
+              <div className={`p-4 rounded-xl transition-all duration-500 border-2 ${
+                phase === 'inhale' 
+                  ? 'bg-blue-900 text-white border-blue-500 shadow-2xl transform scale-110' 
+                  : 'text-white border-blue-600'
+              }`}
+              style={phase !== 'inhale' ? {
+                backgroundColor: '#1E3A8A',
+                borderColor: '#1E40AF'
+              } : {}}>
                 <div className="text-2xl font-bold mb-1">4s</div>
-                <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
+                <div className="text-sm">{t('breathing.inhale')}</div>
                 <div className="text-xs mt-1 font-bold">AZUL ULTRA</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-900 text-white border-2 border-green-700 shadow-2xl transform scale-110' : 'bg-green-800 text-white border border-green-600'}`}>
+              <div className={`p-4 rounded-xl transition-all duration-500 border-2 ${
+                phase === 'hold' 
+                  ? 'bg-green-900 text-white border-green-500 shadow-2xl transform scale-110' 
+                  : 'text-white border-green-600'
+              }`}
+              style={phase !== 'hold' ? {
+                backgroundColor: '#065F46',
+                borderColor: '#047857'
+              } : {}}>
                 <div className="text-2xl font-bold mb-1">7s</div>
-                <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
+                <div className="text-sm">{t('breathing.hold')}</div>
                 <div className="text-xs mt-1 font-bold">VERDE ULTRA</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-900 text-white border-2 border-purple-700 shadow-2xl transform scale-110' : 'bg-purple-800 text-white border border-purple-600'}`}>
+              <div className={`p-4 rounded-xl transition-all duration-500 border-2 ${
+                phase === 'exhale' 
+                  ? 'bg-purple-900 text-white border-purple-500 shadow-2xl transform scale-110' 
+                  : 'text-white border-purple-600'
+              }`}
+              style={phase !== 'exhale' ? {
+                backgroundColor: '#581C87',
+                borderColor: '#6B21A8'
+              } : {}}>
                 <div className="text-2xl font-bold mb-1">8s</div>
-                <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
+                <div className="text-sm">{t('breathing.exhale')}</div>
                 <div className="text-xs mt-1 font-bold">ROXO ULTRA</div>
               </div>
             </div>
@@ -378,10 +412,24 @@ export const BreathingExercise: React.FC = () => {
         </div>
 
         {/* Scientific Background */}
-        <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8">
+        <div 
+          className="mt-8 rounded-3xl p-8 border-2 transition-all duration-1000"
+          style={{
+            background: isActive 
+              ? `linear-gradient(135deg, ${currentColor}25, ${currentColor}15, ${currentColor}08, white)`
+              : 'linear-gradient(to right, #EFF6FF, #F3E8FF)',
+            borderColor: isActive ? currentColor + '50' : '#C7D2FE'
+          }}
+        >
           <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">🧬 {t('breathing.science.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl p-6">
+            <div 
+              className="rounded-xl p-6 border transition-all duration-500"
+              style={{
+                background: isActive ? 'rgba(255, 255, 255, 0.9)' : 'white',
+                borderColor: isActive ? currentColor + '40' : '#E5E7EB'
+              }}
+            >
               <h3 className="font-bold text-gray-800 mb-3">📚 {t('breathing.science.evidence')}</h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• {t('breathing.science.parasympathetic')}</li>
@@ -390,7 +438,13 @@ export const BreathingExercise: React.FC = () => {
                 <li>• {t('breathing.science.gaba')}</li>
               </ul>
             </div>
-            <div className="bg-white rounded-xl p-6">
+            <div 
+              className="rounded-xl p-6 border transition-all duration-500"
+              style={{
+                background: isActive ? 'rgba(255, 255, 255, 0.9)' : 'white',
+                borderColor: isActive ? currentColor + '40' : '#E5E7EB'
+              }}
+            >
               <h3 className="font-bold text-gray-800 mb-3">🎨 {t('breathing.science.chromotherapy')}</h3>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• {t('breathing.science.blue.effect')}</li>
