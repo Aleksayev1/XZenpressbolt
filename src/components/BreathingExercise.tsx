@@ -22,13 +22,13 @@ export const BreathingExercise: React.FC = () => {
   const expectedTotalTimeRef = useRef<number>(0);
 
   const phases = {
-    inhale: { duration: 4, next: 'hold' as const, color: '#1E40AF', label: t('breathing.inhale') },
-    hold: { duration: 7, next: 'exhale' as const, color: '#047857', label: t('breathing.hold') },
-    exhale: { duration: 8, next: 'inhale' as const, color: '#6B21A8', label: t('breathing.exhale') },
+    inhale: { duration: 4, next: 'hold' as const, color: '#1E3A8A', label: t('breathing.inhale') },
+    hold: { duration: 7, next: 'exhale' as const, color: '#065F46', label: t('breathing.hold') },
+    exhale: { duration: 8, next: 'inhale' as const, color: '#581C87', label: t('breathing.exhale') },
   };
 
-  const colors = ['#1E40AF', '#047857', '#6B21A8']; // Blue, Green, Magenta - CORES INTENSAS
-  const colorNames = ['Azul Intenso', 'Verde Intenso', 'Roxo Intenso'];
+  const colors = ['#1E3A8A', '#065F46', '#581C87']; // Blue, Green, Magenta - CORES ULTRA INTENSAS
+  const colorNames = ['Azul Ultra Intenso', 'Verde Ultra Intenso', 'Roxo Ultra Intenso'];
   
   useEffect(() => {
     if (isActive) {
@@ -126,7 +126,7 @@ export const BreathingExercise: React.FC = () => {
     setPhase('inhale');
     setTimeLeft(4);
     setTotalTime(0);
-    setCurrentColor('#1E40AF');
+    setCurrentColor('#1E3A8A');
     sessionStartTime.current = null;
   };
 
@@ -253,20 +253,20 @@ export const BreathingExercise: React.FC = () => {
           {/* Instructions */}
           <div className="mb-8">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-100 border-2 border-blue-400 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
-                <div className="text-2xl font-bold text-blue-800 mb-1">4s</div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'inhale' ? 'bg-blue-900 text-white border-2 border-blue-700 shadow-2xl transform scale-110' : 'bg-blue-800 text-white border border-blue-600'}`}>
+                <div className="text-2xl font-bold mb-1">4s</div>
                 <div className="text-sm text-gray-600">{t('breathing.inhale')}</div>
-                <div className="text-xs text-blue-700 mt-1 font-semibold">{t('breathing.chromotherapy.blue.short')}</div>
+                <div className="text-xs mt-1 font-bold">AZUL ULTRA</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-100 border-2 border-green-400 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
-                <div className="text-2xl font-bold text-green-800 mb-1">7s</div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'hold' ? 'bg-green-900 text-white border-2 border-green-700 shadow-2xl transform scale-110' : 'bg-green-800 text-white border border-green-600'}`}>
+                <div className="text-2xl font-bold mb-1">7s</div>
                 <div className="text-sm text-gray-600">{t('breathing.hold')}</div>
-                <div className="text-xs text-green-700 mt-1 font-semibold">{t('breathing.chromotherapy.green.short')}</div>
+                <div className="text-xs mt-1 font-bold">VERDE ULTRA</div>
               </div>
-              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-100 border-2 border-purple-400 shadow-lg transform scale-105' : 'bg-gray-50'}`}>
-                <div className="text-2xl font-bold text-purple-800 mb-1">8s</div>
+              <div className={`p-4 rounded-xl transition-all duration-500 ${phase === 'exhale' ? 'bg-purple-900 text-white border-2 border-purple-700 shadow-2xl transform scale-110' : 'bg-purple-800 text-white border border-purple-600'}`}>
+                <div className="text-2xl font-bold mb-1">8s</div>
                 <div className="text-sm text-gray-600">{t('breathing.exhale')}</div>
-                <div className="text-xs text-purple-700 mt-1 font-semibold">{t('breathing.chromotherapy.magenta.short')}</div>
+                <div className="text-xs mt-1 font-bold">ROXO ULTRA</div>
               </div>
             </div>
           </div>
@@ -313,41 +313,41 @@ export const BreathingExercise: React.FC = () => {
           <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">{t('breathing.chromotherapy.description')}</p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+            <div className="bg-gradient-to-br from-blue-800 to-blue-900 rounded-2xl p-6 border-2 border-blue-600 shadow-2xl">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-blue-800">{t('breathing.chromotherapy.blue')}</h3>
+                <div className="w-8 h-8 bg-blue-300 rounded-full shadow-lg"></div>
+                <h3 className="text-xl font-bold text-white">{t('breathing.chromotherapy.blue')}</h3>
               </div>
-              <p className="text-blue-700 text-sm leading-relaxed">
+              <p className="text-blue-100 text-sm leading-relaxed">
                 {t('breathing.chromotherapy.blue.desc')}
               </p>
-              <div className="mt-4 text-xs text-blue-600 bg-blue-50 rounded-lg p-2">
+              <div className="mt-4 text-xs text-blue-200 bg-blue-700 rounded-lg p-2">
                 <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.inhale.detail')}
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+            <div className="bg-gradient-to-br from-green-800 to-green-900 rounded-2xl p-6 border-2 border-green-600 shadow-2xl">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-green-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-green-800">{t('breathing.chromotherapy.green')}</h3>
+                <div className="w-8 h-8 bg-green-300 rounded-full shadow-lg"></div>
+                <h3 className="text-xl font-bold text-white">{t('breathing.chromotherapy.green')}</h3>
               </div>
-              <p className="text-green-700 text-sm leading-relaxed">
+              <p className="text-green-100 text-sm leading-relaxed">
                 {t('breathing.chromotherapy.green.desc')}
               </p>
-              <div className="mt-4 text-xs text-green-600 bg-green-50 rounded-lg p-2">
+              <div className="mt-4 text-xs text-green-200 bg-green-700 rounded-lg p-2">
                 <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.hold.detail')}
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 border border-purple-200">
+            <div className="bg-gradient-to-br from-purple-800 to-purple-900 rounded-2xl p-6 border-2 border-purple-600 shadow-2xl">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-purple-500 rounded-full"></div>
-                <h3 className="text-xl font-bold text-purple-800">{t('breathing.chromotherapy.magenta')}</h3>
+                <div className="w-8 h-8 bg-purple-300 rounded-full shadow-lg"></div>
+                <h3 className="text-xl font-bold text-white">{t('breathing.chromotherapy.magenta')}</h3>
               </div>
-              <p className="text-purple-700 text-sm leading-relaxed">
+              <p className="text-purple-100 text-sm leading-relaxed">
                 {t('breathing.chromotherapy.magenta.desc')}
               </p>
-              <div className="mt-4 text-xs text-purple-600 bg-purple-50 rounded-lg p-2">
+              <div className="mt-4 text-xs text-purple-200 bg-purple-700 rounded-lg p-2">
                 <strong>{t('breathing.phase')}:</strong> {t('breathing.phase.exhale.detail')}
               </div>
             </div>
@@ -358,19 +358,19 @@ export const BreathingExercise: React.FC = () => {
             <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">{t('breathing.benefits.title')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-blue-800 rounded-full shadow-lg"></div>
                 <span className="text-gray-700 text-sm">{t('breathing.benefits.stress')}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-800 rounded-full shadow-lg"></div>
                 <span className="text-gray-700 text-sm">{t('breathing.benefits.sleep')}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-purple-800 rounded-full shadow-lg"></div>
                 <span className="text-gray-700 text-sm">{t('breathing.benefits.focus')}</span>
               </div>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-orange-800 rounded-full shadow-lg"></div>
                 <span className="text-gray-700 text-sm">{t('breathing.benefits.pressure')}</span>
               </div>
             </div>
