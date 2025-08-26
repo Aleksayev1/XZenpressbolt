@@ -559,10 +559,10 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
                   </div>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {t(`corporate.benefits.${benefit.title.toLowerCase().replace(' ', '')}`)}
+                  {benefit.title}
                 </h3>
                 <p className="text-gray-600">
-                  {t(`corporate.benefits.${benefit.title.toLowerCase().replace(' ', '')}.desc`)}
+                  {benefit.description}
                 </p>
               </div>
             ))}
