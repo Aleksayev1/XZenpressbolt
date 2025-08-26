@@ -709,10 +709,10 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         {/* Contact CTA */}
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl p-8 text-center text-white">
           <h2 className="text-3xl font-bold mb-4">
-            {t('corporate.contact.title')}
+            Entre em Contato Conosco
           </h2>
           <p className="text-xl mb-6 opacity-90">
-            {t('corporate.contact.subtitle')}
+            Nossa equipe está pronta para criar uma solução personalizada para sua empresa
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
