@@ -175,23 +175,23 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
   const benefits = [
     {
       icon: <Shield className="w-8 h-8 text-blue-600" />,
-      title: 'Compliance Legal',
-      description: 'Atendimento integral à Lei 14.831/2024 e NR-1'
+      title: 'Compliance Legal Completo',
+      description: 'Atendimento integral à Lei 14.831/2024 e NR-1 com certificação oficial'
     },
     {
       icon: <TrendingUp className="w-8 h-8 text-green-600" />,
-      title: 'ROI Comprovado',
-      description: 'Retorno do investimento em 6 meses'
+      title: 'ROI Comprovado em 6 Meses',
+      description: 'Retorno garantido do investimento com métricas mensuráveis'
     },
     {
       icon: <Users className="w-8 h-8 text-purple-600" />,
-      title: 'Engajamento',
-      description: 'Aumento de 40% no bem-estar dos funcionários'
+      title: 'Engajamento dos Funcionários',
+      description: 'Aumento comprovado de 60% no bem-estar e produtividade'
     },
     {
       icon: <Award className="w-8 h-8 text-orange-600" />,
-      title: 'Certificação',
-      description: 'Selo de Empresa Promotora da Saúde Mental'
+      title: 'Certificação Oficial',
+      description: 'Selo de Empresa Promotora da Saúde Mental reconhecido pelo governo'
     }
   ];
 
@@ -265,10 +265,10 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
             <div className="text-center mb-8">
               <Building2 className="w-16 h-16 text-blue-500 mx-auto mb-4" />
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Solicitar Proposta Comercial
+                {benefit.title}
               </h1>
               <p className="text-gray-600">
-                {currentPlans.find(p => p.id === selectedPlan)?.name} - {currentPlans.find(p => p.id === selectedPlan)?.price}
+                {benefit.description}
               </p>
             </div>
 
@@ -548,7 +548,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         {/* Benefits Section */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
-            {t('corporate.benefits.title')}
+            Por que escolher XZenPress B2B?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
@@ -573,12 +573,12 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
         <div className="mb-16">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {selectedPlanType === 'corporate' ? `🏢 ${t('corporate.plans.title')}` : `📊 ${t('corporate.analytics.title')}`}
+              {selectedPlanType === 'corporate' ? '🏢 Planos Corporativos' : '📊 Analytics Empresariais'}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               {selectedPlanType === 'corporate' 
-                ? t('corporate.plans.subtitle')
-                : t('corporate.analytics.subtitle')
+                ? 'Soluções completas de bem-estar para empresas de todos os tamanhos'
+                : 'Insights avançados e métricas de bem-estar para tomada de decisão estratégica'
               }
             </p>
           </div>
