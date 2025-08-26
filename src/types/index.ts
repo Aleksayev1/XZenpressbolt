@@ -3,6 +3,8 @@ export interface User {
   email: string;
   name: string;
   isPremium: boolean;
+  hasPaidPremium?: boolean;
+  premiumActivatedAt?: string;
   isAdmin?: boolean;
   createdAt: string;
 }

@@ -7,6 +7,7 @@ interface AuthContextType {
   logout: () => void;
   resetPassword: (email: string) => Promise<void>;
   upgradeToPremium: () => void;
+  confirmPremiumPayment: () => void;
   isLoading: boolean;
 }
 
@@ -110,6 +111,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
   };
+
+  const confirmPremiumPayment = () => {
+    console.log('💳 Confirmando pagamento Premium...');
+    if (user) {
+      const updatedUser = { 
+        ...user, 
+        isPremium: true,
+        hasPaidPremium: true,
+        premiumActivatedAt: new Date().toISOString()
+      };
+      console.log('💰 Pagamento confirmado:', updatedUser);
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+  };
+
   const logout = () => {
     console.log('🚪 Fazendo logout...');
     setUser(null);
@@ -129,7 +146,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, resetPassword, upgradeToPremium, isLoading }}>
+    <AuthContext.Provider value={{ user, login, logout, resetPassword, upgradeToPremium, confirmPremiumPayment, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

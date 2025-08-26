@@ -12,7 +12,7 @@ interface PremiumStructureProps {
 }
 
 export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange }) => {
-  const { user, upgradeToPremium } = useAuth();
+  const { user, upgradeToPremium, confirmPremiumPayment } = useAuth();
   const { t } = useLanguage();
   const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [showPayment, setShowPayment] = useState(false);
@@ -53,7 +53,11 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
             {/* WhatsApp Consultation */}
             <div 
               onClick={() => onPageChange('whatsapp-consultation')}
-              className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border-2 border-green-200 hover:border-green-300"
+              className={`group bg-white rounded-2xl p-8 shadow-lg transition-all duration-300 border-2 ${
+                user?.hasPaidPremium 
+                  ? 'hover:shadow-xl cursor-pointer border-green-200 hover:border-green-300' 
+                  : 'border-gray-200 opacity-60 cursor-not-allowed'
+              }`}
             >
               <div className="flex items-center mb-6">
                 <div className="p-3 bg-green-100 rounded-xl group-hover:bg-green-200 transition-colors">
@@ -61,15 +65,23 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                 </div>
                 <div className="ml-4">
                   <h3 className="text-xl font-bold text-gray-900">Consulta Especializada</h3>
-                  <p className="text-green-600 font-medium">Disponível Agora</p>
+                  <p className={`font-medium ${user?.hasPaidPremium ? 'text-green-600' : 'text-gray-500'}`}>
+                    {user?.hasPaidPremium ? 'Disponível Agora' : 'Após Pagamento'}
+                  </p>
                 </div>
               </div>
               <p className="text-gray-600 mb-4">
                 Formulário detalhado para casos complexos com atendimento personalizado via WhatsApp
               </p>
-              <div className="flex items-center text-green-600 font-medium group-hover:text-green-700">
-                <span>Acessar formulário</span>
-                <Zap className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              <div className={`flex items-center font-medium ${
+                user?.hasPaidPremium 
+                  ? 'text-green-600 group-hover:text-green-700' 
+                  : 'text-gray-500'
+              }`}>
+                <span>{user?.hasPaidPremium ? 'Acessar formulário' : 'Faça o pagamento para desbloquear'}</span>
+                {user?.hasPaidPremium && (
+                  <Zap className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                )}
               </div>
             </div>
 
@@ -340,7 +352,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     setTimeout(() => {
       console.log('✅ Pagamento confirmado, ativando Premium...');
       alert(`Pagamento ${paymentMethod.toUpperCase()} confirmado! Bem-vindo ao Premium!`);
-      upgradeToPremium();
+      confirmPremiumPayment();
       setShowPayment(false);
     }, 2000);
   };
@@ -349,7 +361,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     console.log('🎯 PIX confirmado:', paymentData);
     trackPremiumUpgrade(selectedPlan, 'pix');
     alert('Pagamento PIX confirmado! Bem-vindo ao Premium!');
-    upgradeToPremium();
+    confirmPremiumPayment();
     setShowPayment(false);
   };
 
@@ -474,7 +486,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                     onPaymentSuccess={(paymentData) => {
                       console.log('💳 Cartão aprovado:', paymentData);
                       alert('Pagamento com cartão aprovado! Bem-vindo ao Premium!');
-                      upgradeToPremium();
+                      confirmPremiumPayment();
                       setShowPayment(false);
                     }}
                     onPaymentError={(error) => {

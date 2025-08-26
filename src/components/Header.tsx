@@ -89,8 +89,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            {/* WhatsApp Consultation Button - Only for Premium individual users */}
-            {user?.isPremium && (
+            {/* WhatsApp Consultation Button - Only for users who paid Premium */}
+            {user?.isPremium && user?.hasPaidPremium && (
               <button
                 onClick={() => onPageChange('whatsapp-consultation')}
                 className="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-green-600 transition-all duration-200 shadow-lg"
@@ -230,8 +230,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
               {/* Mobile User Actions */}
               {user ? (
                 <div className="px-3 py-2 border-t border-gray-200">
-                  {/* WhatsApp Button for Premium individual users */}
-                  {user.isPremium && (
+                  {/* WhatsApp Button for users who paid Premium */}
+                  {user.isPremium && user.hasPaidPremium && (
                     <button
                       onClick={() => {
                         onPageChange('whatsapp-consultation');

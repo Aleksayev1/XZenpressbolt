@@ -23,6 +23,52 @@ interface FormData {
 export const WhatsAppConsultationPage: React.FC<WhatsAppConsultationPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
   const { t } = useLanguage();
+
+  // Verificar se usuário pagou Premium
+  if (!user?.hasPaidPremium) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-gradient-to-r from-green-500 to-blue-500 rounded-full">
+                <MessageCircle className="w-16 h-16 text-white" />
+              </div>
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              Consulta WhatsApp Premium
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              Este recurso está disponível apenas para usuários que fizeram o pagamento Premium
+            </p>
+            
+            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 mb-8 border border-green-200">
+              <h3 className="font-semibold text-green-800 mb-2">💬 O que você terá acesso:</h3>
+              <ul className="text-sm text-green-700 space-y-1 text-left max-w-md mx-auto">
+                <li>• Formulário detalhado para casos complexos</li>
+                <li>• Atendimento personalizado via WhatsApp</li>
+                <li>• Profissional com 15+ anos de experiência</li>
+                <li>• Resposta prioritária em até 24h</li>
+                <li>• Acompanhamento contínuo do caso</li>
+              </ul>
+            </div>
+            
+            <button
+              onClick={() => onPageChange('premium')}
+              className="bg-gradient-to-r from-green-500 to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-green-600 hover:to-blue-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
+            >
+              💳 Fazer Pagamento Premium
+            </button>
+            
+            <p className="text-sm text-gray-500 mt-4">
+              Acesso imediato após confirmação do pagamento
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const [formData, setFormData] = useState<FormData>({
     nome: user?.name || '',
     email: user?.email || '',
