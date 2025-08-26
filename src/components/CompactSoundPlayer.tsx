@@ -189,7 +189,6 @@ export const CompactSoundPlayer: React.FC<CompactSoundPlayerProps> = ({
                 onClick={onNavigateToLibrary}
                 className="w-full flex items-center justify-center space-x-2 p-2 rounded-lg text-xs font-medium transition-all hover:shadow-md"
                 style={{ 
-                    ? 'text-white shadow-lg font-bold'
                   color: currentColor,
                   backgroundColor: currentColor,
                   boxShadow: `0 4px 12px ${currentColor}40`
