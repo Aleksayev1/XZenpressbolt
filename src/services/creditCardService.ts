@@ -115,41 +115,21 @@ export class StripeProvider implements CreditCardProvider {
 }
 
 // Implementação para PagSeguro
-export class PagSeguroProvider implements CreditCardProvider {
+      // Simular delay e SEMPRE retornar erro para evitar aprovação automática
+      await new Promise(resolve => setTimeout(resolve, 2000));
   name = 'PagSeguro';
-  private token: string;
-  private email: string;
-
-  constructor(token: string, email: string) {
-    this.token = token;
-    this.email = email;
-  }
-
-  async processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult> {
-    try {
-      console.log('Processing PagSeguro payment...', {
-        amount: paymentData.amount,
-        orderId: paymentData.orderId
-      });
-
-      // Simular delay de processamento
-      await new Promise(resolve => setTimeout(resolve, 2500));
-
-      // Simular resposta do PagSeguro
+      // SEMPRE retornar erro em modo demonstração
       return {
-        id: `ps_${Date.now()}`,
-        status: 'approved',
+        id: `mock_demo_${Date.now()}`,
+        status: 'declined',
         amount: paymentData.amount,
         currency: paymentData.currency,
         orderId: paymentData.orderId,
         paymentMethod: 'credit_card',
-        card: {
-          brand: this.getCardBrand(cardData.number),
-          lastFour: cardData.number.slice(-4),
-          name: cardData.name
-        },
-        processedAt: new Date().toISOString()
+        processedAt: new Date().toISOString(),
+        errorMessage: 'Modo demonstração ativo - Configure Stripe para processar pagamentos reais'
       };
+
 
     } catch (error) {
       console.error('PagSeguro payment error:', error);
