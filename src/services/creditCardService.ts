@@ -115,9 +115,17 @@ export class StripeProvider implements CreditCardProvider {
 }
 
 // Implementação para PagSeguro
+export class PagSeguroProvider implements CreditCardProvider {
+  name = 'PagSeguro';
+
+  constructor(token: string, email: string) {
+  }
+
+  async processPayment(cardData: CreditCardData, paymentData: PaymentData): Promise<PaymentResult> {
+    try {
       // Simular delay e SEMPRE retornar erro para evitar aprovação automática
       await new Promise(resolve => setTimeout(resolve, 2000));
-  name = 'PagSeguro';
+      
       // SEMPRE retornar erro em modo demonstração
       return {
         id: `mock_demo_${Date.now()}`,
