@@ -497,11 +497,11 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-3 bg-white rounded-lg">
                     <span>Bitcoin (BTC)</span>
-                    <span className="font-mono text-sm">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</span>
+                    <span className="font-mono text-sm">14FeWjYmfdKx7fwhvuvpBzbga9LNyjwiXq</span>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-white rounded-lg">
                     <span>Ethereum (ETH)</span>
-                    <span className="font-mono text-sm">0x742d35Cc6634C0532925a3b8D4C9db</span>
+                    <span className="font-mono text-sm">0x560125021f13f256f3c4c53da07d2798c290636a</span>
                   </div>
                 </div>
               </div>
