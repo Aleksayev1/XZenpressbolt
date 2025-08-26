@@ -194,13 +194,6 @@ export const BreathingExercise: React.FC = () => {
       />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="flex justify-center mb-6">
-          <img 
-            src="/Logo Xzenpress oficial.png" 
-            alt="XZenPress Logo" 
-            className="h-16 w-auto opacity-80"
-          />
-        </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">{t('breathing.title')}</h1>
         
         <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 mb-8">

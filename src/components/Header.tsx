@@ -58,11 +58,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <div className="flex items-center space-x-3">
-              <img 
-                src="/Logo Xzenpress oficial.png" 
-                alt="XZenPress Logo" 
-                className="h-10 w-auto"
-              />
+              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-lg">X</span>
+              </div>
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 XZenPress
               </h1>

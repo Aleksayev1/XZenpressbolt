@@ -72,13 +72,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center mb-12">
-            <div className="flex justify-center mb-8">
-              <img 
-                src="/Logo Xzenpress oficial.png" 
-                alt="XZenPress Logo" 
-                className="h-20 w-auto"
-              />
-            </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
                 Escolha sua Terapia
@@ -200,13 +193,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
           <div className="text-center">
-            <div className="flex justify-center mb-8">
-              <img 
-                src="/Logo Xzenpress oficial.png" 
-                alt="XZenPress Logo" 
-                className="h-20 w-auto"
-              />
-            </div>
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
               <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-green-600 bg-clip-text text-transparent">
                 {t('home.hero.title').split(' ')[0]}
