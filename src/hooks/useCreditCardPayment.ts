@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createCreditCardService, CreditCardData, PaymentData, PaymentResult, StripeProvider } from '../services/creditCardService';
 
 export const useCreditCardPayment = () => {
@@ -10,7 +10,7 @@ export const useCreditCardPayment = () => {
   const creditCardService = createCreditCardService();
 
   // Verificar se Stripe está configurado
-  React.useEffect(() => {
+  useEffect(() => {
     const checkStripe = async () => {
       const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
       if (stripeKey && stripeKey.startsWith('pk_')) {
