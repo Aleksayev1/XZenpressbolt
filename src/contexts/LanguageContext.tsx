@@ -37,6 +37,27 @@ export const useLanguage = () => {
   return context;
 };
 
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [currentLanguage, setCurrentLanguage] = useState(languages[0]); // Portuguese as default
+
+  const t = (key: string): string => {
+    const keys = key.split('.');
+    let value: any = translations[currentLanguage.code];
+    
+    for (const k of keys) {
+      value = value?.[k];
+    }
+    
+    return value || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ currentLanguage, setLanguage: setCurrentLanguage, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+};
+
 // Traduções completas para todos os idiomas
 const translations: Record<string, Record<string, string>> = {
   pt: {
