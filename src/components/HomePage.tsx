@@ -224,8 +224,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 <ArrowRight className="w-5 h-5 ml-2 inline" />
               </button>
               <button
+                onClick={() => onPageChange('blog')}
+                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-blue-600 hover:text-white transition-all duration-200"
+              >
+                📚 Ler Blog
+              </button>
+              <button
                 onClick={() => onPageChange('login')}
-                className="border-2 border-purple-600 text-purple-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-200"
+                className="border-2 border-purple-600 text-purple-600 px-6 py-4 rounded-full text-lg font-semibold hover:bg-purple-600 hover:text-white transition-all duration-200"
               >
                 {t('home.hero.createAccount')}
               </button>

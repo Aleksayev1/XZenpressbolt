@@ -42,6 +42,7 @@ const translations: Record<string, Record<string, string>> = {
   pt: {
     // Navegação
     'nav.home': 'Início',
+    'nav.blog': 'Blog',
     'nav.acupressure': 'Acupressão',
     'nav.breathing': 'Respiração',
     'nav.premium': 'Premium',
@@ -360,6 +361,7 @@ const translations: Record<string, Record<string, string>> = {
   en: {
     // Navigation
     'nav.home': 'Home',
+    'nav.blog': 'Blog',
     'nav.acupressure': 'Acupressure',
     'nav.breathing': 'Breathing',
     'nav.premium': 'Premium',
@@ -678,6 +680,7 @@ const translations: Record<string, Record<string, string>> = {
   es: {
     // Navegación
     'nav.home': 'Inicio',
+    'nav.blog': 'Blog',
     'nav.acupressure': 'Acupresión',
     'nav.breathing': 'Respiración',
     'nav.premium': 'Premium',
@@ -767,6 +770,7 @@ const translations: Record<string, Record<string, string>> = {
   zh: {
     // 导航
     'nav.home': '首页',
+    'nav.blog': '博客',
     'nav.acupressure': '穴位按摩',
     'nav.breathing': '呼吸',
     'nav.premium': '高级版',
@@ -856,6 +860,7 @@ const translations: Record<string, Record<string, string>> = {
   hi: {
     // नेवीगेशन
     'nav.home': 'होम',
+    'nav.blog': 'ब्लॉग',
     'nav.acupressure': 'एक्यूप्रेशर',
     'nav.breathing': 'श्वास',
     'nav.premium': 'प्रीमियम',
@@ -945,6 +950,7 @@ const translations: Record<string, Record<string, string>> = {
   ar: {
     // التنقل
     'nav.home': 'الرئيسية',
+    'nav.blog': 'المدونة',
     'nav.acupressure': 'العلاج بالضغط',
     'nav.breathing': 'التنفس',
     'nav.premium': 'المميز',
@@ -1034,6 +1040,7 @@ const translations: Record<string, Record<string, string>> = {
   bn: {
     // নেভিগেশন
     'nav.home': 'হোম',
+    'nav.blog': 'ব্লগ',
     'nav.acupressure': 'আকুপ্রেশার',
     'nav.breathing': 'শ্বাস',
     'nav.premium': 'প্রিমিয়াম',
@@ -1123,6 +1130,7 @@ const translations: Record<string, Record<string, string>> = {
   ru: {
     // Навигация
     'nav.home': 'Главная',
+    'nav.blog': 'Блог',
     'nav.acupressure': 'Акупрессура',
     'nav.breathing': 'Дыхание',
     'nav.premium': 'Премиум',
@@ -1204,330 +1212,4 @@ const translations: Record<string, Record<string, string>> = {
     'corporate.roi.stress': 'Снижение стресса',
     'corporate.roi.absences': 'Меньше отсутствий',
     'corporate.roi.engagement': 'Более высокая вовлеченность',
-    'corporate.roi.return': 'Возврат инвестиций',
-    'corporate.contact.title': 'Готовы преобразить вашу компанию?',
-    'corporate.contact.subtitle': 'Поговорите с нашими специалистами и получите персонализированное предложение'
-  },
-
-  ja: {
-    // ナビゲーション
-    'nav.home': 'ホーム',
-    'nav.acupressure': '指圧',
-    'nav.breathing': '呼吸',
-    'nav.premium': 'プレミアム',
-    'nav.corporate': '企業向け',
-    'nav.dashboard': 'ダッシュボード',
-    'nav.sounds': 'サウンド',
-    'nav.progress': '進捗',
-    'nav.personalization': 'パーソナライゼーション',
-    'nav.login': 'ログイン',
-    'nav.logout': 'ログアウト',
-
-    // ホーム
-    'home.hero.title': 'ホリスティック療法で人生を変える',
-    'home.hero.subtitle': '科学的証拠に基づくホリスティック療法であなたの人生を変える',
-    'home.hero.startNow': '今すぐ始める',
-    'home.hero.createAccount': 'アカウント作成',
-    'home.features.title': '完全な機能',
-    'home.features.subtitle': 'あなたの健康に必要なすべて',
-    'home.feature.acupressure.title': 'TCM指圧',
-    'home.feature.acupressure.desc': '伝統中国医学の20の治療ポイント',
-    'home.feature.cranio.title': '頭鍼療法',
-    'home.feature.cranio.desc': '記憶、集中力、不安のための頭部技術',
-    'home.feature.breathing.title': '4-7-8呼吸法',
-    'home.feature.breathing.desc': 'タイマーと統合色彩療法を備えた科学的技術',
-    'home.feature.chromotherapy.title': '色彩療法',
-    'home.feature.chromotherapy.desc': '神経科学に基づく治療色',
-    'home.feature.sounds.title': '調和音',
-    'home.feature.sounds.desc': '完全ライブラリ + Spotify Premium統合',
-    'home.feature.consultation.title': 'WhatsApp相談',
-    'home.cta.title': '始める準備はできましたか？',
-    'home.cta.subtitle': '人生を変えている何千人もの人々に参加してください',
-    'home.cta.demo': '無料で試す',
-    'home.cta.corporate': '企業ソリューション',
-    'home.compliance.title': '企業法的コンプライアンス',
-    'home.compliance.subtitle': 'ブラジル法との完全な準拠',
-
-    // Acupressure page
-    'acupressure.title': '統合療法',
-    'acupressure.subtitle': '指圧 + 4-7-8呼吸法 + 色彩療法 + 調和音',
-    'acupressure.categories.all': '全てのポイント',
-    'acupressure.categories.general': '一般TCM',
-    'acupressure.categories.cranio': '頭蓋鍼',
-    'acupressure.categories.septicemia': '敗血症',
-    'acupressure.categories.atm': '顎関節症',
-    'acupressure.point.benefits': '効果',
-    'acupressure.point.location': '位置',
-    'acupressure.point.instructions': '適用方法',
-    'acupressure.point.duration': '持続時間',
-    'acupressure.point.pressure': '圧力',
-    'acupressure.timer.active': 'アクティブ療法',
-    'acupressure.timer.start': '統合療法を開始',
-    'acupressure.timer.stop': '停止',
-    'acupressure.timer.reset': 'リセット',
-    'acupressure.timer.switch': 'このポイントに切り替え',
-    'acupressure.premium.unlock': 'プレミアム解除',
-    'acupressure.premium.exclusive': 'プレミアムポイント',
-    'acupressure.select.title': 'ポイントを選択',
-    'acupressure.select.subtitle': '完全な統合療法を開始するには任意のポイントをクリック',
-    'acupressure.integrated.description': '統合療法：精密タイマー指圧、同期4-7-8呼吸、鮮やかな色彩療法、オプション調和音',
-
-    // Corporate page
-    'corporate.hero.title': 'B2B企業ソリューション',
-    'corporate.hero.subtitle': 'テクノロジーとデータで会社のウェルネスを変革',
-    'corporate.benefits.title': 'なぜXZenPress B2Bを選ぶのか？',
-    'corporate.benefits.compliance': '法的コンプライアンス',
-    'corporate.benefits.compliance.desc': '法律14.831/2024とNR-1への完全準拠',
-    'corporate.benefits.roi': '実証済みROI',
-    'corporate.benefits.roi.desc': '6ヶ月での投資収益率',
-    'corporate.benefits.engagement': 'エンゲージメント',
-    'corporate.benefits.engagement.desc': '従業員ウェルネス40%向上',
-    'corporate.benefits.certification': '認証',
-    'corporate.benefits.certification.desc': 'メンタルヘルス促進企業シール',
-    'corporate.plans.title': '企業プラン',
-    'corporate.plans.subtitle': 'あらゆる規模の企業向け完全ウェルネスソリューション',
-    'corporate.analytics.title': 'B2Bアナリティクス',
-    'corporate.analytics.subtitle': '企業ウェルネス最適化のためのデータインテリジェンス',
-    'corporate.roi.title': '実証済みROI',
-    'corporate.roi.subtitle': 'XZenPressを実装した企業の報告：',
-    'corporate.roi.stress': 'ストレス軽減',
-    'corporate.roi.absences': '欠勤減少',
-    'corporate.roi.engagement': 'エンゲージメント向上',
-    'corporate.roi.return': '投資収益率',
-    'corporate.contact.title': '会社を変革する準備はできましたか？',
-    'corporate.contact.subtitle': '専門家と話し、パーソナライズされた提案を受け取る'
-  },
-
-  de: {
-    // Navigation
-    'nav.home': 'Startseite',
-    'nav.acupressure': 'Akupressur',
-    'nav.breathing': 'Atmung',
-    'nav.premium': 'Premium',
-    'nav.corporate': 'Unternehmen',
-    'nav.dashboard': 'Dashboard',
-    'nav.sounds': 'Klänge',
-    'nav.progress': 'Fortschritt',
-    'nav.personalization': 'Personalisierung',
-    'nav.login': 'Anmelden',
-    'nav.logout': 'Abmelden',
-
-    // Startseite
-    'home.hero.title': 'Verwandeln Sie Ihr Leben mit ganzheitlichen Therapien',
-    'home.hero.subtitle': 'Verwandeln Sie Ihr Leben mit evidenzbasierten ganzheitlichen Therapien',
-    'home.hero.startNow': 'Jetzt beginnen',
-    'home.hero.createAccount': 'Konto erstellen',
-    'home.features.title': 'Vollständige Funktionen',
-    'home.features.subtitle': 'Alles was Sie für Ihr Wohlbefinden brauchen',
-    'home.feature.acupressure.title': 'TCM Akupressur',
-    'home.feature.acupressure.desc': '20 therapeutische Punkte der Traditionellen Chinesischen Medizin',
-    'home.feature.cranio.title': 'Kraniopunktur',
-    'home.feature.cranio.desc': 'Schädeltechniken für Gedächtnis, Konzentration und Angst',
-    'home.feature.breathing.title': '4-7-8 Atmung',
-    'home.feature.breathing.desc': 'Wissenschaftliche Technik mit Timer und integrierter Farbtherapie',
-    'home.feature.chromotherapy.title': 'Farbtherapie',
-    'home.feature.chromotherapy.desc': 'Therapeutische Farben basierend auf Neurowissenschaft',
-    'home.feature.sounds.title': 'Harmonisierende Klänge',
-    'home.feature.sounds.desc': 'Vollständige Bibliothek + Spotify Premium Integration',
-    'home.feature.consultation.title': 'WhatsApp Beratungen',
-    'home.cta.title': 'Bereit anzufangen?',
-    'home.cta.subtitle': 'Schließen Sie sich Tausenden von Menschen an, die ihr Leben verändern',
-    'home.cta.demo': 'Kostenlos testen',
-    'home.cta.corporate': 'Unternehmenslösungen',
-    'home.compliance.title': 'Unternehmens-Rechtskonformität',
-    'home.compliance.subtitle': 'Vollständige Einhaltung der brasilianischen Gesetzgebung',
-
-    // Acupressure page
-    'acupressure.title': 'Integrierte Therapie',
-    'acupressure.subtitle': 'Akupressur + 4-7-8-Atmung + Farbtherapie + Harmonisierende Klänge',
-    'acupressure.categories.all': 'Alle Punkte',
-    'acupressure.categories.general': 'Allgemeine TCM',
-    'acupressure.categories.cranio': 'Kraniopunktur',
-    'acupressure.categories.septicemia': 'Sepsis',
-    'acupressure.categories.atm': 'Kiefergelenk',
-    'acupressure.point.benefits': 'Wofür es ist',
-    'acupressure.point.location': 'Lage',
-    'acupressure.point.instructions': 'Wie anwenden',
-    'acupressure.point.duration': 'Dauer',
-    'acupressure.point.pressure': 'Druck',
-    'acupressure.timer.active': 'Aktive Therapie',
-    'acupressure.timer.start': 'Integrierte Therapie Starten',
-    'acupressure.timer.stop': 'Stoppen',
-    'acupressure.timer.reset': 'Zurücksetzen',
-    'acupressure.timer.switch': 'Zu diesem Punkt Wechseln',
-    'acupressure.premium.unlock': 'Premium Freischalten',
-    'acupressure.premium.exclusive': 'Premium Punkt',
-    'acupressure.select.title': 'Punkt Auswählen',
-    'acupressure.select.subtitle': 'Klicken Sie auf einen beliebigen Punkt, um die vollständige integrierte Therapie zu starten',
-    'acupressure.integrated.description': 'Integrierte Therapie: Präzise Timer-Akupressur, Synchronisierte 4-7-8-Atmung, Lebendige Farbtherapie, Optionale harmonisierende Klänge',
-
-    // Corporate page
-    'corporate.hero.title': 'B2B Unternehmenslösungen',
-    'corporate.hero.subtitle': 'Verwandeln Sie das Wohlbefinden Ihres Unternehmens mit Technologie und Daten',
-    'corporate.benefits.title': 'Warum XZenPress B2B wählen?',
-    'corporate.benefits.compliance': 'Rechtliche Compliance',
-    'corporate.benefits.compliance.desc': 'Vollständige Einhaltung von Gesetz 14.831/2024 und NR-1',
-    'corporate.benefits.roi': 'Bewiesener ROI',
-    'corporate.benefits.roi.desc': 'Kapitalrendite in 6 Monaten',
-    'corporate.benefits.engagement': 'Engagement',
-    'corporate.benefits.engagement.desc': '40% Steigerung des Mitarbeiterwohlbefindens',
-    'corporate.benefits.certification': 'Zertifizierung',
-    'corporate.benefits.certification.desc': 'Siegel für Mental Health Förderunternehmen',
-    'corporate.plans.title': 'Unternehmenspläne',
-    'corporate.plans.subtitle': 'Vollständige Wellness-Lösungen für Unternehmen aller Größen',
-    'corporate.analytics.title': 'B2B Analytics',
-    'corporate.analytics.subtitle': 'Datenintelligenz zur Optimierung des Unternehmenswohlbefindens',
-    'corporate.roi.title': 'Bewiesener ROI',
-    'corporate.roi.subtitle': 'Unternehmen, die XZenPress implementiert haben, berichten:',
-    'corporate.roi.stress': 'Stressreduktion',
-    'corporate.roi.absences': 'Weniger Fehlzeiten',
-    'corporate.roi.engagement': 'Höheres Engagement',
-    'corporate.roi.return': 'Kapitalrendite',
-    'corporate.contact.title': 'Bereit, Ihr Unternehmen zu transformieren?',
-    'corporate.contact.subtitle': 'Sprechen Sie mit unseren Spezialisten und erhalten Sie ein personalisiertes Angebot'
-  },
-
-  fr: {
-    // Navigation
-    'nav.home': 'Accueil',
-    'nav.acupressure': 'Acupression',
-    'nav.breathing': 'Respiration',
-    'nav.premium': 'Premium',
-    'nav.corporate': 'Entreprise',
-    'nav.dashboard': 'Tableau de bord',
-    'nav.sounds': 'Sons',
-    'nav.progress': 'Progrès',
-    'nav.personalization': 'Personnalisation',
-    'nav.login': 'Connexion',
-    'nav.logout': 'Déconnexion',
-
-    // Accueil
-    'home.hero.title': 'Transformez votre vie avec des thérapies holistiques',
-    'home.hero.subtitle': 'Transmuter avec des thérapies intégrateur basées sur des preuves scientifiques',
-    'home.hero.startNow': 'Commencer maintenant',
-    'home.hero.createAccount': 'Créer un compte',
-    'home.features.title': 'Fonctionnalités complètes',
-    'home.features.subtitle': 'Tout ce dont vous avez besoin pour votre bien-être',
-    'home.feature.acupressure.title': 'Acupression MTC',
-    'home.feature.acupressure.desc': '20 points thérapeutiques de Médecine Traditionnelle Chinoise',
-    'home.feature.cranio.title': 'Craniopuncture',
-    'home.feature.cranio.desc': 'Techniques crâniennes pour mémoire, concentration et anxiété',
-    'home.feature.breathing.title': 'Respiration 4-7-8',
-    'home.feature.breathing.desc': 'Technique scientifique avec minuteur et chromothérapie intégrée',
-    'home.feature.chromotherapy.title': 'Chromothérapie',
-    'home.feature.chromotherapy.desc': 'Couleurs thérapeutiques basées sur les neurosciences',
-    'home.feature.sounds.title': 'Sons harmonisants',
-    'home.feature.sounds.desc': 'Bibliothèque complète + intégration Spotify Premium',
-    'home.feature.consultation.title': 'Consultations WhatsApp',
-    'home.cta.title': 'Prêt à commencer?',
-    'home.cta.subtitle': 'Rejoignez des milliers de personnes transformant leur vie',
-    'home.cta.demo': 'Essayer gratuitement',
-    'home.cta.corporate': 'Solutions d\'entreprise',
-    'home.compliance.title': 'Conformité légale d\'entreprise',
-    'home.compliance.subtitle': 'Conformité complète avec la législation brésilienne',
-
-    // Acupressure page
-    'acupressure.title': 'Thérapie Intégrée',
-    'acupressure.subtitle': 'Acupression + Respiration 4-7-8 + Chromothérapie + Sons Harmonisants',
-    'acupressure.categories.all': 'Tous les Points',
-    'acupressure.categories.general': 'MTC Général',
-    'acupressure.categories.cranio': 'Craniopuncture',
-    'acupressure.categories.septicemia': 'Septicémie',
-    'acupressure.categories.atm': 'ATM',
-    'acupressure.point.benefits': 'À quoi ça sert',
-    'acupressure.point.location': 'Emplacement',
-    'acupressure.point.instructions': 'Comment appliquer',
-    'acupressure.point.duration': 'Durée',
-    'acupressure.point.pressure': 'Pression',
-    'acupressure.timer.active': 'Thérapie Active',
-    'acupressure.timer.start': 'Commencer Thérapie Intégrée',
-    'acupressure.timer.stop': 'Arrêter',
-    'acupressure.timer.reset': 'Réinitialiser',
-    'acupressure.timer.switch': 'Passer à ce Point',
-    'acupressure.premium.unlock': 'Débloquer Premium',
-    'acupressure.premium.exclusive': 'Point Premium',
-    'acupressure.select.title': 'Sélectionner un Point',
-    'acupressure.select.subtitle': 'Cliquez sur n\'importe quel point pour commencer la thérapie intégrée complète',
-    'acupressure.integrated.description': 'Thérapie Intégrée : Acupression avec minuteur précis, Respiration 4-7-8 synchronisée, Chromothérapie vibrante, Sons harmonisants optionnels',
-
-    // Corporate page
-    'corporate.hero.title': 'Solutions d\'Entreprise B2B',
-    'corporate.hero.subtitle': 'Transformez le bien-être de votre entreprise avec la technologie et les données',
-    'corporate.benefits.title': 'Pourquoi choisir XZenPress B2B ?',
-    'corporate.benefits.compliance': 'Conformité Légale',
-    'corporate.benefits.compliance.desc': 'Conformité complète avec la Loi 14.831/2024 et NR-1',
-    'corporate.benefits.roi': 'ROI Prouvé',
-    'corporate.benefits.roi.desc': 'Retour sur investissement en 6 mois',
-    'corporate.benefits.engagement': 'Engagement',
-    'corporate.benefits.engagement.desc': '40% d\'augmentation du bien-être des employés',
-    'corporate.benefits.certification': 'Certification',
-    'corporate.benefits.certification.desc': 'Sceau d\'Entreprise Promotrice de Santé Mentale',
-    'corporate.plans.title': 'Plans d\'Entreprise',
-    'corporate.plans.subtitle': 'Solutions de bien-être complètes pour entreprises de toutes tailles',
-    'corporate.analytics.title': 'Analytics B2B',
-    'corporate.analytics.subtitle': 'Intelligence de données pour optimiser le bien-être d\'entreprise',
-    'corporate.roi.title': 'ROI Prouvé',
-    'corporate.roi.subtitle': 'Les entreprises qui ont implémenté XZenPress rapportent :',
-    'corporate.roi.stress': 'Réduction du stress',
-    'corporate.roi.absences': 'Moins d\'absences',
-    'corporate.roi.engagement': 'Engagement plus élevé',
-    'corporate.roi.return': 'Retour sur investissement',
-    'corporate.contact.title': 'Prêt à transformer votre entreprise ?',
-    'corporate.contact.subtitle': 'Parlez à nos spécialistes et recevez une proposition personnalisée'
-  }
-};
-
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]); // Português como padrão
-
-  useEffect(() => {
-    // Carregar idioma salvo ou detectar idioma do navegador
-    const savedLanguage = localStorage.getItem('xzenpress_language');
-    if (savedLanguage) {
-      const found = languages.find(lang => lang.code === savedLanguage);
-      if (found) {
-        setCurrentLanguage(found);
-        return;
-      }
-    }
-
-    // Detectar idioma do navegador
-    const browserLang = navigator.language.split('-')[0];
-    const detected = languages.find(lang => lang.code === browserLang);
-    if (detected) {
-      setCurrentLanguage(detected);
-    }
-  }, []);
-
-  const setLanguage = (language: Language) => {
-    setCurrentLanguage(language);
-    localStorage.setItem('xzenpress_language', language.code);
-    
-    // Atualizar direção do texto para idiomas RTL
-    document.documentElement.dir = language.direction;
-    document.documentElement.lang = language.code;
-  };
-
-  const t = (key: string): string => {
-    const translation = translations[currentLanguage.code]?.[key];
-    if (translation) {
-      return translation;
-    }
-    
-    // Fallback para português se a tradução não existir
-    const fallback = translations.pt[key];
-    if (fallback) {
-      return fallback;
-    }
-    
-    // Se nem o fallback existir, retornar a chave
-    console.warn(`Translation missing for key: ${key} in language: ${currentLanguage.code}`);
-    return key;
-  };
-
-  return (
-    <LanguageContext.Provider value={{ currentLanguage, setLanguage, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
-};
+    'corporate.roi.return': 'Возвр
