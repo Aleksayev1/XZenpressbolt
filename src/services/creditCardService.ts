@@ -218,7 +218,6 @@ export class MockCreditCardProvider implements CreditCardProvider {
     const cardNumber = cardData.number.replace(/\s/g, '');
     
     // Cartão de teste para falha
-    const cardNumber = cardData.number.replace(/\s/g, '');
     console.log('🔍 Testando cartão mock:', cardNumber);
     
     // Cartões de teste para diferentes cenários
