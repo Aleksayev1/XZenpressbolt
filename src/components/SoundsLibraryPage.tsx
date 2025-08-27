@@ -33,12 +33,15 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
   // Verificar configuração do Spotify
   useEffect(() => {
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    console.log('🔍 Verificando Spotify Client ID:', clientId ? clientId.substring(0, 10) + '...' : 'NÃO CONFIGURADO');
+    
     if (clientId && clientId !== 'seu_spotify_client_id') {
       setSpotifyClientId(clientId);
       setSpotifyConnected(true);
       console.log('✅ Spotify configurado:', clientId.substring(0, 10) + '...');
     } else {
-      console.log('⚠️ Spotify não configurado - usando links diretos');
+      console.log('⚠️ Spotify não configurado - adicione VITE_SPOTIFY_CLIENT_ID no Netlify');
+      console.log('📝 Para configurar: Dashboard Spotify → App Settings → Client ID');
     }
   }, []);
 

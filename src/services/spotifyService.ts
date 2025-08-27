@@ -39,7 +39,18 @@ export class SpotifyService {
   // Verificar se Spotify está configurado
   static isConfigured(): boolean {
     const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-    return !!(clientId && clientId !== 'seu_spotify_client_id' && clientId.length > 10);
+    const isConfigured = !!(clientId && clientId !== 'seu_spotify_client_id' && clientId.length > 10);
+    
+    console.log('🎵 Spotify Status:', isConfigured ? '✅ CONFIGURADO' : '❌ NÃO CONFIGURADO');
+    if (!isConfigured) {
+      console.log('📋 Para ativar Spotify:');
+      console.log('1. Acesse: https://developer.spotify.com/dashboard');
+      console.log('2. Crie um app ou use existente');
+      console.log('3. Copie o Client ID');
+      console.log('4. Adicione no Netlify: VITE_SPOTIFY_CLIENT_ID=seu_client_id');
+    }
+    
+    return isConfigured;
   }
 
   // Obter URL de autorização
