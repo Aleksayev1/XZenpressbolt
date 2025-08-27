@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-anon-key'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://seu-projeto.supabase.co'
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sua-chave-anonima'
 
-// Only create client if both variables are properly set (not placeholders)
-const isSupabaseConfigured = supabaseUrl !== 'https://placeholder.supabase.co' && 
-                            supabaseAnonKey !== 'placeholder-anon-key' &&
+// Create client - ready for production
+const isSupabaseConfigured = supabaseUrl !== 'https://seu-projeto.supabase.co' && 
+                            supabaseAnonKey !== 'sua-chave-anonima' &&
                             supabaseUrl && supabaseAnonKey
 
 export const supabase = isSupabaseConfigured 
