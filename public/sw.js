@@ -1,23 +1,32 @@
-// XZenPress Service Worker - Advanced PWA Strategy
-const CACHE_NAME = 'xzenpress-v2.0.0';
-const STATIC_CACHE = 'xzenpress-static-v2.0.0';
-const DYNAMIC_CACHE = 'xzenpress-dynamic-v2.0.0';
+// XZenPress Service Worker - PWABuilder Optimized
+const CACHE_NAME = 'xzenpress-v2.4.0';
+const STATIC_CACHE = 'xzenpress-static-v2.4.0';
+const DYNAMIC_CACHE = 'xzenpress-dynamic-v2.4.0';
+const SOUNDS_CACHE = 'xzenpress-sounds-v2.4.0';
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
   '/',
-  '/static/js/main.js',
-  '/static/css/main.css',
+  '/index.html',
   '/manifest.json',
-  '/favicon.ico',
-  '/logo192.png',
-  '/logo512.png'
+  '/Logo Xzenpress oficial.png',
+  '/sounds/ocean.mp3',
+  '/sounds/rain.mp3'
 ];
 
 // Dynamic content patterns
 const DYNAMIC_PATTERNS = [
   /\/api\//,
   /\/images\//,
+  /\/sounds\//,
+  /\/assets\//
+];
+
+// Sounds patterns for special caching
+const SOUNDS_PATTERNS = [
+  /\.mp3$/,
+  /\.wav$/,
+  /\.ogg$/,
   /\/sounds\//
 ];
 
@@ -30,7 +39,8 @@ self.addEventListener('install', event => {
         console.log('XZenPress SW: Caching static assets');
         return cache.addAll(STATIC_ASSETS);
       }),
-      caches.open(DYNAMIC_CACHE)
+      caches.open(DYNAMIC_CACHE),
+      caches.open(SOUNDS_CACHE)
     ])
   );
   self.skipWaiting();
@@ -43,7 +53,7 @@ self.addEventListener('activate', event => {
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+          if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE && cacheName !== SOUNDS_CACHE) {
             console.log('XZenPress SW: Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
@@ -67,6 +77,26 @@ self.addEventListener('fetch', event => {
 
   event.respondWith(
     (async () => {
+      // Cache first for sounds (large files)
+      if (SOUNDS_PATTERNS.some(pattern => pattern.test(url.pathname))) {
+        const cachedResponse = await caches.match(request);
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        
+        try {
+          const networkResponse = await fetch(request);
+          if (networkResponse.ok) {
+            const cache = await caches.open(SOUNDS_CACHE);
+            cache.put(request, networkResponse.clone());
+          }
+          return networkResponse;
+        } catch (error) {
+          // Return cached version if network fails
+          return cachedResponse || new Response('Sound not available offline', { status: 404 });
+        }
+      }
+
       // Try cache first for static assets
       if (STATIC_ASSETS.some(asset => url.pathname.endsWith(asset))) {
         const cachedResponse = await caches.match(request);
