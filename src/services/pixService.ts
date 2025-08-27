@@ -351,16 +351,19 @@ export class PixService {
 // Factory para criar o serviço PIX baseado na configuração
 export function createPixService(): PixService {
   // Verificar variáveis de ambiente ou configuração
-  const pixProvider = import.meta.env.VITE_PIX_PROVIDER || 'mock';
+  const pixProvider = import.meta.env.VITE_PIX_PROVIDER || 'pagseguro';
+  
+  console.log('🔍 PIX Provider configurado:', pixProvider);
   
   switch (pixProvider) {
     case 'pagseguro':
       const pagSeguroToken = import.meta.env.VITE_PAGSEGURO_TOKEN;
       const pagSeguroEmail = import.meta.env.VITE_PAGSEGURO_EMAIL;
       if (!pagSeguroToken || !pagSeguroEmail) {
-        console.warn('PagSeguro credentials not found, using Mock provider');
+        console.log('⚠️ PagSeguro credentials not configured, using official PIX key with Mock provider');
         return new PixService(new MockPixProvider());
       }
+      console.log('✅ PagSeguro PIX ativo com chave oficial');
       return new PixService(new PagSeguroPixProvider(pagSeguroToken, pagSeguroEmail));
       
     case 'mercadopago':

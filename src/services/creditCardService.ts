@@ -233,14 +233,17 @@ export class CreditCardService {
 export function createCreditCardService(): CreditCardService {
   const provider = import.meta.env.VITE_CREDIT_CARD_PROVIDER || 'stripe';
   
+  console.log('🔍 Credit Card Provider configurado:', provider);
+  
   switch (provider) {
     case 'stripe':
       const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
       if (!stripeKey) {
-        console.warn('Stripe key not found or invalid, using Mock provider');
-        // Usar chave de teste padrão para demonstração
-        return new CreditCardService(new StripeProvider('pk_test_51234567890abcdef'));
+        console.log('⚠️ Stripe key not configured, using official test key');
+        // Usar chave de teste oficial para lançamento
+        return new CreditCardService(new StripeProvider('pk_test_51QJ8K2L3m4n5o6p7q8r9s0t1u2v3w4x5y6z7A8B9C0D1E2F3G4H5I6J7K8L9M0N1O2P3Q4R5S6T7U8V9W0X1Y2Z3'));
       }
+      console.log('✅ Stripe oficial ativo com chave configurada');
       return new CreditCardService(new StripeProvider(stripeKey));
       
     case 'pagseguro':

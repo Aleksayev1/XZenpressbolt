@@ -1,16 +1,25 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://seu-projeto.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sua-chave-anonima'
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
 
 // Create client - ready for production
-const isSupabaseConfigured = supabaseUrl !== 'https://seu-projeto.supabase.co' && 
-                            supabaseAnonKey !== 'sua-chave-anonima' &&
+const isSupabaseConfigured = supabaseUrl && supabaseUrl.includes('supabase.co') && 
+                            supabaseAnonKey && supabaseAnonKey.startsWith('eyJ') &&
                             supabaseUrl && supabaseAnonKey
 
 export const supabase = isSupabaseConfigured 
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null
+
+// Log configuration status
+if (typeof window !== 'undefined') {
+  if (isSupabaseConfigured) {
+    console.log('✅ Supabase configurado e ativo:', supabaseUrl.substring(0, 30) + '...')
+  } else {
+    console.log('⚠️ Supabase não configurado - usando modo local')
+  }
+}
 
 export interface CorporateLeadData {
   name: string
