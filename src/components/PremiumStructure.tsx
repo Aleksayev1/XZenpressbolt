@@ -444,7 +444,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
                 <div className="bg-white rounded-lg p-3 mb-4 border border-green-200">
                   <div className="flex items-center space-x-2 text-green-700">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm font-medium">PIX Real Ativo - Chave: aleksayevacupress@gmail.com</span>
+                    <span className="text-sm font-medium">✅ PIX OFICIAL ATIVO - aleksayevacupress@gmail.com</span>
                   </div>
                 </div>
                 {pixPaymentData && (

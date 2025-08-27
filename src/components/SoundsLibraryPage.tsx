@@ -20,6 +20,8 @@ interface Sound {
 
 export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
+  const [spotifyConnected, setSpotifyConnected] = useState(false);
+  const [spotifyClientId, setSpotifyClientId] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [currentSound, setCurrentSound] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -27,6 +29,18 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Verificar configuração do Spotify
+  useEffect(() => {
+    const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+    if (clientId && clientId !== 'seu_spotify_client_id') {
+      setSpotifyClientId(clientId);
+      setSpotifyConnected(true);
+      console.log('✅ Spotify configurado:', clientId.substring(0, 10) + '...');
+    } else {
+      console.log('⚠️ Spotify não configurado - usando links diretos');
+    }
+  }, []);
 
   const categories = [
     { id: 'all', name: 'Todos os Sons', icon: '🎵' },
@@ -493,7 +507,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
               </a>
             </div>
             <button className="bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors">
-              Conectar Spotify Premium
+              {spotifyConnected ? '✅ Spotify Conectado' : 'Conectar Spotify Premium'}
             </button>
           </div>
         </div>
