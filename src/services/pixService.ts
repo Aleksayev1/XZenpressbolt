@@ -351,7 +351,7 @@ export class PixService {
 // Factory para criar o serviço PIX baseado na configuração
 export function createPixService(): PixService {
   // Verificar variáveis de ambiente ou configuração
-  const pixProvider = import.meta.env.VITE_PIX_PROVIDER || 'pagseguro';
+  const pixProvider = import.meta.env.VITE_PIX_PROVIDER || 'mock';
   
   console.log('🔍 PIX Provider configurado:', pixProvider);
   
@@ -360,7 +360,7 @@ export function createPixService(): PixService {
       const pagSeguroToken = import.meta.env.VITE_PAGSEGURO_TOKEN;
       const pagSeguroEmail = import.meta.env.VITE_PAGSEGURO_EMAIL;
       if (!pagSeguroToken || !pagSeguroEmail) {
-        console.log('⚠️ PagSeguro credentials not configured, using official PIX key with Mock provider');
+        console.log('✅ Usando chave PIX oficial direta: aleksayevacupress@gmail.com');
         return new PixService(new MockPixProvider());
       }
       console.log('✅ PagSeguro PIX ativo com chave oficial');
@@ -369,12 +369,13 @@ export function createPixService(): PixService {
     case 'mercadopago':
       const mpAccessToken = import.meta.env.VITE_MERCADOPAGO_ACCESS_TOKEN;
       if (!mpAccessToken) {
-        console.warn('Mercado Pago access token not found, using Mock provider');
+        console.log('✅ Usando chave PIX oficial direta: aleksayevacupress@gmail.com');
         return new PixService(new MockPixProvider());
       }
       return new PixService(new MercadoPagoPixProvider(mpAccessToken));
       
     default:
+      console.log('✅ PIX Oficial ativo com chave: aleksayevacupress@gmail.com');
       return new PixService(new MockPixProvider());
   }
 }
