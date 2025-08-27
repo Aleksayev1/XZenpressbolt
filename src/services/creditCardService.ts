@@ -64,7 +64,10 @@ export class StripeProvider implements CreditCardProvider {
 
       // Verificar cartão de teste para recusa ANTES de processar
       const cardNumber = cardData.number.replace(/\s/g, '');
-      if (cardNumber === '4000000000000002') {
+      console.log('🔍 Verificando cartão:', cardNumber);
+      
+      // Cartões de teste para diferentes cenários
+      if (cardNumber === '4000000000000002' || cardNumber === '4000000000000069') {
         console.log('❌ Cartão de teste para recusa detectado');
         return {
           id: `stripe_declined_${Date.now()}`,
@@ -74,7 +77,37 @@ export class StripeProvider implements CreditCardProvider {
           orderId: paymentData.orderId,
           paymentMethod: 'credit_card',
           processedAt: new Date().toISOString(),
-          errorMessage: 'Seu cartão foi recusado. Código: card_declined'
+          errorMessage: 'Seu cartão foi recusado pelo banco emissor. Código: card_declined'
+        };
+      }
+      
+      // Cartão para teste de limite insuficiente
+      if (cardNumber === '4000000000000341') {
+        console.log('❌ Cartão de teste para limite insuficiente');
+        return {
+          id: `stripe_declined_${Date.now()}`,
+          status: 'declined',
+          amount: paymentData.amount,
+          currency: paymentData.currency,
+          orderId: paymentData.orderId,
+          paymentMethod: 'credit_card',
+          processedAt: new Date().toISOString(),
+          errorMessage: 'Limite insuficiente. Entre em contato com seu banco.'
+        };
+      }
+      
+      // Cartão para teste de CVV incorreto
+      if (cardNumber === '4000000000000127') {
+        console.log('❌ Cartão de teste para CVV incorreto');
+        return {
+          id: `stripe_declined_${Date.now()}`,
+          status: 'declined',
+          amount: paymentData.amount,
+          currency: paymentData.currency,
+          orderId: paymentData.orderId,
+          paymentMethod: 'credit_card',
+          processedAt: new Date().toISOString(),
+          errorMessage: 'CVV incorreto. Verifique o código de segurança.'
         };
       }
 
@@ -185,7 +218,12 @@ export class MockCreditCardProvider implements CreditCardProvider {
     const cardNumber = cardData.number.replace(/\s/g, '');
     
     // Cartão de teste para falha
-    if (cardNumber.startsWith('4000000000000002')) {
+    const cardNumber = cardData.number.replace(/\s/g, '');
+    console.log('🔍 Testando cartão mock:', cardNumber);
+    
+    // Cartões de teste para diferentes cenários
+    if (cardNumber === '4000000000000002' || cardNumber === '4000000000000069') {
+      console.log('❌ Simulando recusa de cartão');
       return {
         id: `mock_declined_${Date.now()}`,
         status: 'declined',
@@ -194,7 +232,21 @@ export class MockCreditCardProvider implements CreditCardProvider {
         orderId: paymentData.orderId,
         paymentMethod: 'credit_card',
         processedAt: new Date().toISOString(),
-        errorMessage: 'Transação não autorizada pelo banco emissor'
+        errorMessage: 'Cartão recusado pelo banco emissor. Tente outro cartão.'
+      };
+    }
+    
+    // Outros cartões de teste
+    if (cardNumber === '4000000000000341') {
+      return {
+        id: `mock_declined_${Date.now()}`,
+        status: 'declined',
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        orderId: paymentData.orderId,
+        paymentMethod: 'credit_card',
+        processedAt: new Date().toISOString(),
+        errorMessage: 'Limite insuficiente no cartão.'
       };
     }
 

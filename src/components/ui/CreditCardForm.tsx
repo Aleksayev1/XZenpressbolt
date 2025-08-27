@@ -337,10 +337,15 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         <div className="text-sm text-blue-700 space-y-1">
           <div><strong>✅ Visa Sucesso:</strong> 4242 4242 4242 4242</div>
           <div><strong>❌ Visa Recusado:</strong> 4000 0000 0000 0002</div>
+          <div><strong>💰 Limite Insuficiente:</strong> 4000 0000 0000 0341</div>
+          <div><strong>🔒 CVV Incorreto:</strong> 4000 0000 0000 0127</div>
           <div><strong>💳 Mastercard:</strong> 5555 5555 5555 4444</div>
           <div><strong>💎 Amex:</strong> 3782 822463 10005</div>
           <div className="bg-yellow-50 border border-yellow-200 rounded p-2 mt-2">
             <strong>📅 Data:</strong> Qualquer futura (ex: 12/25) • <strong>🔒 CVV:</strong> 123
+          </div>
+          <div className="bg-red-50 border border-red-200 rounded p-2 mt-2">
+            <strong>🧪 Teste de Recusa:</strong> Use 4000 0000 0000 0002 para simular cartão recusado
           </div>
         </div>
       </div>
