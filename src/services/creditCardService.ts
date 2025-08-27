@@ -62,6 +62,22 @@ export class StripeProvider implements CreditCardProvider {
         throw new Error('Stripe ainda não foi inicializado. Aguarde alguns segundos.');
       }
 
+      // Verificar cartão de teste para recusa ANTES de processar
+      const cardNumber = cardData.number.replace(/\s/g, '');
+      if (cardNumber === '4000000000000002') {
+        console.log('❌ Cartão de teste para recusa detectado');
+        return {
+          id: `stripe_declined_${Date.now()}`,
+          status: 'declined',
+          amount: paymentData.amount,
+          currency: paymentData.currency,
+          orderId: paymentData.orderId,
+          paymentMethod: 'credit_card',
+          processedAt: new Date().toISOString(),
+          errorMessage: 'Seu cartão foi recusado. Código: card_declined'
+        };
+      }
+
       // Criar token do cartão
       const { token, error } = await this.stripe.createToken('card', {
         number: cardData.number.replace(/\s/g, ''),
@@ -95,9 +111,6 @@ export class StripeProvider implements CreditCardProvider {
         amount: paymentData.amount,
         currency: paymentData.currency,
         orderId: paymentData.orderId,
-        payment_method: {
-          card: token.card
-        },
         paymentMethod: 'credit_card',
         card: {
           brand: token.card.brand,
