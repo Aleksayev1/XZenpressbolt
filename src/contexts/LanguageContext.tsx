@@ -1213,3 +1213,5 @@ const translations: Record<string, Record<string, string>> = {
     'corporate.roi.absences': 'Меньше отсутствий',
     'corporate.roi.engagement': 'Более высокая вовлеченность',
     'corporate.roi.return': 'Возврат за 6 месяцев',
+  }
+}
