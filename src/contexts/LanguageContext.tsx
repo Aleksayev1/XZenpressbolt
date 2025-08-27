@@ -1212,4 +1212,4 @@ const translations: Record<string, Record<string, string>> = {
     'corporate.roi.stress': 'Снижение стресса',
     'corporate.roi.absences': 'Меньше отсутствий',
     'corporate.roi.engagement': 'Более высокая вовлеченность',
-    'corporate.roi.return': 'Возвр
+    'corporate.roi.return': 'Возврат за 6 месяцев',
