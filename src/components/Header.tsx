@@ -29,11 +29,11 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
 
   const navItems = [
     { id: 'home' },
-    { id: 'blog' },
     { id: 'acupressure' },
     { id: 'breathing' },
     { id: 'premium' },
     { id: 'corporate' },
+    { id: 'blog' },
   ];
 
   // Adicionar itens premium apenas para usuários premium
