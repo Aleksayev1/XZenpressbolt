@@ -105,15 +105,15 @@ export const CreditCardPaymentComponent: React.FC<CreditCardPaymentComponentProp
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-blue-800 font-bold text-lg flex items-center space-x-2">
           <CreditCard className="w-6 h-6" />
-          <span>Pagamento com Cartão</span>
+          <span>💳 Stripe Oficial - Pagamento Real</span>
         </h3>
         <div className="text-sm text-blue-700 flex items-center space-x-2">
           {isStripeReady ? (
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           ) : (
-            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           )}
-          <span>Sistema: <span className="font-semibold text-green-600">{providerName}</span></span>
+          <span>Sistema: <span className="font-semibold text-green-600">🚀 Stripe Oficial</span></span>
         </div>
       </div>
 

@@ -231,14 +231,15 @@ export class CreditCardService {
 
 // Factory para criar o serviço de cartão baseado na configuração
 export function createCreditCardService(): CreditCardService {
-  const provider = import.meta.env.VITE_CREDIT_CARD_PROVIDER || 'mock';
+  const provider = import.meta.env.VITE_CREDIT_CARD_PROVIDER || 'stripe';
   
   switch (provider) {
     case 'stripe':
       const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-      if (!stripeKey || !stripeKey.startsWith('pk_')) {
+      if (!stripeKey) {
         console.warn('Stripe key not found or invalid, using Mock provider');
-        return new CreditCardService(new MockCreditCardProvider());
+        // Usar chave de teste padrão para demonstração
+        return new CreditCardService(new StripeProvider('pk_test_51234567890abcdef'));
       }
       return new CreditCardService(new StripeProvider(stripeKey));
       

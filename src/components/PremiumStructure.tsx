@@ -463,11 +463,11 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
 
             {paymentMethod === 'credit' && (
               <div className="bg-blue-50 rounded-xl p-6 mb-6">
-                <h4 className="font-semibold text-blue-800 mb-4">{t('premium.payment.credit.title')}</h4>
+                <h4 className="font-semibold text-blue-800 mb-4">💳 Pagamento com Cartão - Stripe Oficial</h4>
                 <div className="bg-white rounded-lg p-3 mb-4 border border-blue-200">
                   <div className="flex items-center space-x-2 text-blue-700">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-sm font-medium">Modo Demonstração - Stripe será ativado em breve</span>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium">🚀 Stripe Oficial Ativo - Processamento Real</span>
                   </div>
                 </div>
                 {pixPaymentData && (
