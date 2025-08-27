@@ -74,6 +74,37 @@ const translations: Record<string, Record<string, string>> = {
     'nav.personalization': 'Personalização',
     'nav.login': 'Entrar',
     'nav.logout': 'Sair',
+    
+    // Home page translations
+    'home.hero.title': 'XZenPress Wellness',
+    'home.hero.subtitle': 'Plataforma completa de bem-estar holístico com acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes',
+    'home.hero.startNow': 'Começar Agora',
+    'home.hero.createAccount': 'Criar Conta',
+    'home.hero.demo': 'Ver Demonstração',
+    'home.cta.title': 'Transforme sua Vida com Bem-estar Holístico',
+    'home.cta.subtitle': 'Junte-se a milhares de pessoas que já melhoraram sua qualidade de vida',
+    'home.cta.demo': 'Experimentar Grátis',
+    'home.cta.corporate': 'Soluções Corporativas',
+    'home.features.title': 'Recursos Completos de Bem-estar',
+    'home.features.subtitle': 'Tudo que você precisa para uma vida mais equilibrada e saudável',
+    
+    // Feature descriptions
+    'home.feature.acupressure.title': 'Acupressão MTC',
+    'home.feature.acupressure.desc': '20 pontos terapêuticos da Medicina Tradicional Chinesa com instruções detalhadas',
+    'home.feature.cranio.title': 'Craniopuntura',
+    'home.feature.cranio.desc': 'Técnicas avançadas de craniopuntura para problemas neurológicos e cognitivos',
+    'home.feature.breathing.title': 'Respiração 4-7-8',
+    'home.feature.breathing.desc': 'Técnica científica de respiração com cromoterapia integrada para reduzir ansiedade',
+    'home.feature.chromotherapy.title': 'Cromoterapia Avançada',
+    'home.feature.chromotherapy.desc': 'Terapia das cores sincronizada com respiração para potencializar os efeitos',
+    'home.feature.sounds.title': 'Sons Harmonizantes',
+    'home.feature.sounds.desc': 'Biblioteca de sons terapêuticos e integração com Spotify Premium',
+    'home.feature.consultation.title': 'Consulta Especializada',
+    'home.feature.consultation.desc': 'Atendimento personalizado via WhatsApp com profissional qualificado',
+    
+    // Compliance section
+    'home.compliance.title': 'Compliance Legal Completo',
+    'home.compliance.subtitle': 'Atendimento integral à legislação brasileira de saúde mental corporativa',
 
     // Home
     'home.hero.title': 'Evolua',
