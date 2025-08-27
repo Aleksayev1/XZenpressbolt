@@ -75,7 +75,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'nature',
       duration: '60:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY'
+      spotifyUrl: 'https://open.spotify.com/search/forest%20sounds%20meditation'
     },
     {
       id: 'fireplace-crackle',
@@ -85,7 +85,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'ambient',
       duration: '120:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI1i'
+      spotifyUrl: 'https://open.spotify.com/search/fireplace%20sounds%20relaxing'
     },
     {
       id: 'wind-chimes',
@@ -95,7 +95,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'ambient',
       duration: '40:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT'
+      spotifyUrl: 'https://open.spotify.com/search/wind%20chimes%20meditation'
     },
     {
       id: 'binaural-focus',
@@ -105,7 +105,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'binaural',
       duration: '30:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwAYIy1'
+      spotifyUrl: 'https://open.spotify.com/search/binaural%20beats%2040hz%20focus'
     },
     {
       id: 'binaural-sleep',
@@ -115,7 +115,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'binaural',
       duration: '480:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI1i'
+      spotifyUrl: 'https://open.spotify.com/search/delta%20waves%20sleep%20meditation'
     },
     {
       id: 'om-mantra',
@@ -125,7 +125,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'mantras',
       duration: '21:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY'
+      spotifyUrl: 'https://open.spotify.com/search/om%20mantra%20meditation'
     },
     {
       id: 'tibetan-bowls',
@@ -135,7 +135,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'mantras',
       duration: '35:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT'
+      spotifyUrl: 'https://open.spotify.com/search/tibetan%20singing%20bowls'
     }
   ];
 
@@ -469,17 +469,17 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <a
-                href="https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY"
+                href="https://open.spotify.com/search/meditation%20relaxation"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white rounded-lg p-4 hover:shadow-lg transition-all border border-green-200"
               >
                 <div className="text-2xl mb-2">🧘</div>
                 <div className="font-semibold text-gray-800">Meditação</div>
-                <div className="text-sm text-gray-600">Playlist oficial</div>
+                <div className="text-sm text-gray-600">Busca no Spotify</div>
               </a>
               <a
-                href="https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI1i"
+                href="https://open.spotify.com/search/sleep%20sounds%20nature"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white rounded-lg p-4 hover:shadow-lg transition-all border border-green-200"
@@ -489,7 +489,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
                 <div className="text-sm text-gray-600">Sons para dormir</div>
               </a>
               <a
-                href="https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT"
+                href="https://open.spotify.com/search/focus%20concentration%20music"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-white rounded-lg p-4 hover:shadow-lg transition-all border border-green-200"
