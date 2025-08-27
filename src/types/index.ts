@@ -86,3 +86,29 @@ export interface AIRecommendation {
   duration?: number;
   schedule?: string;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  author: string;
+  authorEmail?: string;
+  imageUrl?: string;
+  category: string;
+  tags: string[];
+  published: boolean;
+  publishedAt?: string;
+  views: number;
+  readingTime: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BlogCategory {
+  id: string;
+  name: string;
+  description: string;
+  postCount: number;
+}

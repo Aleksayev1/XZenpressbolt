@@ -13,6 +13,7 @@ import { SoundsLibraryPage } from './components/SoundsLibraryPage';
 import { ProgressTrackingPage } from './components/ProgressTrackingPage';
 import { PersonalizationPage } from './components/PersonalizationPage';
 import { DataDeletionPage } from './components/DataDeletionPage';
+import { BlogPage } from './components/BlogPage';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
@@ -46,6 +47,8 @@ function App() {
         return <PersonalizationPage onPageChange={setCurrentPage} />;
       case 'data-deletion':
         return <DataDeletionPage onPageChange={setCurrentPage} />;
+      case 'blog':
+        return <BlogPage onPageChange={setCurrentPage} />;
       default:
         return <HomePage onPageChange={setCurrentPage} />;
     }
