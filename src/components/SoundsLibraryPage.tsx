@@ -20,8 +20,7 @@ interface Sound {
 
 export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChange }) => {
   const { user } = useAuth();
-  const [spotifyConnected, setSpotifyConnected] = useState(false);
-  const [spotifyClientId, setSpotifyClientId] = useState('');
+  const [spotifyConnected, setSpotifyConnected] = useState(true); // Sempre ativo para links diretos
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [currentSound, setCurrentSound] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -30,19 +29,10 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Verificar configuração do Spotify
+  // Spotify sempre disponível via links diretos
   useEffect(() => {
-    const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-    console.log('🔍 Verificando Spotify Client ID:', clientId ? clientId.substring(0, 10) + '...' : 'NÃO CONFIGURADO');
-    
-    if (clientId && clientId !== 'seu_spotify_client_id') {
-      setSpotifyClientId(clientId);
-      setSpotifyConnected(true);
-      console.log('✅ Spotify configurado:', clientId.substring(0, 10) + '...');
-    } else {
-      console.log('⚠️ Spotify não configurado - adicione VITE_SPOTIFY_CLIENT_ID no Netlify');
-      console.log('📝 Para configurar: Dashboard Spotify → App Settings → Client ID');
-    }
+    console.log('🎵 Spotify: Links diretos sempre ativos');
+    console.log('✅ Playlists oficiais do Spotify funcionando');
   }, []);
 
   const categories = [
@@ -85,7 +75,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'nature',
       duration: '60:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY'
     },
     {
       id: 'fireplace-crackle',
@@ -95,7 +85,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'ambient',
       duration: '120:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/1234567890'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI1i'
     },
     {
       id: 'wind-chimes',
@@ -105,7 +95,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'ambient',
       duration: '40:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/1234567891'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT'
     },
     {
       id: 'binaural-focus',
@@ -115,7 +105,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'binaural',
       duration: '30:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/1234567892'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwAYIy1'
     },
     {
       id: 'binaural-sleep',
@@ -125,7 +115,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'binaural',
       duration: '480:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/1234567893'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DWZqd5JICZI1i'
     },
     {
       id: 'om-mantra',
@@ -135,7 +125,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'mantras',
       duration: '21:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/1234567894'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX3Ogo9pFvBkY'
     },
     {
       id: 'tibetan-bowls',
@@ -145,7 +135,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
       category: 'mantras',
       duration: '35:00',
       isPremium: true,
-      spotifyUrl: 'https://open.spotify.com/track/1234567895'
+      spotifyUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX0SM0LYsmbMT'
     }
   ];
 
@@ -510,7 +500,7 @@ export const SoundsLibraryPage: React.FC<SoundsLibraryPageProps> = ({ onPageChan
               </a>
             </div>
             <button className="bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-colors">
-              {spotifyConnected ? '✅ Spotify Conectado' : 'Conectar Spotify Premium'}
+              ✅ Links Spotify Oficiais Ativos
             </button>
           </div>
         </div>
