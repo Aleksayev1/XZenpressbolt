@@ -1,5 +1,12 @@
 # XZenPress - Plataforma de Bem-Estar Holística
 
+## 🚀 **LANÇAMENTO OFICIAL ATIVO**
+
+**URL de Produção:** Em breve no Netlify  
+**Repositório GitHub:** https://github.com/Aleksayev1/XZenpressbolt  
+**Status:** ✅ Pronto para deploy manual  
+**Versão:** 2.4.0 - Lançamento Oficial Completo  
+
 ## 🌟 Sobre o Projeto
 
 XZenPress é uma plataforma completa de bem-estar holístico que combina:
