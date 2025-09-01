@@ -14,12 +14,15 @@ import { ProgressTrackingPage } from './components/ProgressTrackingPage';
 import { PersonalizationPage } from './components/PersonalizationPage';
 import { DataDeletionPage } from './components/DataDeletionPage';
 import { BlogPage } from './components/BlogPage';
+import { FirstTimeBanner } from './components/FirstTimeBanner';
+import { TutorialModal } from './components/TutorialModal';
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const renderPage = () => {
     switch (currentPage) {
@@ -61,6 +64,16 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           <Header currentPage={currentPage} onPageChange={setCurrentPage} />
           {renderPage()}
+          
+          {/* First Time Banner */}
+          <FirstTimeBanner onStartTutorial={() => setShowTutorial(true)} />
+          
+          {/* Tutorial Modal */}
+          <TutorialModal 
+            isVisible={showTutorial}
+            onClose={() => setShowTutorial(false)}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </AuthProvider>
     </LanguageProvider>

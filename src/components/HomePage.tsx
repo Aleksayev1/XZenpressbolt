@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Play, Heart, Brain, Palette, Music, Star, ArrowRight, BarChart3, User } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -10,6 +10,16 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
   const { t } = useLanguage();
   const [showTherapySelection, setShowTherapySelection] = useState(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(false);
+
+  useEffect(() => {
+    // Mostrar mensagem de boas-vindas se for primeira visita
+    const hasVisited = localStorage.getItem('xzenpress_has_visited');
+    if (!hasVisited) {
+      setShowWelcomeMessage(true);
+      localStorage.setItem('xzenpress_has_visited', 'true');
+    }
+  }, []);
 
   const features = [
     {

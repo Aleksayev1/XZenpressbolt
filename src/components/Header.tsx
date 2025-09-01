@@ -137,6 +137,20 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
             {/* User Actions */}
             {user ? (
               <div className="flex items-center space-x-3">
+                {/* Tutorial Button for logged users */}
+                <button
+                  onClick={() => {
+                    localStorage.removeItem('xzenpress_tutorial_seen');
+                    localStorage.removeItem('xzenpress_banner_dismissed');
+                    window.location.reload();
+                  }}
+                  className="flex items-center space-x-1 px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                  title="Rever tutorial"
+                >
+                  <Play className="w-4 h-4" />
+                  <span>Tutorial</span>
+                </button>
+                
                 <div className="flex items-center space-x-2">
                   <User className="w-4 h-4 text-gray-600" />
                   <span className="text-sm text-gray-700">{user.name}</span>
