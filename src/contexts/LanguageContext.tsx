@@ -38,7 +38,7 @@ const translations = {
 
     // Home Page
     'home.hero.title': 'XZenPress Wellness',
-    'home.hero.subtitle': 'Plataforma completa de bem-estar holístico com acupressão MTC, respiração 4-7-8 e cromoterapia avançada',
+    'home.hero.subtitle': 'Plataforma completa de bem-estar integrativa com acupressão MTC, Craniopuntura, respiração 4-7-8 e cromoterapia avançada',
     'home.hero.startNow': 'Começar Agora',
     'home.hero.createAccount': 'Criar Conta',
 
@@ -57,19 +57,19 @@ const translations = {
     'home.feature.consultation.desc': 'Atendimento personalizado via WhatsApp com profissional qualificado',
 
     'home.features.title': 'Recursos Terapêuticos',
-    'home.features.subtitle': 'Combine técnicas milenares com tecnologia moderna para máximo bem-estar',
+    'home.features.subtitle': 'Combine técnicas milenares com tecnologia moderna para máximo bem-estar integrativo',
 
     'home.cta.title': 'Transforme sua Qualidade de Vida',
-    'home.cta.subtitle': 'Junte-se a milhares de pessoas que já descobriram o poder das terapias holísticas',
+    'home.cta.subtitle': 'Junte-se a milhares de pessoas que já descobriram o poder das terapias integrativas',
     'home.cta.demo': 'Experimentar Grátis',
     'home.cta.corporate': 'Soluções Corporativas',
 
     'home.compliance.title': 'Compliance Legal Completo',
-    'home.compliance.subtitle': 'Atendimento integral à legislação brasileira de saúde mental corporativa',
+    'home.compliance.subtitle': 'Atendimento integral à legislação brasileira de saúde mental corporativa com abordagem integrativa',
 
     // Acupressure Page
     'acupressure.title': 'Pontos de Acupressão',
-    'acupressure.subtitle': 'Medicina Tradicional Chinesa com terapia integrada: acupressão + respiração + cromoterapia',
+    'acupressure.subtitle': 'Medicina Tradicional Chinesa e Craniopuntura com terapia integrativa: acupressão + respiração + cromoterapia',
     'acupressure.categories.all': 'Todos os Pontos',
     'acupressure.categories.general': 'MTC Geral',
     'acupressure.categories.cranio': 'Craniopuntura',
@@ -124,7 +124,7 @@ const translations = {
 
     // Premium Page
     'premium.hero.title': 'Desbloqueie Todo o Potencial',
-    'premium.hero.subtitle': 'Acesso completo a consultas especializadas e recursos exclusivos',
+    'premium.hero.subtitle': 'Acesso completo a consultas especializadas e recursos exclusivos de medicina integrativa',
     'premium.hero.upgrade': 'Fazer Upgrade',
     'premium.hero.active': 'Premium Ativo',
 
@@ -233,7 +233,7 @@ const translations = {
 
     // Corporate Page
     'corporate.hero.title': 'Soluções Corporativas',
-    'corporate.hero.subtitle': 'Bem-estar holístico para empresas com compliance legal completo',
+    'corporate.hero.subtitle': 'Bem-estar integrativo para empresas com compliance legal completo',
     'corporate.plans.title': 'Planos Corporativos',
     'corporate.analytics.title': 'Analytics Empresariais',
     'corporate.roi.title': 'ROI Comprovado',
@@ -334,7 +334,7 @@ const translations = {
 
     // Home Page
     'home.hero.title': 'XZenPress Wellness',
-    'home.hero.subtitle': 'Complete holistic wellness platform with TCM acupressure, 4-7-8 breathing and advanced chromotherapy',
+    'home.hero.subtitle': 'Complete integrative wellness platform with TCM acupressure, Craniopuncture, 4-7-8 breathing and advanced chromotherapy',
     'home.hero.startNow': 'Start Now',
     'home.hero.createAccount': 'Create Account',
 
@@ -353,15 +353,15 @@ const translations = {
     'home.feature.consultation.desc': 'Personalized care via WhatsApp with qualified professional',
 
     'home.features.title': 'Therapeutic Resources',
-    'home.features.subtitle': 'Combine ancient techniques with modern technology for maximum wellness',
+    'home.features.subtitle': 'Combine ancient techniques with modern technology for maximum integrative wellness',
 
     'home.cta.title': 'Transform Your Quality of Life',
-    'home.cta.subtitle': 'Join thousands who have discovered the power of holistic therapies',
+    'home.cta.subtitle': 'Join thousands who have discovered the power of integrative therapies',
     'home.cta.demo': 'Try Free',
     'home.cta.corporate': 'Corporate Solutions',
 
     'home.compliance.title': 'Complete Legal Compliance',
-    'home.compliance.subtitle': 'Full compliance with Brazilian corporate mental health legislation',
+    'home.compliance.subtitle': 'Full compliance with Brazilian corporate mental health legislation with integrative approach',
 
     // Breathing Exercise
     'breathing.title': '4-7-8 Breathing with Chromotherapy',
@@ -391,7 +391,7 @@ const translations = {
 
     // Home Page
     'home.hero.title': 'XZenPress Bienestar',
-    'home.hero.subtitle': 'Plataforma completa de bienestar holístico con acupresión MTC, respiración 4-7-8 y cromoterapia avanzada',
+    'home.hero.subtitle': 'Plataforma completa de bienestar integrativo con acupresión MTC, Craniopuntura, respiración 4-7-8 y cromoterapia avanzada',
     'home.hero.startNow': 'Comenzar Ahora',
     'home.hero.createAccount': 'Crear Cuenta'
   }

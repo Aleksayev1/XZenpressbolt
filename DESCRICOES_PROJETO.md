@@ -10,7 +10,7 @@
 
 ## 📄 **DESCRIÇÃO COMPLETA (4000 caracteres)**
 
-**XZenPress** é uma plataforma revolucionária de bem-estar holístico que combina **Medicina Tradicional Chinesa (MTC)**, **respiração científica 4-7-8** e **cromoterapia avançada** em uma experiência digital única e transformadora.
+**XZenPress** é uma plataforma revolucionária de bem-estar integrativa que combina **Medicina Tradicional Chinesa (MTC)**, **Craniopuntura**, **respiração científica 4-7-8** e **cromoterapia avançada** em uma experiência digital única e transformadora.
 
 ### 🎯 **FUNCIONALIDADES PRINCIPAIS**
 

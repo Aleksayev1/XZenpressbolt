@@ -3,7 +3,7 @@
 
 ### 📋 RESUMO EXECUTIVO
 
-**Nome do Projeto:** XZenPress - Plataforma de Bem-Estar Holística  
+**Nome do Projeto:** XZenPress - Plataforma de Bem-Estar Integrativa  
 **Versão:** 2.1.0  
 **Status:** 🚀 **LANÇADO OFICIALMENTE**  
 **Data de Conclusão:** Janeiro 2025  

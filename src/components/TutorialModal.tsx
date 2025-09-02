@@ -31,7 +31,7 @@ export const TutorialModal: React.FC<TutorialModalProps> = ({
     {
       id: 1,
       title: '🌟 Bem-vindo ao XZenPress!',
-      description: 'Sua plataforma completa de bem-estar holístico que combina Medicina Tradicional Chinesa, respiração científica e cromoterapia.',
+      description: 'Sua plataforma completa de bem-estar integrativa que combina Medicina Tradicional Chinesa, Craniopuntura, respiração científica e cromoterapia.',
       icon: <Heart className="w-8 h-8 text-red-500" />,
       tips: [
         'Plataforma 100% baseada em evidências científicas',
