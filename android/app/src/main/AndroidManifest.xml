@@ -56,6 +56,25 @@
                       android:host="xzenpress.com" />
             </intent-filter>
 
+            <!-- Intent filter adicional para paths específicos -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                      android:host="xzenpress.com"
+                      android:pathPattern="/.*" />
+            </intent-filter>
+
+            <!-- Intent filter para credenciais -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                      android:host="xzenpress.com" />
+            </intent-filter>
+
         </activity>
 
         <!-- Provider para compartilhamento de arquivos -->
