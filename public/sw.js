@@ -1,8 +1,8 @@
 // XZenPress Service Worker - PWABuilder Optimized
-const CACHE_NAME = 'xzenpress-v2.4.0';
-const STATIC_CACHE = 'xzenpress-static-v2.4.0';
-const DYNAMIC_CACHE = 'xzenpress-dynamic-v2.4.0';
-const SOUNDS_CACHE = 'xzenpress-sounds-v2.4.0';
+const CACHE_NAME = 'xzenpress-v2.5.0';
+const STATIC_CACHE = 'xzenpress-static-v2.5.0';
+const DYNAMIC_CACHE = 'xzenpress-dynamic-v2.5.0';
+const SOUNDS_CACHE = 'xzenpress-sounds-v2.5.0';
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [

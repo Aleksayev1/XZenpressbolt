@@ -9,6 +9,20 @@
   status = 301
   force = true
 
+# Redirect www to non-www
+[[redirects]]
+  from = "https://www.xzenpress.com/*"
+  to = "https://xzenpress.com/:splat"
+  status = 301
+  force = true
+
+# Redirect old URLs if any
+[[redirects]]
+  from = "https://*.netlify.app/*"
+  to = "https://xzenpress.com/:splat"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -18,6 +32,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     X-XSS-Protection = "1; mode=block"
