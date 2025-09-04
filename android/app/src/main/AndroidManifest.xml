@@ -53,7 +53,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"
-                      android:host="xzenpress.com" />
+                      android:host="xzenpressbolt.netlify.app" />
             </intent-filter>
 
             <!-- Intent filter adicional para paths específicos -->
@@ -62,7 +62,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"
-                      android:host="xzenpress.com"
+                      android:host="xzenpressbolt.netlify.app"
                       android:pathPattern="/.*" />
             </intent-filter>
 
@@ -72,7 +72,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"
-                      android:host="xzenpress.com" />
+                      android:host="xzenpressbolt.netlify.app" />
             </intent-filter>
 
         </activity>
