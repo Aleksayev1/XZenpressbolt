@@ -4,8 +4,8 @@
 
 # Force HTTPS redirects - CRITICAL for PWA Builder
 [[redirects]]
-  from = "http://xzenpress.netlify.app/*"
-  to = "https://xzenpress.netlify.app/:splat"
+  from = "http://xzenpressbolt.netlify.app/*"
+  to = "https://xzenpressbolt.netlify.app/:splat"
   status = 301
   force = true
 
