@@ -1,7 +1,7 @@
 {
   "name": "xzenpress-holistic-wellness",
-  "version": "2.4.0",
-  "description": "🚀 LANÇAMENTO OFICIAL - Plataforma completa de bem-estar holístico com pagamentos reais, acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes",
+  "version": "2.5.0",
+  "description": "🚀 LANÇAMENTO OFICIAL - Plataforma completa de bem-estar integrativa com Craniopuntura, acupressão MTC, respiração 4-7-8, cromoterapia e sons harmonizantes",
   "homepage": "https://xzenpress.com",
   "repository": {
     "type": "git",
@@ -13,12 +13,14 @@
   "private": true,
   "keywords": [
     "acupressão",
+    "craniopuntura",
     "medicina tradicional chinesa",
     "respiração 4-7-8",
     "cromoterapia",
     "bem-estar",
+    "medicina integrativa",
     "saúde natural",
-    "holístico",
+    "integrativa",
     "mindfulness"
   ],
   "author": {

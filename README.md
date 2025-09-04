@@ -5,12 +5,13 @@
 **URL de Produção:** Em breve no Netlify  
 **Repositório GitHub:** https://github.com/Aleksayev1/XZenpressbolt  
 **Status:** ✅ Pronto para deploy manual  
-**Versão:** 2.4.0 - Lançamento Oficial Completo  
+**Versão:** 2.5.0 - Lançamento Oficial com Domínio xzenpress.com  
 
 ## 🌟 Sobre o Projeto
 
-XZenPress é uma plataforma completa de bem-estar holístico que combina:
+XZenPress é uma plataforma completa de bem-estar integrativa que combina:
 - **Acupressão MTC** - Pontos terapêuticos da Medicina Tradicional Chinesa
+- **Craniopuntura** - Técnicas especializadas para sistema nervoso
 - **Respiração 4-7-8** - Técnica de respiração com timer e cromoterapia
 - **Cromoterapia** - Cores terapêuticas (azul, verde, magenta)
 - **Sons Harmonizantes** - Biblioteca de sons relaxantes + Spotify Premium
@@ -84,9 +85,9 @@ XZenPress é uma plataforma completa de bem-estar holístico que combina:
 
 **Status**: 🚀 **LANÇAMENTO OFICIAL ATIVO** - Stripe Real + PIX Real em Produção! ✅ **SISTEMA DE PAGAMENTOS OFICIAL**
 
-**URL Oficial**: https://xzenpress.netlify.app
+**URL Oficial**: https://xzenpress.com
 **Data de Lançamento Oficial**: Janeiro 2025
-**Versão**: 2.4.0 - Lançamento Oficial (Stripe Real + PIX Real + Produção Completa)
+**Versão**: 2.5.0 - Lançamento Oficial (Domínio Oficial + Stripe Real + PIX Real)
 
 ## 🚀 LANÇAMENTO OFICIAL - VERSÃO 2.4.0
 

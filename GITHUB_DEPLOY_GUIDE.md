@@ -102,7 +102,7 @@ VITE_SPOTIFY_CLIENT_ID=seu_client_id_spotify
 
 ### **URL Final:**
 ```
-https://xzenpressbolt.netlify.app
+https://xzenpress.com
 (ou nome personalizado que você escolher)
 ```
 

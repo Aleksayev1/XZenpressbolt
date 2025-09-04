@@ -8,8 +8,8 @@ const config: CapacitorConfig = {
   server: {
     androidScheme: 'https',
     allowNavigation: [
-      'xzenpressbolt.netlify.app',
-      '*.netlify.app'
+      'xzenpress.com',
+      '*.xzenpress.com'
     ]
   },
   plugins: {
@@ -25,7 +25,7 @@ const config: CapacitorConfig = {
       backgroundColor: "#059669"
     },
     App: {
-      launchUrl: 'https://xzenpressbolt.netlify.app'
+      launchUrl: 'https://xzenpress.com'
     }
   }
 };
