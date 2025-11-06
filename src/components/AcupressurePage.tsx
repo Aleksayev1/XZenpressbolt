@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Brain, Heart, Volume2, VolumeX, ExternalLink } from 'lucide-react';
+import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Brain, Heart, Volume2, VolumeX, ExternalLink, X, ZoomIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useSessionHistory } from '../hooks/useSessionHistory';
@@ -25,6 +25,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const [breathingTimeLeft, setBreathingTimeLeft] = useState(4);
   const [usedPoints, setUsedPoints] = useState<string[]>([]);
   const [viewingPoint, setViewingPoint] = useState<string | null>(null);
+  const [showZoomModal, setShowZoomModal] = useState(false);
+  const [zoomImageUrl, setZoomImageUrl] = useState<string | null>(null);
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const totalTimeRef = useRef<NodeJS.Timeout | null>(null);
@@ -277,6 +279,65 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const circleRadius = 80;
   const circumference = 2 * Math.PI * circleRadius;
   const breathingProgress = ((breathingPhases[breathingPhase].duration - breathingTimeLeft) / breathingPhases[breathingPhase].duration) * circumference;
+
+  const ImageZoomModal: React.FC<{
+    isVisible: boolean;
+    imageUrl: string | null;
+    onClose: () => void;
+  }> = ({ isVisible, imageUrl, onClose }) => {
+    useEffect(() => {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      };
+
+      if (isVisible) {
+        document.addEventListener('keydown', handleEscape);
+        document.body.style.overflow = 'hidden';
+      }
+
+      return () => {
+        document.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = 'unset';
+      };
+    }, [isVisible, onClose]);
+
+    if (!isVisible || !imageUrl) return null;
+
+    return (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity duration-300 p-4"
+        onClick={onClose}
+      >
+        <div
+          className="relative max-w-4xl max-h-[90vh] flex items-center justify-center"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img
+            src={imageUrl}
+            alt="Zoomed acupressure point"
+            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none';
+            }}
+          />
+
+          <button
+            onClick={onClose}
+            className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors p-2 rounded-full hover:bg-white hover:bg-opacity-10"
+            aria-label="Close zoom"
+          >
+            <X className="w-8 h-8" />
+          </button>
+
+          <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-white text-sm opacity-75">
+            Pressione ESC para fechar
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div 
@@ -545,15 +606,25 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
               {/* Point Image */}
               {selectedPointData.image && (
-                <div className="mb-6 relative">
-                  <img 
-                    src={selectedPointData.image} 
+                <div className="mb-6 relative group">
+                  <img
+                    src={selectedPointData.image}
                     alt={selectedPointData.imageAlt || selectedPointData.name}
-                    className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
+                    className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105 group-hover:shadow-xl"
+                    onClick={() => {
+                      setShowZoomModal(true);
+                      setZoomImageUrl(selectedPointData.image);
+                    }}
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
                   />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl">
+                    <div className="flex flex-col items-center gap-2">
+                      <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
+                      <span className="text-white text-sm font-medium drop-shadow-lg">Clique para ampliar</span>
+                    </div>
+                  </div>
                   {/* Overlay com informações do ponto */}
                   <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
                     <div className="text-xs font-medium">
@@ -847,15 +918,25 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
                   {/* Imagem do Ponto */}
                   {viewingPointData.image && (
-                    <div className="mb-6 relative">
-                      <img 
-                        src={viewingPointData.image} 
+                    <div className="mb-6 relative group">
+                      <img
+                        src={viewingPointData.image}
                         alt={viewingPointData.imageAlt || viewingPointData.name}
-                        className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
+                        className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105 group-hover:shadow-xl"
+                        onClick={() => {
+                          setShowZoomModal(true);
+                          setZoomImageUrl(viewingPointData.image);
+                        }}
                         onError={(e) => {
                           e.currentTarget.style.display = 'none';
                         }}
                       />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl">
+                        <div className="flex flex-col items-center gap-2">
+                          <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
+                          <span className="text-white text-sm font-medium drop-shadow-lg">Clique para ampliar</span>
+                        </div>
+                      </div>
                       {/* Overlay com nome do ponto */}
                       <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
                         <div className="text-xs font-medium text-center">
@@ -981,6 +1062,15 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             </button>
           </div>
         )}
+
+        <ImageZoomModal
+          isVisible={showZoomModal}
+          imageUrl={zoomImageUrl}
+          onClose={() => {
+            setShowZoomModal(false);
+            setZoomImageUrl(null);
+          }}
+        />
       </div>
     </div>
   );
