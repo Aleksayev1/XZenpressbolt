@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Globe, User, LogOut, Crown, Trash2 } from 'lucide-react';
+import { Menu, X, Globe, User, LogOut, Crown, Trash2, BookOpen, Play } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage, languages } from '../contexts/LanguageContext';
 import { trackPageView, trackLanguageChange } from './GoogleAnalytics';
@@ -150,7 +150,17 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                   <Play className="w-4 h-4" />
                   <span>Tutorial</span>
                 </button>
-                
+
+                {/* Blog Admin Link - For authenticated users */}
+                <button
+                  onClick={() => onPageChange('blog-admin')}
+                  className="flex items-center space-x-1 px-3 py-2 text-sm text-green-600 hover:bg-green-50 rounded-md transition-colors"
+                  title="Administrar Blog"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Admin Blog</span>
+                </button>
+
                 <div className="flex items-center space-x-2">
                   <User className="w-4 h-4 text-gray-600" />
                   <span className="text-sm text-gray-700">{user.name}</span>
@@ -161,7 +171,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange }) => 
                     </div>
                   )}
                 </div>
-                
+
                 {/* Data Deletion Link - Desktop */}
                 <button
                   onClick={() => onPageChange('data-deletion')}

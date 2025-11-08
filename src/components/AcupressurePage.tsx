@@ -285,6 +285,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     imageUrl: string | null;
     onClose: () => void;
   }> = ({ isVisible, imageUrl, onClose }) => {
+    const [imageLoaded, setImageLoaded] = useState(false);
+
     useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
@@ -295,6 +297,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
       if (isVisible) {
         document.addEventListener('keydown', handleEscape);
         document.body.style.overflow = 'hidden';
+        setImageLoaded(false);
       }
 
       return () => {
@@ -307,32 +310,50 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity duration-300 p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 transition-opacity duration-300 p-4 backdrop-blur-sm"
         onClick={onClose}
       >
         <div
-          className="relative max-w-4xl max-h-[90vh] flex items-center justify-center"
+          className="relative w-full max-w-6xl max-h-[95vh] flex items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
+          {!imageLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-white text-sm">Carregando imagem...</span>
+              </div>
+            </div>
+          )}
+
           <img
             src={imageUrl}
-            alt="Zoomed acupressure point"
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            alt="Ponto de acupressão ampliado"
+            className={`max-w-full max-h-[95vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
             onError={(e) => {
               e.currentTarget.style.display = 'none';
+              setImageLoaded(true);
             }}
           />
 
           <button
             onClick={onClose}
-            className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors p-2 rounded-full hover:bg-white hover:bg-opacity-10"
-            aria-label="Close zoom"
+            className="absolute -top-14 right-0 bg-red-500 hover:bg-red-600 text-white transition-colors p-3 rounded-full shadow-lg hover:scale-110 transform duration-200"
+            aria-label="Fechar"
+            title="Fechar (ESC)"
           >
-            <X className="w-8 h-8" />
+            <X className="w-6 h-6" />
           </button>
 
-          <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 text-white text-sm opacity-75">
-            Pressione ESC para fechar
+          <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 px-6 py-3 rounded-full">
+            <div className="flex items-center gap-3 text-white text-sm">
+              <span className="opacity-90">💡 Dica: Use as setas do mouse para navegar</span>
+              <span className="opacity-75">•</span>
+              <span className="opacity-90">Pressione ESC para fechar</span>
+            </div>
           </div>
         </div>
       </div>
@@ -606,27 +627,31 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
               {/* Point Image */}
               {selectedPointData.image && (
-                <div className="mb-6 relative group">
-                  <img
-                    src={selectedPointData.image}
-                    alt={selectedPointData.imageAlt || selectedPointData.name}
-                    className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105 group-hover:shadow-xl"
+                <div className="mb-6 relative">
+                  <div
+                    className="image-zoom-wrapper w-full rounded-xl cursor-pointer"
                     onClick={() => {
                       setShowZoomModal(true);
                       setZoomImageUrl(selectedPointData.image);
                     }}
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl">
-                    <div className="flex flex-col items-center gap-2">
-                      <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
-                      <span className="text-white text-sm font-medium drop-shadow-lg">Clique para ampliar</span>
+                  >
+                    <img
+                      src={selectedPointData.image}
+                      alt={selectedPointData.imageAlt || selectedPointData.name}
+                      className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    <div className="image-zoom-overlay rounded-xl">
+                      <div className="flex flex-col items-center gap-2">
+                        <ZoomIn className="w-8 h-8 text-white drop-shadow-lg image-zoom-icon" />
+                        <span className="text-white text-sm font-medium drop-shadow-lg image-zoom-text">Clique para ampliar</span>
+                      </div>
                     </div>
                   </div>
                   {/* Overlay com informações do ponto */}
-                  <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
+                  <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg pointer-events-none">
                     <div className="text-xs font-medium">
                       📍 {selectedPointData.name} • ⏱️ {Math.floor((selectedPointData.duration || 120) / 60)}min
                     </div>
@@ -768,16 +793,31 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                       {/* Point Image */}
                       {point.image && (
                         <div className="relative flex-shrink-0">
-                          <img 
-                            src={point.image} 
-                            alt={point.imageAlt || point.name}
-                            className="w-20 h-20 object-contain bg-gray-50 rounded-lg border border-gray-200"
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
+                          <div
+                            className="image-zoom-wrapper w-20 h-20 rounded-lg cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowZoomModal(true);
+                              setZoomImageUrl(point.image);
                             }}
-                          />
+                          >
+                            <img
+                              src={point.image}
+                              alt={point.imageAlt || point.name}
+                              className="w-20 h-20 object-contain bg-gray-50 rounded-lg border border-gray-200"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                            <div className="image-zoom-overlay rounded-lg">
+                              <div className="flex flex-col items-center gap-1">
+                                <ZoomIn className="w-5 h-5 text-white drop-shadow-lg image-zoom-icon" />
+                                <span className="text-white text-xs font-medium drop-shadow-lg image-zoom-text">Ampliar</span>
+                              </div>
+                            </div>
+                          </div>
                           {point.isPremium && (
-                            <div className="absolute -top-2 -right-2">
+                            <div className="absolute -top-2 -right-2 z-10">
                               <div className="bg-yellow-500 text-white p-1 rounded-full">
                                 <Crown className="w-3 h-3" />
                               </div>
@@ -918,27 +958,31 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
                   {/* Imagem do Ponto */}
                   {viewingPointData.image && (
-                    <div className="mb-6 relative group">
-                      <img
-                        src={viewingPointData.image}
-                        alt={viewingPointData.imageAlt || viewingPointData.name}
-                        className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200 cursor-pointer transition-transform duration-300 hover:scale-105 group-hover:shadow-xl"
+                    <div className="mb-6 relative">
+                      <div
+                        className="image-zoom-wrapper w-full rounded-xl cursor-pointer"
                         onClick={() => {
                           setShowZoomModal(true);
                           setZoomImageUrl(viewingPointData.image);
                         }}
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                        }}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl">
-                        <div className="flex flex-col items-center gap-2">
-                          <ZoomIn className="w-8 h-8 text-white drop-shadow-lg" />
-                          <span className="text-white text-sm font-medium drop-shadow-lg">Clique para ampliar</span>
+                      >
+                        <img
+                          src={viewingPointData.image}
+                          alt={viewingPointData.imageAlt || viewingPointData.name}
+                          className="w-full h-56 object-contain bg-gray-50 rounded-xl shadow-lg border border-gray-200"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                        <div className="image-zoom-overlay rounded-xl">
+                          <div className="flex flex-col items-center gap-2">
+                            <ZoomIn className="w-8 h-8 text-white drop-shadow-lg image-zoom-icon" />
+                            <span className="text-white text-sm font-medium drop-shadow-lg image-zoom-text">Clique para ampliar</span>
+                          </div>
                         </div>
                       </div>
                       {/* Overlay com nome do ponto */}
-                      <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg">
+                      <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg pointer-events-none">
                         <div className="text-xs font-medium text-center">
                           📍 {viewingPointData.name}
                         </div>

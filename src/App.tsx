@@ -14,6 +14,7 @@ import { ProgressTrackingPage } from './components/ProgressTrackingPage';
 import { PersonalizationPage } from './components/PersonalizationPage';
 import { DataDeletionPage } from './components/DataDeletionPage';
 import { BlogPage } from './components/BlogPage';
+import { BlogAdminPage } from './components/BlogAdminPage';
 import { FirstTimeBanner } from './components/FirstTimeBanner';
 import { TutorialModal } from './components/TutorialModal';
 import { AuthProvider } from './contexts/AuthContext';
@@ -52,6 +53,8 @@ function App() {
         return <DataDeletionPage onPageChange={setCurrentPage} />;
       case 'blog':
         return <BlogPage onPageChange={setCurrentPage} />;
+      case 'blog-admin':
+        return <BlogAdminPage onPageChange={setCurrentPage} />;
       default:
         return <HomePage onPageChange={setCurrentPage} />;
     }
