@@ -177,9 +177,9 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onPageChange }) => {
 
               {/* Content */}
               <div className="prose prose-lg max-w-none">
-                <div 
+                <div
                   className="text-gray-700 leading-relaxed"
-                  style={{ whiteSpace: 'pre-line' }}
+                  style={{ whiteSpace: 'pre-line', textAlign: 'justify' }}
                 >
                   {selectedPost.content}
                 </div>
