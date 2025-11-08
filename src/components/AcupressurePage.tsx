@@ -286,6 +286,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     onClose: () => void;
   }> = ({ isVisible, imageUrl, onClose }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [autoCloseTimer, setAutoCloseTimer] = useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
@@ -298,13 +299,24 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
         document.addEventListener('keydown', handleEscape);
         document.body.style.overflow = 'hidden';
         setImageLoaded(false);
+
+        // Auto-close after 3 seconds when image is loaded
+        if (imageLoaded) {
+          const timer = setTimeout(() => {
+            onClose();
+          }, 3000);
+          setAutoCloseTimer(timer);
+        }
       }
 
       return () => {
         document.removeEventListener('keydown', handleEscape);
         document.body.style.overflow = 'unset';
+        if (autoCloseTimer) {
+          clearTimeout(autoCloseTimer);
+        }
       };
-    }, [isVisible, onClose]);
+    }, [isVisible, imageLoaded, onClose]);
 
     if (!isVisible || !imageUrl) return null;
 
@@ -329,9 +341,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           <img
             src={imageUrl}
             alt="Ponto de acupressão ampliado"
-            className={`max-w-full max-h-[95vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${
+            className={`max-w-full max-h-[95vh] object-contain rounded-xl shadow-2xl transition-opacity duration-300 cursor-pointer ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
+            onClick={onClose}
             onLoad={() => setImageLoaded(true)}
             onError={(e) => {
               e.currentTarget.style.display = 'none';
@@ -350,9 +363,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
           <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 px-6 py-3 rounded-full">
             <div className="flex items-center gap-3 text-white text-sm">
-              <span className="opacity-90">💡 Dica: Use as setas do mouse para navegar</span>
+              <span className="opacity-90">💡 Clique na imagem para fechar</span>
               <span className="opacity-75">•</span>
-              <span className="opacity-90">Pressione ESC para fechar</span>
+              <span className="opacity-90">Fecha automaticamente em 3s</span>
             </div>
           </div>
         </div>

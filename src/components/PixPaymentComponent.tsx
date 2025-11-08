@@ -95,7 +95,7 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
         </div>
         <div className="bg-white rounded-lg p-4">
           <div className="text-sm text-gray-600">
-            <div>Valor: <span className="font-semibold">R$ {amount.toFixed(2)}</span></div>
+            <div>Valor: <span className="font-semibold">${amount.toFixed(2)}</span></div>
             <div>Pedido: <span className="font-semibold">{orderId}</span></div>
             <div>Status: <span className="font-semibold text-green-600">Pago</span></div>
           </div>
@@ -144,7 +144,7 @@ export const PixPaymentComponent: React.FC<PixPaymentComponentProps> = ({
           <div className="bg-white rounded-lg p-4">
             <h5 className="font-semibold text-gray-800 mb-2">Detalhes:</h5>
             <div className="space-y-1 text-sm text-gray-600">
-              <div>Valor: <span className="font-semibold">R$ {amount.toFixed(2)}</span></div>
+              <div>Valor: <span className="font-semibold">${amount.toFixed(2)}</span></div>
               <div>Descrição: <span className="font-semibold">{description}</span></div>
               <div>Pedido: <span className="font-semibold">{orderId}</span></div>
               <div>Status: <span className="font-semibold text-yellow-600">Aguardando pagamento</span></div>

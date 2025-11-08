@@ -46,7 +46,7 @@ export class PagSeguroPixProvider implements PixProvider {
           description: data.description,
           amount: {
             value: Math.round(data.amount * 100), // Converter para centavos
-            currency: 'BRL'
+            currency: 'USD'
           },
           payment_method: {
             type: 'PIX',

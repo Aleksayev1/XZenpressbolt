@@ -32,7 +32,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     {
       id: 'starter',
       name: 'Plano Corporativo Starter',
-      price: 'R$ 750,00',
+      price: '$150.00',
       period: '/mês',
       description: 'Ideal para pequenas empresas (até 50 funcionários)',
       employees: 'Até 50 funcionários',
@@ -54,7 +54,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     {
       id: 'business',
       name: 'Plano Corporativo Business',
-      price: 'R$ 2.400,00',
+      price: '$480.00',
       period: '/mês',
       description: 'Para médias empresas (51-200 funcionários)',
       employees: '51-200 funcionários',
@@ -76,7 +76,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     {
       id: 'enterprise',
       name: 'Plano Corporativo Enterprise',
-      price: 'R$ 5.000,00',
+      price: '$1,000.00',
       period: '/mês',
       description: 'Para grandes corporações (200+ funcionários)',
       employees: '200+ funcionários',
@@ -104,7 +104,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     {
       id: 'basic',
       name: 'Analytics Básico',
-      price: 'R$ 500,00',
+      price: '$100.00',
       period: '/mês',
       description: 'Métricas essenciais de bem-estar corporativo',
       features: [
@@ -126,7 +126,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     {
       id: 'professional',
       name: 'Analytics Profissional',
-      price: 'R$ 1.200,00',
+      price: '$240.00',
       period: '/mês',
       description: 'Analytics avançados com insights comportamentais',
       features: [
@@ -150,7 +150,7 @@ export const CorporatePlansPage: React.FC<CorporatePlansPageProps> = ({ onPageCh
     {
       id: 'complete',
       name: 'Analytics Completo',
-      price: 'R$ 2.000,00',
+      price: '$400.00',
       period: '/mês',
       description: 'Suite completa de inteligência em bem-estar',
       features: [

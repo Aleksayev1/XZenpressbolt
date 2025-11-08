@@ -46,7 +46,7 @@ export const CreditCardPaymentComponent: React.FC<CreditCardPaymentComponentProp
           <div className="text-sm text-gray-600 space-y-1">
             <div className="flex justify-between">
               <span>Valor:</span>
-              <span className="font-semibold">R$ {amount.toFixed(2)}</span>
+              <span className="font-semibold">${amount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span>Pedido:</span>

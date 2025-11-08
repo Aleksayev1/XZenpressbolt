@@ -259,7 +259,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'monthly',
       name: t('premium.plans.monthly.name'),
-      price: 'R$ 29,90',
+      price: '$5.99',
       period: t('premium.plans.monthly.period'),
       features: [
         t('premium.plans.monthly.feature1'),
@@ -274,9 +274,9 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     {
       id: 'annual',
       name: t('premium.plans.annual.name'),
-      price: 'R$ 297,00',
+      price: '$59.99',
       period: t('premium.plans.annual.period'),
-      originalPrice: 'R$ 358,80',
+      originalPrice: '$71.99',
       discount: '17% OFF',
       features: [
         t('premium.plans.annual.feature1'),
@@ -286,14 +286,14 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
         t('premium.plans.annual.feature5')
       ],
       popular: true,
-      savings: 'R$ 61,80'
+      savings: '$12.00'
     },
     {
       id: 'lifetime',
       name: t('premium.plans.lifetime.name'),
-      price: 'R$ 997,00',
+      price: '$199.99',
       period: t('premium.plans.lifetime.period'),
-      originalPrice: 'R$ 1.794,00',
+      originalPrice: '$359.99',
       discount: '44% OFF',
       features: [
         t('premium.plans.lifetime.feature1'),
@@ -303,7 +303,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
         t('premium.plans.lifetime.feature5')
       ],
       popular: false,
-      savings: 'R$ 797,00'
+      savings: '$160.00'
     }
   ];
 
@@ -334,7 +334,7 @@ export const PremiumStructure: React.FC<PremiumStructureProps> = ({ onPageChange
     // Preparar dados do pagamento PIX
     const plan = pricingPlans.find(p => p.id === planId);
     if (plan) {
-      const amount = parseFloat(plan.price.replace('R$ ', '').replace('.', '').replace(',', '.'));
+      const amount = parseFloat(plan.price.replace('$', ''));
       setPixPaymentData({
         amount,
         description: `XZenPress Premium - ${plan.name}`,

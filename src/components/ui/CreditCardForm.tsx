@@ -297,7 +297,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           </div>
           <div className="flex justify-between">
             <span>Valor:</span>
-            <span className="font-bold text-green-600">R$ {amount.toFixed(2)}</span>
+            <span className="font-bold text-green-600">${amount.toFixed(2)}</span>
           </div>
           <div className="flex justify-between">
             <span>Pedido:</span>
@@ -324,7 +324,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         ) : (
           <>
             <CreditCard className="w-5 h-5" />
-            <span>Pagar R$ {amount.toFixed(2)}</span>
+            <span>Pagar ${amount.toFixed(2)}</span>
           </>
         )}
       </button>

@@ -94,14 +94,14 @@ export const trackPremiumUpgrade = (planType: string, paymentMethod: string) => 
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'purchase', {
       transaction_id: `upgrade_${Date.now()}`,
-      value: planType === 'monthly' ? 29.90 : planType === 'annual' ? 297.00 : 997.00,
-      currency: 'BRL',
+      value: planType === 'monthly' ? 5.99 : planType === 'annual' ? 59.99 : 199.99,
+      currency: 'USD',
       items: [{
         item_id: `xzenpress_premium_${planType}`,
         item_name: `XZenPress Premium ${planType}`,
         category: 'subscription',
         quantity: 1,
-        price: planType === 'monthly' ? 29.90 : planType === 'annual' ? 297.00 : 997.00
+        price: planType === 'monthly' ? 5.99 : planType === 'annual' ? 59.99 : 199.99
       }],
       custom_parameters: {
         plan_type: planType,
