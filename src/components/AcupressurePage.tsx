@@ -55,6 +55,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   const selectedPointData = selectedPoint ? acupressurePoints.find(p => p.id === selectedPoint) : null;
   const viewingPointData = viewingPoint ? acupressurePoints.find(p => p.id === viewingPoint) : null;
 
+  // Debug log para estado do modal
+  useEffect(() => {
+    console.log('🎭 Estado do Modal:', { showZoomModal, zoomImageUrl });
+  }, [showZoomModal, zoomImageUrl]);
+
   // Timer principal para duração do ponto
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
@@ -288,9 +293,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
   }> = ({ isVisible, imageUrl, onClose }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
 
+    console.log('🔍 ImageZoomModal render:', { isVisible, imageUrl, imageLoaded });
+
     // Reset imageLoaded when modal opens with new image
     useEffect(() => {
       if (isVisible) {
+        console.log('✅ Modal está visível, resetando imageLoaded');
         setImageLoaded(false);
       }
     }, [isVisible, imageUrl]);
@@ -645,9 +653,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      console.log('Clique na imagem detectado!', selectedPointData.image);
+                      console.log('🖱️ Clique na imagem detectado!', selectedPointData.image);
+                      console.log('📊 Estado antes:', { showZoomModal, zoomImageUrl });
                       setShowZoomModal(true);
                       setZoomImageUrl(selectedPointData.image);
+                      console.log('📊 Chamando setShowZoomModal(true) e setZoomImageUrl');
                     }}
                   >
                     <img
@@ -1129,6 +1139,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
           isVisible={showZoomModal}
           imageUrl={zoomImageUrl}
           onClose={() => {
+            console.log('🚪 Fechando modal');
             setShowZoomModal(false);
             setZoomImageUrl(null);
           }}
