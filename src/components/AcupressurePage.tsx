@@ -286,11 +286,16 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     onClose: () => void;
   }> = ({ isVisible, imageUrl, onClose }) => {
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [autoCloseTimer, setAutoCloseTimer] = useState<NodeJS.Timeout | null>(null);
 
+    // Reset imageLoaded when modal opens with new image
     useEffect(() => {
-      console.log('ImageZoomModal - isVisible:', isVisible, 'imageUrl:', imageUrl);
+      if (isVisible) {
+        setImageLoaded(false);
+      }
+    }, [isVisible, imageUrl]);
 
+    // Handle keyboard events
+    useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           onClose();
@@ -300,31 +305,19 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
       if (isVisible) {
         document.addEventListener('keydown', handleEscape);
         document.body.style.overflow = 'hidden';
-        setImageLoaded(false);
-
-        // Auto-close after 3 seconds when image is loaded
-        if (imageLoaded) {
-          const timer = setTimeout(() => {
-            onClose();
-          }, 3000);
-          setAutoCloseTimer(timer);
-        }
       }
 
       return () => {
         document.removeEventListener('keydown', handleEscape);
         document.body.style.overflow = 'unset';
-        if (autoCloseTimer) {
-          clearTimeout(autoCloseTimer);
-        }
       };
-    }, [isVisible, imageLoaded, onClose]);
+    }, [isVisible, onClose]);
 
     if (!isVisible || !imageUrl) return null;
 
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 transition-opacity duration-300 p-4 backdrop-blur-sm"
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-90 transition-opacity duration-300 p-4 backdrop-blur-sm"
         onClick={onClose}
       >
         <div
@@ -347,8 +340,12 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
             onClick={onClose}
-            onLoad={() => setImageLoaded(true)}
+            onLoad={() => {
+              console.log('Imagem carregada com sucesso!');
+              setImageLoaded(true);
+            }}
             onError={(e) => {
+              console.error('Erro ao carregar imagem:', imageUrl);
               e.currentTarget.style.display = 'none';
               setImageLoaded(true);
             }}
@@ -365,9 +362,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
           <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-70 px-6 py-3 rounded-full">
             <div className="flex items-center gap-3 text-white text-sm">
-              <span className="opacity-90">💡 Clique na imagem para fechar</span>
-              <span className="opacity-75">•</span>
-              <span className="opacity-90">Fecha automaticamente em 3s</span>
+              <span className="opacity-90">💡 Clique na imagem ou pressione ESC para fechar</span>
             </div>
           </div>
         </div>
