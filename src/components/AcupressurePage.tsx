@@ -289,6 +289,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
     const [autoCloseTimer, setAutoCloseTimer] = useState<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
+      console.log('ImageZoomModal - isVisible:', isVisible, 'imageUrl:', imageUrl);
+
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape') {
           onClose();
@@ -643,7 +645,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                 <div className="mb-6">
                   <div
                     className="image-zoom-wrapper w-full rounded-xl cursor-pointer relative"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log('Clique na imagem detectado!', selectedPointData.image);
                       setShowZoomModal(true);
                       setZoomImageUrl(selectedPointData.image);
                     }}
@@ -974,7 +979,10 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                     <div className="mb-6">
                       <div
                         className="image-zoom-wrapper w-full rounded-xl cursor-pointer relative"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          console.log('Clique na imagem do viewing point!', viewingPointData.image);
                           setShowZoomModal(true);
                           setZoomImageUrl(viewingPointData.image);
                         }}
