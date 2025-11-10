@@ -363,6 +363,20 @@ const translations = {
     'home.compliance.title': 'Complete Legal Compliance',
     'home.compliance.subtitle': 'Full compliance with Brazilian corporate mental health legislation with integrative approach',
 
+    // Acupressure Page
+    'acupressure.title': 'Acupressure Points',
+    'acupressure.subtitle': 'Traditional Chinese Medicine and Craniopuncture with integrative therapy: acupressure + breathing + chromotherapy',
+    'acupressure.categories.all': 'All Points',
+    'acupressure.categories.general': 'General TCM',
+    'acupressure.categories.cranio': 'Craniopuncture',
+    'acupressure.categories.septicemia': 'Septicemia',
+    'acupressure.categories.atm': 'TMJ',
+    'acupressure.select.title': 'Select a Point',
+    'acupressure.select.subtitle': 'Click on a point to see details and start integrated therapy',
+    'acupressure.timer.start': 'Start Integrated Therapy',
+    'acupressure.timer.active': 'Therapy in Progress',
+    'acupressure.timer.switch': 'Switch to This Point',
+
     // Breathing Exercise
     'breathing.title': '4-7-8 Breathing with Chromotherapy',
     'breathing.inhale': 'Inhale',
@@ -371,7 +385,232 @@ const translations = {
     'breathing.start': 'Start Breathing',
     'breathing.stop': 'Stop',
     'breathing.reset': 'Reset',
-    'breathing.totalTime': 'Total Time'
+    'breathing.totalTime': 'Total Time',
+    'breathing.phase': 'Phase',
+    'breathing.phase.inhale.detail': 'Inhalation with calming blue',
+    'breathing.phase.hold.detail': 'Retention with balancing green',
+    'breathing.phase.exhale.detail': 'Exhalation with energizing purple',
+
+    'breathing.chromotherapy.title': 'Scientific Chromotherapy',
+    'breathing.chromotherapy.description': 'Therapeutic colors synchronized with each breathing phase to enhance effects',
+    'breathing.chromotherapy.blue': 'Calming Blue',
+    'breathing.chromotherapy.blue.desc': 'Activates parasympathetic system, reduces blood pressure and promotes deep relaxation',
+    'breathing.chromotherapy.green': 'Balancing Green',
+    'breathing.chromotherapy.green.desc': 'Balances nervous system, harmonizes emotions and promotes stability',
+    'breathing.chromotherapy.magenta': 'Energizing Purple',
+    'breathing.chromotherapy.magenta.desc': 'Stimulates endorphin release and promotes energy transformation',
+
+    'breathing.benefits.title': 'Proven Benefits',
+    'breathing.benefits.stress': 'Reduces stress and anxiety',
+    'breathing.benefits.sleep': 'Improves sleep quality',
+    'breathing.benefits.focus': 'Increases focus and concentration',
+    'breathing.benefits.pressure': 'Lowers blood pressure',
+
+    'breathing.science.title': 'Scientific Basis',
+    'breathing.science.evidence': 'Scientific Evidence',
+    'breathing.science.parasympathetic': 'Activates parasympathetic system',
+    'breathing.science.cortisol': 'Reduces cortisol levels',
+    'breathing.science.heartRate': 'Improves heart rate variability',
+    'breathing.science.gaba': 'Increases GABA production',
+    'breathing.science.chromotherapy': 'Integrated Chromotherapy',
+    'breathing.science.blue.effect': 'Blue reduces blood pressure',
+    'breathing.science.green.effect': 'Green balances nervous system',
+    'breathing.science.magenta.effect': 'Purple stimulates endorphins',
+    'breathing.science.melatonin': 'Improves melatonin production',
+
+    // Premium Page
+    'premium.hero.title': 'Unlock Full Potential',
+    'premium.hero.subtitle': 'Complete access to specialized consultations and exclusive integrative medicine resources',
+    'premium.hero.upgrade': 'Upgrade Now',
+    'premium.hero.active': 'Premium Active',
+
+    'premium.features.title': 'Premium Features',
+    'premium.features.available': 'Available',
+    'premium.features.coming': 'Coming Soon',
+
+    'premium.features.whatsapp.title': 'WhatsApp Consultation',
+    'premium.features.whatsapp.description': 'Personalized care with qualified professional',
+    'premium.features.whatsapp.benefit1': 'Professional with 15+ years experience',
+    'premium.features.whatsapp.benefit2': 'Priority response within 24h',
+    'premium.features.whatsapp.benefit3': 'Detailed form for complex cases',
+    'premium.features.whatsapp.benefit4': 'Continuous case monitoring',
+
+    'premium.features.points.title': 'Exclusive Points',
+    'premium.features.points.description': '11 specialized points for specific cases',
+    'premium.features.points.benefit1': 'Septicemia: 3 purification points',
+    'premium.features.points.benefit2': 'TMJ: 3 articulation points',
+    'premium.features.points.benefit3': 'Cranio: 3 nervous system points',
+    'premium.features.points.benefit4': 'Neurology: 2 advanced points',
+
+    'premium.features.chromotherapy.title': 'Advanced Chromotherapy',
+    'premium.features.chromotherapy.description': 'Personalized therapeutic color sequences',
+    'premium.features.chromotherapy.benefit1': 'Adaptive color profiles',
+    'premium.features.chromotherapy.benefit2': 'Biofeedback synchronization',
+    'premium.features.chromotherapy.benefit3': 'Personalized sequences',
+    'premium.features.chromotherapy.benefit4': 'Colors based on emotional state',
+
+    'premium.features.sounds.title': 'Complete Library',
+    'premium.features.sounds.description': 'Over 50 sounds + Spotify integration',
+    'premium.features.sounds.benefit1': 'Therapeutic binaural frequencies',
+    'premium.features.sounds.benefit2': 'Full Spotify integration',
+    'premium.features.sounds.benefit3': 'High-quality sounds',
+    'premium.features.sounds.benefit4': 'Expert-curated playlists',
+
+    'premium.features.ai.title': 'AI Recommendations',
+    'premium.features.ai.description': 'Personalized artificial intelligence',
+    'premium.features.ai.benefit1': 'Behavioral pattern analysis',
+    'premium.features.ai.benefit2': 'Personalized recommendations',
+    'premium.features.ai.benefit3': 'Automatic session optimization',
+    'premium.features.ai.benefit4': 'Predictive wellness insights',
+
+    'premium.features.offline.title': 'Offline Mode',
+    'premium.features.offline.description': 'Full functionality without internet',
+    'premium.features.offline.benefit1': 'Automatic synchronization',
+    'premium.features.offline.benefit2': 'Smart content caching',
+    'premium.features.offline.benefit3': 'Complete offline sessions',
+    'premium.features.offline.benefit4': 'Automatic data backup',
+
+    'premium.plans.title': 'Premium Plans',
+    'premium.plans.subtitle': 'Choose the ideal plan for your needs',
+    'premium.plans.popular': 'Most Popular',
+    'premium.plans.save': 'Save',
+    'premium.plans.choose': 'Choose Plan',
+
+    'premium.plans.monthly.name': 'Monthly Premium',
+    'premium.plans.monthly.period': '/month',
+    'premium.plans.monthly.feature1': 'All premium points',
+    'premium.plans.monthly.feature2': 'WhatsApp consultation',
+    'premium.plans.monthly.feature3': 'Exclusive sounds',
+    'premium.plans.monthly.feature4': 'Advanced chromotherapy',
+    'premium.plans.monthly.feature5': 'Priority support',
+
+    'premium.plans.annual.name': 'Annual Premium',
+    'premium.plans.annual.period': '/year',
+    'premium.plans.annual.feature1': 'Everything in monthly plan',
+    'premium.plans.annual.feature2': '2 months free',
+    'premium.plans.annual.feature3': 'AI recommendations',
+    'premium.plans.annual.feature4': 'Advanced analytics',
+    'premium.plans.annual.feature5': 'Quarterly consulting',
+
+    'premium.plans.lifetime.name': 'Lifetime Premium',
+    'premium.plans.lifetime.period': 'one-time payment',
+    'premium.plans.lifetime.feature1': 'Lifetime access',
+    'premium.plans.lifetime.feature2': 'All future updates',
+    'premium.plans.lifetime.feature3': 'VIP support',
+    'premium.plans.lifetime.feature4': 'Unlimited consulting',
+    'premium.plans.lifetime.feature5': 'Beta access to new features',
+
+    'premium.payment.title': 'Complete Payment',
+    'premium.payment.methods': 'Payment Methods',
+    'premium.payment.back': 'Back to Plans',
+    'premium.payment.pix': 'PIX',
+    'premium.payment.pix.desc': 'Instant and secure',
+    'premium.payment.pix.title': 'PIX Payment',
+    'premium.payment.credit': 'Card',
+    'premium.payment.credit.desc': 'Visa, Master, Amex',
+    'premium.payment.crypto': 'Crypto',
+    'premium.payment.crypto.desc': 'Bitcoin, Ethereum',
+    'premium.payment.crypto.title': 'Cryptocurrency Payment',
+
+    'premium.testimonials.title': 'What our users say',
+    'premium.testimonials.maria': 'Transformed my life! Acupressure relieved my chronic pain in just weeks.',
+    'premium.testimonials.joao': '4-7-8 breathing helped me control my anxiety. I recommend it to everyone!',
+    'premium.testimonials.ana': 'Excellent for corporate use. Our team is much more relaxed and productive.',
+
+    'premium.faq.title': 'Frequently Asked Questions',
+    'premium.faq.q1': 'Can I cancel anytime?',
+    'premium.faq.a1': 'Yes, you can cancel your subscription at any time without additional fees.',
+    'premium.faq.q2': 'Are premium points safe?',
+    'premium.faq.a2': 'All points are based on Traditional Chinese Medicine with 15+ years of clinical experience.',
+    'premium.faq.q3': 'Does it work offline?',
+    'premium.faq.a3': 'Yes, the premium version includes full offline mode with automatic synchronization.',
+    'premium.faq.q4': 'Is there a results guarantee?',
+    'premium.faq.a4': 'We offer a 30-day guarantee. If not satisfied, we refund your money.',
+
+    // Corporate Page
+    'corporate.hero.title': 'Corporate Solutions',
+    'corporate.hero.subtitle': 'Integrative wellness for companies with complete legal compliance',
+    'corporate.plans.title': 'Corporate Plans',
+    'corporate.analytics.title': 'Business Analytics',
+    'corporate.roi.title': 'Proven ROI',
+    'corporate.roi.subtitle': 'Measurable results in corporate wellness',
+    'corporate.roi.stress': 'Stress reduction',
+    'corporate.roi.absences': 'Fewer absences',
+    'corporate.roi.engagement': 'Greater engagement',
+    'corporate.roi.return': 'Return on investment',
+
+    // Login Page
+    'login.welcome': 'Welcome back',
+    'login.createAccount': 'Create Account',
+    'login.subtitle.login': 'Sign in to your account to access all features',
+    'login.subtitle.register': 'Create your account and start your wellness journey',
+    'login.email': 'Email',
+    'login.password': 'Password',
+    'login.confirmPassword': 'Confirm Password',
+    'login.name': 'Name',
+    'login.forgotPassword': 'Forgot password',
+    'login.noAccount': 'No account? Sign up',
+    'login.hasAccount': 'Already have account? Sign in',
+    'login.demo.title': 'Demo Mode',
+    'login.demo.desc': 'Use any valid email + password with 6+ characters',
+    'login.reset.title': 'Reset Password',
+    'login.reset.subtitle': 'Enter your email to receive instructions',
+    'login.reset.send': 'Send Email',
+    'login.reset.back': 'Back to Login',
+
+    // WhatsApp Consultation
+    'whatsapp.back': 'Back',
+    'whatsapp.consultation.title': 'Specialized Consultation',
+    'whatsapp.consultation.description': 'Detailed form for personalized WhatsApp care',
+    'whatsapp.features.specialized.title': 'Specialized Care',
+    'whatsapp.features.specialized.subtitle': 'Complex cases requiring individual attention',
+    'whatsapp.features.specialized.professional': 'Professional with 15+ years experience',
+    'whatsapp.features.fast.title': 'Fast Response',
+    'whatsapp.features.fast.subtitle': 'Maximum response priority',
+    'whatsapp.features.direct.title': 'Direct WhatsApp',
+    'whatsapp.features.direct.subtitle': 'Direct and personalized communication',
+    'whatsapp.when.title': 'When to Seek Help',
+    'whatsapp.when.chronic': 'Chronic pain that doesn\'t improve',
+    'whatsapp.when.neurological': 'Complex neurological problems',
+    'whatsapp.when.nonresponsive': 'Cases not responding to basic points',
+    'whatsapp.when.personalized': 'Need for personalized protocol',
+    'whatsapp.testimonial.text': 'Exceptional care! Solved my chronic pain in just a few sessions.',
+    'whatsapp.testimonial.author': 'Maria S., São Paulo',
+    'whatsapp.form.title': 'Consultation Form',
+    'whatsapp.form.subtitle': 'Fill in the details below to receive specialized care',
+    'whatsapp.form.name': 'Full Name',
+    'whatsapp.form.name.placeholder': 'Your full name',
+    'whatsapp.form.email': 'Email',
+    'whatsapp.form.email.placeholder': 'your@email.com',
+    'whatsapp.form.whatsapp': 'WhatsApp',
+    'whatsapp.form.whatsapp.placeholder': '(11) 99999-9999',
+    'whatsapp.form.urgency': 'Urgency Level',
+    'whatsapp.form.urgency.select': 'Select urgency',
+    'whatsapp.form.urgency.low': 'Low - Preventive consultation',
+    'whatsapp.form.urgency.medium': 'Medium - Moderate discomfort',
+    'whatsapp.form.urgency.high': 'High - Significant pain',
+    'whatsapp.form.urgency.urgent': 'Urgent - Intense pain',
+    'whatsapp.form.medical.title': 'Medical Information',
+    'whatsapp.form.medical.condition': 'Main Condition',
+    'whatsapp.form.medical.condition.placeholder': 'E.g.: Chronic migraine, anxiety, back pain',
+    'whatsapp.form.medical.duration': 'How long have you had symptoms?',
+    'whatsapp.form.medical.duration.placeholder': 'E.g.: 2 years, 6 months, since childhood',
+    'whatsapp.form.medical.symptoms': 'Detailed Symptom Description',
+    'whatsapp.form.medical.symptoms.placeholder': 'Describe your symptoms in detail, when they appear, intensity, etc.',
+    'whatsapp.form.medical.treatments': 'Previous Treatments',
+    'whatsapp.form.medical.treatments.placeholder': 'Medications, therapies, surgeries, etc.',
+    'whatsapp.form.medical.medications': 'Current Medications',
+    'whatsapp.form.medical.medications.placeholder': 'List all medications you currently use',
+    'whatsapp.form.medical.schedule': 'Preferred Time',
+    'whatsapp.form.medical.schedule.select': 'Select best time',
+    'whatsapp.form.medical.schedule.morning': 'Morning (8am-12pm)',
+    'whatsapp.form.medical.schedule.afternoon': 'Afternoon (12pm-6pm)',
+    'whatsapp.form.medical.schedule.evening': 'Evening (6pm-10pm)',
+    'whatsapp.form.medical.schedule.anytime': 'Anytime',
+    'whatsapp.form.notice.title': 'Important',
+    'whatsapp.form.notice.text': 'This form will be sent directly to our specialist via WhatsApp',
+    'whatsapp.form.submit': 'Send to WhatsApp',
+    'whatsapp.form.redirect': 'You will be redirected to WhatsApp with your message ready'
   },
 
   es: {
@@ -393,8 +632,294 @@ const translations = {
     'home.hero.title': 'XZenPress Bienestar',
     'home.hero.subtitle': 'Plataforma completa de bienestar integrativo con acupresión MTC, Craniopuntura, respiración 4-7-8 y cromoterapia avanzada',
     'home.hero.startNow': 'Comenzar Ahora',
-    'home.hero.createAccount': 'Crear Cuenta'
-  }
+    'home.hero.createAccount': 'Crear Cuenta',
+
+    // Home Features
+    'home.feature.acupressure.title': 'Acupresión MTC',
+    'home.feature.acupressure.desc': '20 puntos terapéuticos de Medicina Tradicional China para alivio natural',
+    'home.feature.breathing.title': 'Respiración 4-7-8',
+    'home.feature.breathing.desc': 'Técnica científica de respiración con cromoterapia sincronizada',
+    'home.feature.cranio.title': 'Craniopuntura',
+    'home.feature.cranio.desc': 'Puntos especializados para sistema nervioso y función cerebral',
+    'home.feature.chromotherapy.title': 'Cromoterapia Avanzada',
+    'home.feature.chromotherapy.desc': 'Colores terapéuticos sincronizados con respiración para potenciar efectos',
+    'home.feature.sounds.title': 'Sonidos Armonizantes',
+    'home.feature.sounds.desc': 'Biblioteca de sonidos relajantes con integración Spotify Premium',
+    'home.feature.consultation.title': 'Consulta Especializada',
+    'home.feature.consultation.desc': 'Atención personalizada vía WhatsApp con profesional calificado',
+
+    'home.features.title': 'Recursos Terapéuticos',
+    'home.features.subtitle': 'Combina técnicas milenarias con tecnología moderna para máximo bienestar integrativo',
+
+    'home.cta.title': 'Transforma tu Calidad de Vida',
+    'home.cta.subtitle': 'Únete a miles que han descubierto el poder de las terapias integrativas',
+    'home.cta.demo': 'Probar Gratis',
+    'home.cta.corporate': 'Soluciones Corporativas',
+
+    'home.compliance.title': 'Cumplimiento Legal Completo',
+    'home.compliance.subtitle': 'Cumplimiento integral con legislación brasileña de salud mental corporativa con enfoque integrativo',
+
+    // Acupressure Page
+    'acupressure.title': 'Puntos de Acupresión',
+    'acupressure.subtitle': 'Medicina Tradicional China y Craniopuntura con terapia integrativa: acupresión + respiración + cromoterapia',
+    'acupressure.categories.all': 'Todos los Puntos',
+    'acupressure.categories.general': 'MTC General',
+    'acupressure.categories.cranio': 'Craniopuntura',
+    'acupressure.categories.septicemia': 'Septicemia',
+    'acupressure.categories.atm': 'ATM',
+    'acupressure.select.title': 'Seleccione un Punto',
+    'acupressure.select.subtitle': 'Haga clic en un punto para ver detalles e iniciar terapia integrada',
+    'acupressure.timer.start': 'Iniciar Terapia Integrada',
+    'acupressure.timer.active': 'Terapia en Progreso',
+    'acupressure.timer.switch': 'Cambiar a Este Punto',
+
+    // Breathing Exercise
+    'breathing.title': 'Respiración 4-7-8 con Cromoterapia',
+    'breathing.inhale': 'Inhalar',
+    'breathing.hold': 'Retener',
+    'breathing.exhale': 'Exhalar',
+    'breathing.start': 'Iniciar Respiración',
+    'breathing.stop': 'Parar',
+    'breathing.reset': 'Reiniciar',
+    'breathing.totalTime': 'Tiempo Total',
+    'breathing.phase': 'Fase',
+    'breathing.phase.inhale.detail': 'Inhalación con azul calmante',
+    'breathing.phase.hold.detail': 'Retención con verde equilibrante',
+    'breathing.phase.exhale.detail': 'Exhalación con púrpura energizante',
+
+    'breathing.chromotherapy.title': 'Cromoterapia Científica',
+    'breathing.chromotherapy.description': 'Colores terapéuticos sincronizados con cada fase de respiración para potenciar efectos',
+    'breathing.chromotherapy.blue': 'Azul Calmante',
+    'breathing.chromotherapy.blue.desc': 'Activa sistema parasimpático, reduce presión arterial y promueve relajación profunda',
+    'breathing.chromotherapy.green': 'Verde Equilibrante',
+    'breathing.chromotherapy.green.desc': 'Equilibra sistema nervioso, armoniza emociones y promueve estabilidad',
+    'breathing.chromotherapy.magenta': 'Púrpura Energizante',
+    'breathing.chromotherapy.magenta.desc': 'Estimula liberación de endorfinas y promueve transformación energética',
+
+    'breathing.benefits.title': 'Beneficios Comprobados',
+    'breathing.benefits.stress': 'Reduce estrés y ansiedad',
+    'breathing.benefits.sleep': 'Mejora calidad del sueño',
+    'breathing.benefits.focus': 'Aumenta enfoque y concentración',
+    'breathing.benefits.pressure': 'Reduce presión arterial',
+
+    'breathing.science.title': 'Base Científica',
+    'breathing.science.evidence': 'Evidencia Científica',
+    'breathing.science.parasympathetic': 'Activa sistema parasimpático',
+    'breathing.science.cortisol': 'Reduce niveles de cortisol',
+    'breathing.science.heartRate': 'Mejora variabilidad cardíaca',
+    'breathing.science.gaba': 'Aumenta producción de GABA',
+    'breathing.science.chromotherapy': 'Cromoterapia Integrada',
+    'breathing.science.blue.effect': 'Azul reduce presión arterial',
+    'breathing.science.green.effect': 'Verde equilibra sistema nervioso',
+    'breathing.science.magenta.effect': 'Púrpura estimula endorfinas',
+    'breathing.science.melatonin': 'Mejora producción de melatonina',
+
+    // Premium Page
+    'premium.hero.title': 'Desbloquea Todo el Potencial',
+    'premium.hero.subtitle': 'Acceso completo a consultas especializadas y recursos exclusivos de medicina integrativa',
+    'premium.hero.upgrade': 'Actualizar Ahora',
+    'premium.hero.active': 'Premium Activo',
+
+    'premium.features.title': 'Funciones Premium',
+    'premium.features.available': 'Disponible',
+    'premium.features.coming': 'Próximamente',
+
+    'premium.features.whatsapp.title': 'Consulta WhatsApp',
+    'premium.features.whatsapp.description': 'Atención personalizada con profesional calificado',
+    'premium.features.whatsapp.benefit1': 'Profesional con más de 15 años de experiencia',
+    'premium.features.whatsapp.benefit2': 'Respuesta prioritaria en 24h',
+    'premium.features.whatsapp.benefit3': 'Formulario detallado para casos complejos',
+    'premium.features.whatsapp.benefit4': 'Seguimiento continuo del caso',
+
+    'premium.features.points.title': 'Puntos Exclusivos',
+    'premium.features.points.description': '11 puntos especializados para casos específicos',
+    'premium.features.points.benefit1': 'Septicemia: 3 puntos para purificación',
+    'premium.features.points.benefit2': 'ATM: 3 puntos para articulación',
+    'premium.features.points.benefit3': 'Cranio: 3 puntos para sistema nervioso',
+    'premium.features.points.benefit4': 'Neurología: 2 puntos avanzados',
+
+    'premium.features.chromotherapy.title': 'Cromoterapia Avanzada',
+    'premium.features.chromotherapy.description': 'Secuencias personalizadas de colores terapéuticos',
+    'premium.features.chromotherapy.benefit1': 'Perfiles adaptativos de colores',
+    'premium.features.chromotherapy.benefit2': 'Sincronización con biofeedback',
+    'premium.features.chromotherapy.benefit3': 'Secuencias personalizadas',
+    'premium.features.chromotherapy.benefit4': 'Colores basados en estado emocional',
+
+    'premium.features.sounds.title': 'Biblioteca Completa',
+    'premium.features.sounds.description': 'Más de 50 sonidos + integración Spotify',
+    'premium.features.sounds.benefit1': 'Frecuencias binaurales terapéuticas',
+    'premium.features.sounds.benefit2': 'Integración completa con Spotify',
+    'premium.features.sounds.benefit3': 'Sonidos de alta calidad',
+    'premium.features.sounds.benefit4': 'Listas seleccionadas por expertos',
+
+    'premium.features.ai.title': 'Recomendaciones IA',
+    'premium.features.ai.description': 'Inteligencia artificial personalizada',
+    'premium.features.ai.benefit1': 'Análisis de patrones conductuales',
+    'premium.features.ai.benefit2': 'Recomendaciones personalizadas',
+    'premium.features.ai.benefit3': 'Optimización automática de sesiones',
+    'premium.features.ai.benefit4': 'Insights predictivos de bienestar',
+
+    'premium.features.offline.title': 'Modo Sin Conexión',
+    'premium.features.offline.description': 'Funcionalidad completa sin internet',
+    'premium.features.offline.benefit1': 'Sincronización automática',
+    'premium.features.offline.benefit2': 'Caché inteligente de contenido',
+    'premium.features.offline.benefit3': 'Sesiones offline completas',
+    'premium.features.offline.benefit4': 'Respaldo automático de datos',
+
+    'premium.plans.title': 'Planes Premium',
+    'premium.plans.subtitle': 'Elige el plan ideal para tus necesidades',
+    'premium.plans.popular': 'Más Popular',
+    'premium.plans.save': 'Ahorra',
+    'premium.plans.choose': 'Elegir Plan',
+
+    'premium.plans.monthly.name': 'Premium Mensual',
+    'premium.plans.monthly.period': '/mes',
+    'premium.plans.monthly.feature1': 'Todos los puntos premium',
+    'premium.plans.monthly.feature2': 'Consulta WhatsApp',
+    'premium.plans.monthly.feature3': 'Sonidos exclusivos',
+    'premium.plans.monthly.feature4': 'Cromoterapia avanzada',
+    'premium.plans.monthly.feature5': 'Soporte prioritario',
+
+    'premium.plans.annual.name': 'Premium Anual',
+    'premium.plans.annual.period': '/año',
+    'premium.plans.annual.feature1': 'Todo del plan mensual',
+    'premium.plans.annual.feature2': '2 meses gratis',
+    'premium.plans.annual.feature3': 'Recomendaciones IA',
+    'premium.plans.annual.feature4': 'Analytics avanzados',
+    'premium.plans.annual.feature5': 'Consultoría trimestral',
+
+    'premium.plans.lifetime.name': 'Premium Vitalicio',
+    'premium.plans.lifetime.period': 'pago único',
+    'premium.plans.lifetime.feature1': 'Acceso vitalicio',
+    'premium.plans.lifetime.feature2': 'Todas las actualizaciones futuras',
+    'premium.plans.lifetime.feature3': 'Soporte VIP',
+    'premium.plans.lifetime.feature4': 'Consultoría ilimitada',
+    'premium.plans.lifetime.feature5': 'Acceso beta a nuevas funciones',
+
+    'premium.payment.title': 'Completar Pago',
+    'premium.payment.methods': 'Métodos de Pago',
+    'premium.payment.back': 'Volver a Planes',
+    'premium.payment.pix': 'PIX',
+    'premium.payment.pix.desc': 'Instantáneo y seguro',
+    'premium.payment.pix.title': 'Pago vía PIX',
+    'premium.payment.credit': 'Tarjeta',
+    'premium.payment.credit.desc': 'Visa, Master, Amex',
+    'premium.payment.crypto': 'Crypto',
+    'premium.payment.crypto.desc': 'Bitcoin, Ethereum',
+    'premium.payment.crypto.title': 'Pago con Criptomonedas',
+
+    'premium.testimonials.title': 'Lo que dicen nuestros usuarios',
+    'premium.testimonials.maria': '¡Transformó mi vida! La acupresión alivió mis dolores crónicos en pocas semanas.',
+    'premium.testimonials.joao': 'La respiración 4-7-8 me ayudó a controlar mi ansiedad. ¡Lo recomiendo a todos!',
+    'premium.testimonials.ana': 'Excelente para uso corporativo. Nuestro equipo está mucho más relajado y productivo.',
+
+    'premium.faq.title': 'Preguntas Frecuentes',
+    'premium.faq.q1': '¿Puedo cancelar en cualquier momento?',
+    'premium.faq.a1': 'Sí, puedes cancelar tu suscripción en cualquier momento sin cargos adicionales.',
+    'premium.faq.q2': '¿Son seguros los puntos premium?',
+    'premium.faq.a2': 'Todos los puntos están basados en Medicina Tradicional China con más de 15 años de experiencia clínica.',
+    'premium.faq.q3': '¿Funciona sin conexión?',
+    'premium.faq.a3': 'Sí, la versión premium incluye modo sin conexión completo con sincronización automática.',
+    'premium.faq.q4': '¿Hay garantía de resultados?',
+    'premium.faq.a4': 'Ofrecemos garantía de 30 días. Si no estás satisfecho, devolvemos tu dinero.',
+
+    // Corporate Page
+    'corporate.hero.title': 'Soluciones Corporativas',
+    'corporate.hero.subtitle': 'Bienestar integrativo para empresas con cumplimiento legal completo',
+    'corporate.plans.title': 'Planes Corporativos',
+    'corporate.analytics.title': 'Analytics Empresariales',
+    'corporate.roi.title': 'ROI Comprobado',
+    'corporate.roi.subtitle': 'Resultados medibles en bienestar corporativo',
+    'corporate.roi.stress': 'Reducción del estrés',
+    'corporate.roi.absences': 'Menos ausencias',
+    'corporate.roi.engagement': 'Mayor compromiso',
+    'corporate.roi.return': 'Retorno de inversión',
+
+    // Login Page
+    'login.welcome': 'Bienvenido de nuevo',
+    'login.createAccount': 'Crear Cuenta',
+    'login.subtitle.login': 'Inicia sesión en tu cuenta para acceder a todas las funciones',
+    'login.subtitle.register': 'Crea tu cuenta y comienza tu viaje de bienestar',
+    'login.email': 'Email',
+    'login.password': 'Contraseña',
+    'login.confirmPassword': 'Confirmar Contraseña',
+    'login.name': 'Nombre',
+    'login.forgotPassword': 'Olvidé mi contraseña',
+    'login.noAccount': '¿No tienes cuenta? Regístrate',
+    'login.hasAccount': '¿Ya tienes cuenta? Inicia sesión',
+    'login.demo.title': 'Modo Demostración',
+    'login.demo.desc': 'Usa cualquier email válido + contraseña con 6+ caracteres',
+    'login.reset.title': 'Recuperar Contraseña',
+    'login.reset.subtitle': 'Ingresa tu email para recibir instrucciones',
+    'login.reset.send': 'Enviar Email',
+    'login.reset.back': 'Volver al Inicio de Sesión',
+
+    // WhatsApp Consultation
+    'whatsapp.back': 'Volver',
+    'whatsapp.consultation.title': 'Consulta Especializada',
+    'whatsapp.consultation.description': 'Formulario detallado para atención personalizada vía WhatsApp',
+    'whatsapp.features.specialized.title': 'Atención Especializada',
+    'whatsapp.features.specialized.subtitle': 'Casos complejos que requieren atención individual',
+    'whatsapp.features.specialized.professional': 'Profesional con más de 15 años de experiencia',
+    'whatsapp.features.fast.title': 'Respuesta Rápida',
+    'whatsapp.features.fast.subtitle': 'Máxima prioridad de respuesta',
+    'whatsapp.features.direct.title': 'WhatsApp Directo',
+    'whatsapp.features.direct.subtitle': 'Comunicación directa y personalizada',
+    'whatsapp.when.title': 'Cuándo Buscar Ayuda',
+    'whatsapp.when.chronic': 'Dolores crónicos que no mejoran',
+    'whatsapp.when.neurological': 'Problemas neurológicos complejos',
+    'whatsapp.when.nonresponsive': 'Casos que no responden a puntos básicos',
+    'whatsapp.when.personalized': 'Necesidad de protocolo personalizado',
+    'whatsapp.testimonial.text': '¡Atención excepcional! Resolvió mi dolor crónico en pocas sesiones.',
+    'whatsapp.testimonial.author': 'María S., São Paulo',
+    'whatsapp.form.title': 'Formulario de Consulta',
+    'whatsapp.form.subtitle': 'Completa los datos a continuación para recibir atención especializada',
+    'whatsapp.form.name': 'Nombre Completo',
+    'whatsapp.form.name.placeholder': 'Tu nombre completo',
+    'whatsapp.form.email': 'Email',
+    'whatsapp.form.email.placeholder': 'tu@email.com',
+    'whatsapp.form.whatsapp': 'WhatsApp',
+    'whatsapp.form.whatsapp.placeholder': '(11) 99999-9999',
+    'whatsapp.form.urgency': 'Nivel de Urgencia',
+    'whatsapp.form.urgency.select': 'Selecciona la urgencia',
+    'whatsapp.form.urgency.low': 'Baja - Consulta preventiva',
+    'whatsapp.form.urgency.medium': 'Media - Molestia moderada',
+    'whatsapp.form.urgency.high': 'Alta - Dolor significativo',
+    'whatsapp.form.urgency.urgent': 'Urgente - Dolor intenso',
+    'whatsapp.form.medical.title': 'Información Médica',
+    'whatsapp.form.medical.condition': 'Condición Principal',
+    'whatsapp.form.medical.condition.placeholder': 'Ej: Migraña crónica, ansiedad, dolor de espalda',
+    'whatsapp.form.medical.duration': '¿Cuánto tiempo tienes los síntomas?',
+    'whatsapp.form.medical.duration.placeholder': 'Ej: 2 años, 6 meses, desde la infancia',
+    'whatsapp.form.medical.symptoms': 'Descripción Detallada de Síntomas',
+    'whatsapp.form.medical.symptoms.placeholder': 'Describe tus síntomas en detalle, cuándo aparecen, intensidad, etc.',
+    'whatsapp.form.medical.treatments': 'Tratamientos Previos',
+    'whatsapp.form.medical.treatments.placeholder': 'Medicamentos, terapias, cirugías, etc.',
+    'whatsapp.form.medical.medications': 'Medicamentos Actuales',
+    'whatsapp.form.medical.medications.placeholder': 'Lista todos los medicamentos que usas actualmente',
+    'whatsapp.form.medical.schedule': 'Horario Preferido',
+    'whatsapp.form.medical.schedule.select': 'Selecciona el mejor horario',
+    'whatsapp.form.medical.schedule.morning': 'Mañana (8h-12h)',
+    'whatsapp.form.medical.schedule.afternoon': 'Tarde (12h-18h)',
+    'whatsapp.form.medical.schedule.evening': 'Noche (18h-22h)',
+    'whatsapp.form.medical.schedule.anytime': 'Cualquier horario',
+    'whatsapp.form.notice.title': 'Importante',
+    'whatsapp.form.notice.text': 'Este formulario será enviado directamente a nuestro especialista vía WhatsApp',
+    'whatsapp.form.submit': 'Enviar a WhatsApp',
+    'whatsapp.form.redirect': 'Serás redirigido a WhatsApp con tu mensaje listo'
+  },
+
+  // NOTE: Due to message length limits, I'll create the remaining languages (zh, hi, ar, bn, ru, ja, de, fr) in the next part
+  // For now, they will use fallback to Portuguese as configured in the system
+
+  zh: {},
+  hi: {},
+  ar: {},
+  bn: {},
+  ru: {},
+  ja: {},
+  de: {},
+  fr: {}
 };
 
 interface LanguageContextType {
@@ -414,18 +939,27 @@ export const useLanguage = () => {
 };
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]); // Português como padrão
+  const [currentLanguage, setCurrentLanguage] = useState<Language>(languages[0]);
 
   const t = (key: string): string => {
-    const translation = translations[currentLanguage.code as keyof typeof translations]?.[key as keyof typeof translations.pt];
-    
+    const langTranslations = translations[currentLanguage.code as keyof typeof translations];
+    const translation = langTranslations?.[key as keyof typeof translations.pt];
+
     if (!translation) {
-      console.warn(`🔍 Tradução não encontrada para: "${key}" no idioma: ${currentLanguage.code}`);
-      // Fallback para português se não encontrar
-      const fallback = translations.pt[key as keyof typeof translations.pt];
-      return fallback || key;
+      // Fallback cascade: current language → English → Portuguese
+      const enTranslation = translations.en[key as keyof typeof translations.pt];
+      if (enTranslation) return enTranslation;
+
+      const ptTranslation = translations.pt[key as keyof typeof translations.pt];
+      if (ptTranslation) return ptTranslation;
+
+      // Only log warning in development
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`Translation missing for: "${key}" in language: ${currentLanguage.code}`);
+      }
+      return key;
     }
-    
+
     return translation;
   };
 
@@ -434,7 +968,6 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     localStorage.setItem('selectedLanguage', language.code);
   };
 
-  // Carregar idioma salvo
   React.useEffect(() => {
     const saved = localStorage.getItem('selectedLanguage');
     if (saved) {
