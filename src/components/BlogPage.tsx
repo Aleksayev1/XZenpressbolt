@@ -97,7 +97,9 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onPageChange }) => {
       'respiracao': 'Respiração',
       'cromoterapia': 'Cromoterapia',
       'bem-estar-corporativo': 'Bem-estar Corporativo',
-      'medicina-tradicional-chinesa': 'Medicina Tradicional Chinesa'
+      'medicina-tradicional-chinesa': 'Medicina Tradicional Chinesa',
+      'Saúde Mental': 'Saúde Mental',
+      'saude-mental': 'Saúde Mental'
     };
     return categoryNames[category] || category;
   };
@@ -108,7 +110,9 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onPageChange }) => {
       'respiracao': 'bg-blue-100 text-blue-800',
       'cromoterapia': 'bg-purple-100 text-purple-800',
       'bem-estar-corporativo': 'bg-orange-100 text-orange-800',
-      'medicina-tradicional-chinesa': 'bg-indigo-100 text-indigo-800'
+      'medicina-tradicional-chinesa': 'bg-indigo-100 text-indigo-800',
+      'Saúde Mental': 'bg-teal-100 text-teal-800',
+      'saude-mental': 'bg-teal-100 text-teal-800'
     };
     return colors[category] || 'bg-gray-100 text-gray-800';
   };
