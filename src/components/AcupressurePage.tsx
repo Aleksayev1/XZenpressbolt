@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Target, Crown, Lock, Star, Clock, Play, Pause, RotateCcw, Info, CheckCircle, Timer, Brain, Heart, Volume2, VolumeX, ExternalLink, X, ZoomIn } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -315,7 +316,7 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
     if (!isVisible || !imageUrl) return null;
 
-    return (
+    return createPortal(
       <div
         className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-90 transition-opacity duration-300 p-4 backdrop-blur-sm"
         onClick={onClose}
@@ -366,7 +367,8 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
             </div>
           </div>
         </div>
-      </div>
+      </div>,
+      document.body
     );
   };
 
