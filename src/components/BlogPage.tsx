@@ -223,9 +223,12 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onPageChange }) => {
                     className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden"
                   >
                     {post.imageUrl && (
-                      <div className="h-40 overflow-hidden">
-                        <img 
-                          src={post.imageUrl} 
+                      <div
+                        className="h-40 overflow-hidden cursor-pointer"
+                        onClick={() => handlePostClick(post)}
+                      >
+                        <img
+                          src={post.imageUrl}
                           alt={post.title}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
@@ -358,9 +361,12 @@ export const BlogPage: React.FC<BlogPageProps> = ({ onPageChange }) => {
                   >
                     {/* Featured Image */}
                     {post.imageUrl && (
-                      <div className="h-48 overflow-hidden">
-                        <img 
-                          src={post.imageUrl} 
+                      <div
+                        className="h-48 overflow-hidden cursor-pointer"
+                        onClick={() => handlePostClick(post)}
+                      >
+                        <img
+                          src={post.imageUrl}
                           alt={post.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
