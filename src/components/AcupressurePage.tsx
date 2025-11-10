@@ -640,9 +640,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
               {/* Point Image */}
               {selectedPointData.image && (
-                <div className="mb-6 relative">
+                <div className="mb-6">
                   <div
-                    className="image-zoom-wrapper w-full rounded-xl cursor-pointer"
+                    className="image-zoom-wrapper w-full rounded-xl cursor-pointer relative"
                     onClick={() => {
                       setShowZoomModal(true);
                       setZoomImageUrl(selectedPointData.image);
@@ -662,11 +662,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                         <span className="text-white text-sm font-medium drop-shadow-lg image-zoom-text">Clique para ampliar</span>
                       </div>
                     </div>
-                  </div>
-                  {/* Overlay com informações do ponto */}
-                  <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg pointer-events-none">
-                    <div className="text-xs font-medium">
-                      📍 {selectedPointData.name} • ⏱️ {Math.floor((selectedPointData.duration || 120) / 60)}min
+                    {/* Overlay com informações do ponto */}
+                    <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg pointer-events-none">
+                      <div className="text-xs font-medium">
+                        📍 {selectedPointData.name} • ⏱️ {Math.floor((selectedPointData.duration || 120) / 60)}min
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -971,9 +971,9 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
 
                   {/* Imagem do Ponto */}
                   {viewingPointData.image && (
-                    <div className="mb-6 relative">
+                    <div className="mb-6">
                       <div
-                        className="image-zoom-wrapper w-full rounded-xl cursor-pointer"
+                        className="image-zoom-wrapper w-full rounded-xl cursor-pointer relative"
                         onClick={() => {
                           setShowZoomModal(true);
                           setZoomImageUrl(viewingPointData.image);
@@ -993,11 +993,11 @@ export const AcupressurePage: React.FC<AcupressurePageProps> = ({ onPageChange }
                             <span className="text-white text-sm font-medium drop-shadow-lg image-zoom-text">Clique para ampliar</span>
                           </div>
                         </div>
-                      </div>
-                      {/* Overlay com nome do ponto */}
-                      <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg pointer-events-none">
-                        <div className="text-xs font-medium text-center">
-                          📍 {viewingPointData.name}
+                        {/* Overlay com nome do ponto */}
+                        <div className="absolute bottom-2 left-2 right-2 bg-black bg-opacity-70 text-white p-2 rounded-lg pointer-events-none">
+                          <div className="text-xs font-medium text-center">
+                            📍 {viewingPointData.name}
+                          </div>
                         </div>
                       </div>
                     </div>
