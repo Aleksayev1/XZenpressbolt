@@ -1,0 +1,103 @@
+name: Build and Pack (Node.js)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "20.x"
+  # Ajuste aqui para a pasta gerada pelo seu build:
+  OUTPUT_DIR: "dist"
+
+jobs:
+  build-pack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Instalar dependências (npm ci se existir package-lock)
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Build do projeto (ignora se não houver script)
+        run: |
+          if npm run | grep -q "build"; then
+            npm run build
+          else
+            echo "Nenhum script 'build' encontrado. Pulando etapa."
+          fi
+
+      # (Opcional) Injeção de arquivos Netlify caso existam na raiz do repo.
+      # Se você tiver netlify.toml, _redirects ou _headers, eles serão copiados ao OUTPUT_DIR.
+      - name: Injetar arquivos Netlify
+        run: |
+          mkdir -p "${{ env.OUTPUT_DIR }}"
+          for f in netlify.toml _redirects _headers; do
+            if [ -f "$f" ]; then
+              echo "Copiando $f para ${{ env.OUTPUT_DIR }}/"
+              cp "$f" "${{ env.OUTPUT_DIR }}/"
+            fi
+          done
+
+      # Detecta automaticamente qual pasta de build usar (dist, build, out),
+      # caso você não ajuste o env OUTPUT_DIR acima.
+      - name: Detectar pasta de saída (fallback)
+        id: detect
+        run: |
+          if [ -d "${{ env.OUTPUT_DIR }}" ]; then
+            echo "dir=${{ env.OUTPUT_DIR }}" >> "$GITHUB_OUTPUT"
+          elif [ -d "dist" ]; then
+            echo "dir=dist" >> "$GITHUB_OUTPUT"
+          elif [ -d "build" ]; then
+            echo "dir=build" >> "$GITHUB_OUTPUT"
+          elif [ -d "out" ]; then
+            echo "dir=out" >> "$GITHUB_OUTPUT"
+          else
+            echo "Nenhuma pasta de saída encontrada; criando ./dist vazia"
+            mkdir -p dist
+            echo "dir=dist" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compactar ZIP final
+        run: |
+          echo "Compactando ${{ steps.detect.outputs.dir }} -> app-distribuicao.zip"
+          cd "${{ steps.detect.outputs.dir }}"
+          zip -r ../app-distribuicao.zip ./*
+          cd -
+
+      - name: Publicar artefato (ZIP)
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-distribuicao
+          path: app-distribuicao.zip
+          retention-days: 7
+
+      # (Opcional) Também enviar a pasta de saída crua, sem zip
+      - name: Publicar artefato (pasta de saída)
+        uses: actions/upload-artifact@v4
+        with:
+          name: pasta-saida
+          path: ${{ steps.detect.outputs.dir }}
+          retention-days: 7
