@@ -1,20 +1,16 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Create client - ready for production
-const isSupabaseConfigured = supabaseUrl && supabaseUrl.includes('supabase.co') && 
-                            supabaseAnonKey && supabaseAnonKey.startsWith('eyJ') &&
-                            supabaseUrl && supabaseAnonKey
-
-export const supabase = isSupabaseConfigured 
+export const supabase = (supabaseUrl && supabaseAnonKey) 
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null
 
 // Log configuration status
 if (typeof window !== 'undefined') {
-  if (isSupabaseConfigured) {
+  if (supabaseUrl && supabaseAnonKey) {
     console.log('✅ Supabase configurado e ativo:', supabaseUrl.substring(0, 30) + '...')
   } else {
     console.log('⚠️ Supabase não configurado - usando modo local')
