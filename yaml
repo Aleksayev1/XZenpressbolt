@@ -1,0 +1,99 @@
+name: Build and Pack Dist
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (Vite)
+        run: npm run build
+
+      - name: Inject Netlify files
+        run: |
+          # _redirects
+          cat > dist/_redirects << 'EOF'
+          /*    /index.html   200
+
+          # (Opcional) forçar www -> apex (descomente se usar www)
+          /*  https://xzenpress.com/:splat   301!   Host:www.xzenpress.com
+          EOF
+
+          # _headers
+          cat > dist/_headers << 'EOF'
+          /*
+            X-Frame-Options: DENY
+            X-Content-Type-Options: nosniff
+            Referrer-Policy: strict-origin-when-cross-origin
+            Permissions-Policy: camera=(), microphone=(), geolocation=()
+            Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+            # CSP: Spotify liberado; Stripe e Supabase previstos
+            # Se depois quiser endurecer, podemos remover 'unsafe-inline'/'unsafe-eval' (teste antes)
+            Content-Security-Policy: default-src 'self'; frame-ancestors 'none'; connect-src 'self' https://api.spotify.com https://*.spotify.com https://*.scdn.co https://*.spotifycdn.com https://*.supabase.co https://api.stripe.com https://m.stripe.network; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://sdk.scdn.co https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: https://i.scdn.co https://*.scdn.co https://*.spotifycdn.com; font-src 'self' https: data:; frame-src https://open.spotify.com https://js.stripe.com; media-src 'self' https: data:
+
+          /index.html
+            Cache-Control: public, max-age=0, must-revalidate
+
+          /assets/*
+            Cache-Control: public, max-age=31536000, immutable
+
+          /service-worker.js
+            Cache-Control: no-cache
+
+          /manifest.webmanifest
+            Cache-Control: public, max-age=0, must-revalidate
+
+          /favicon.ico
+            Cache-Control: public, max-age=604800
+
+          /apple-touch-icon.png
+            Cache-Control: public, max-age=604800
+          EOF
+
+          # robots.txt (opcional)
+          cat > dist/robots.txt << 'EOF'
+          User-agent: *
+          Allow: /
+
+          Sitemap: https://xzenpress.com/sitemap.xml
+          EOF
+
+          # sitemap.xml (opcional – ajuste as rotas se quiser)
+          cat > dist/sitemap.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url><loc>https://xzenpress.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+            <url><loc>https://xzenpress.com/login</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+            <url><loc>https://xzenpress.com/dashboard</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+            <url><loc>https://xzenpress.com/respiracao</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+            <url><loc>https://xzenpress.com/sons</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+            <url><loc>https://xzenpress.com/personalizacao</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+            <url><loc>https://xzenpress.com/premium</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+          </urlset>
+          EOF
+
+      - name: Pack zip
+        run: |
+          cd dist
+          zip -rq "../xzenpress-dist-${GITHUB_SHA::7}.zip" .
+          cd ..
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xzenpress-dist
+          path: xzenpress-dist-*.zip
+          retention-days: 7
