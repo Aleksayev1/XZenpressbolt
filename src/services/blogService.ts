@@ -19,7 +19,7 @@ export class BlogService {
       let query = supabase
         .from('blog_posts')
         .select('*')
-        .eq('published', true)
+       // .eq('published', true)
         .order('published_at', { ascending: false });
 
       if (options?.category) {
@@ -170,7 +170,7 @@ export class BlogService {
       const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
-        .eq('published', true)
+        // .eq('published', true)
         .or(`title.ilike.%${searchTerm}%,content.ilike.%${searchTerm}%`)
         .order('published_at', { ascending: false });
 
@@ -703,7 +703,7 @@ A cromoterapia é uma ferramenta poderosa e não invasiva para promover bem-esta
         readingTime: 10,
         createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
         updatedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-      }
+         }
     ];
   }
 }
